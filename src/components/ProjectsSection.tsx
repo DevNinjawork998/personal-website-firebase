@@ -1,5 +1,5 @@
 import FullScreenSection from "./FullScreenSection";
-import { Box, Flex, Heading, flexbox } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 import Card from "./Card";
 import React from "react";
 

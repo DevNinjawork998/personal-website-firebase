@@ -19,21 +19,9 @@ import useSubmit from "../hooks/useSubmit.js";
 import { useAlertContext } from "../context/alertContext";
 
 const LandingSection = () => {
-  const { isLoading, response, submit } = useSubmit();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { submit } = useSubmit();
   useAlertContext();
-
-  const formik = useFormik({
-    initialValues: {
-      firstName: "",
-      email: "",
-      type: "hireMe",
-      comment: "",
-    },
-    onSubmit: (values: unknown) => {
-      submit("", "");
-    },
-    validationSchema: Yup.object({}),
-  });
 
   return (
     <FullScreenSection
