@@ -6,6 +6,7 @@ import {
   faLinkedin,
   faStackOverflow,
 } from "@fortawesome/free-brands-svg-icons";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Box, HStack, useStatStyles } from "@chakra-ui/react";
 
 const socials = [

@@ -1,5 +1,3 @@
-import React from "react";
-import { useFormik } from "formik";
 import {
   Box,
   Button,
@@ -12,7 +10,6 @@ import {
   Textarea,
   VStack,
 } from "@chakra-ui/react";
-import * as Yup from "yup";
 import FullScreenSection from "./FullScreenSection";
 // @ts-ignore
 import useSubmit from "../hooks/useSubmit.js";
