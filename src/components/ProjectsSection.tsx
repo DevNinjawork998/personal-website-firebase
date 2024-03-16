@@ -16,7 +16,7 @@ const projects = [
     description:
       "Using React.js Framework to create a Pokemon Database, demonstrate the use of React Hooks and Reducer. Added some pagination at the bottom for easy navigation.",
     getImageSrc: () => require("../images/Pokemon.jpg"),
-    url: "https://pokemon-database-ravenslayer998.netlify.app/",
+    url: "https://pokemondatabase.web.app/",
   },
   {
     title: "BuberBreakfast",
