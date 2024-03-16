@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -7,7 +7,7 @@ import {
   faStackOverflow,
 } from "@fortawesome/free-brands-svg-icons";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Box, HStack, useStatStyles } from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 
 const socials = [
   {
@@ -16,7 +16,7 @@ const socials = [
   },
   {
     icon: faGithub,
-    url: "https://github.com/Ravenslayer998",
+    url: "https://github.com/DevNinjawork998",
   },
 
   {
@@ -56,7 +56,8 @@ function Header() {
     }
   };
   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-  -window.addEventListener("scroll", changeBackground);
+  -window.addEventListener("scrollY", changeBackground);
+  // console.log(window.scrollY);
 
   return (
     <Box
