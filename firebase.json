@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "personalwebsite-36ca2",
+    "site": "personal-website-3580d",
     "public": "build",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
   }

@@ -9,7 +9,7 @@ const projects = [
     description:
       "This was first ever Front-End Development project, Using Simple HTML, JavaScript and CSS to create a simple calculator",
     getImageSrc: () => require("../images/photo1.jpg"),
-    url: "https://simple-calculator-ravenslayer.netlify.app/",
+    url: "https://personalcalculator.web.app/",
   },
   {
     title: "Pokemon DataBase",
