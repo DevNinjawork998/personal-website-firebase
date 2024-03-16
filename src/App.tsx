@@ -13,7 +13,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
 //GA Trackingomen
-const Tracking_ID = "6533787350";
+const Tracking_ID = "7642102574";
 //test mode enable true for using test case.
 ReactGA.initialize(Tracking_ID, { testMode: true });
 ReactGA.ga(window.location.pathname);
