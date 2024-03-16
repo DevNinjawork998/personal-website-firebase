@@ -1,7 +1,6 @@
 import { Heading, Text, VStack, Image, Box } from "@chakra-ui/react";
 import FullScreenSection from "./FullScreenSection";
 import profilePic from "../images/IMG_2796.png";
-import "./LandingSection.css";
 
 // Introduction message for Full Scereen Section
 const greeting = "Hello, I am Jack!";
