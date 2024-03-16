@@ -8,26 +8,17 @@ import Footer from "./components/Footer";
 import { AlertProvider } from "./context/alertContext";
 import Alert from "./components/Alert";
 
-import ReactGA from "react-ga4";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
-//GA Trackingomen
-const Tracking_ID = "7642102574";
-//test mode enable true for using test case.
-ReactGA.initialize(Tracking_ID, { testMode: true });
-ReactGA.ga(window.location.pathname);
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBKghiJtbL3y0nyjSQ6uNYadZAxliyKxuA",
   authDomain: "personal-website-3580d.firebaseapp.com",
   projectId: "personal-website-3580d",
   storageBucket: "personal-website-3580d.appspot.com",
   messagingSenderId: "508647798578",
-  appId: "1:508647798578:web:d8ccbb6d9594fa3db0892b",
-  measurementId: "G-ZC8BGNK1P3",
+  appId: "1:508647798578:web:962a6821e2bbbf38b0892b",
+  measurementId: "G-P6LGZJ4YJH",
 };
 
 // Initialize Firebase
