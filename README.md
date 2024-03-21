@@ -7,15 +7,15 @@ Will be improve the website from time to time. Adding more interactive elements 
 
 List of libraries used:
 
-* ### Getting Started with Create React App
+* ## React App with TypeScript Template
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+### Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+#### `npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -23,12 +23,12 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `npm test`
+#### `npm test`
 
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+#### `npm run build`
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -38,7 +38,7 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+#### `npm run eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
@@ -48,14 +48,12 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
-
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
 
-* ### Chakra UI
+* ## Chakra UI
 
 Chakra UI comes pre-configured with this lab, so you don't have to worry about installing it or setting it up.
 
@@ -63,19 +61,7 @@ The components from this library you will need to use are already imported from 
 If you don't see a component already imported, it's because you probably won't need it.
 In any case, feel free to check their official [documentation](https://chakra-ui.com/docs/components) to see all the components at your disposal and their corresponding props.
 
-* ### Formik and Yup
-
-The Formik library is already set up in the project as well, so no extra configuration is needed.
-In this lab, you will be only using the `useFormik` hook from the Formik library, as well as the global `Yup` object to define the Contact Me form validation rules.
-
-The form UI will be implemented using Chakra UI components.
-
-Before you begin, if you run `npm start` and view the app in the browser, you'll notice that the starting React app works as is.
-
-The app outputs a page with an empty header, 3 different full-height sections and a footer.
-Every section has a different background color. The first 2 sections will be empty and the third section will contain all the UI elements for the Contact Me form.
-
-* ### Google Analytics
+* ## Google Analytics
 
 Implemented Google Analytics to analyse and capture user traffic data to further understand number of visits and demographics.
 
