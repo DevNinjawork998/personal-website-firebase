@@ -1,7 +1,6 @@
 {
   "projects": {
-    "default": "personal-website-3580d",
-    "production": "personal-website-3580d"
+    "default": "personal-website-3580d"
   },
   "targets": {},
   "etags": {}
