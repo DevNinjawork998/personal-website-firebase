@@ -1,5 +1,4 @@
 import { Heading, Image, Text } from "@chakra-ui/react";
-import ReactGA from "react-ga4";
 
 type CardContent = {
   title: string;
@@ -7,20 +6,6 @@ type CardContent = {
   imageSrc: string;
   url: string;
 };
-
-// function handleClick() {
-//   // Track a custom event
-//   ReactGA.event({
-//     category: "Button Click",
-//     action: "Pokemon DataBase",
-//     label: "Project Page Pokemon Database",
-//   });
-//   ReactGA.event({
-//     category: "Button Click",
-//     action: "Simple Calculator",
-//     label: "Project Page Simple Calculator",
-//   });
-// }
 
 // OnClick function for Car
 const Card = (card: CardContent) => {
