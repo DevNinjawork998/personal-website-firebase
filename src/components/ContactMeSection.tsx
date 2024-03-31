@@ -11,13 +11,12 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import FullScreenSection from "./FullScreenSection";
-// @ts-ignore
-import useSubmit from "../hooks/useSubmit.js";
+import useSubmit from "../hooks/useSubmit";
 import { useAlertContext } from "../context/alertContext";
 
 const LandingSection = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   useSubmit();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   useAlertContext();
 
   return (

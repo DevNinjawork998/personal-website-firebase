@@ -9,7 +9,7 @@ export const AlertProvider = ({ children }: any) => {
     // Type can be either "success" or "error"
     type: "success",
     // Message to be displayed, can be any string
-    message: "",
+    message: "Thank for submiting your query",
   });
 
   return (
@@ -18,7 +18,12 @@ export const AlertProvider = ({ children }: any) => {
         ...state,
         onOpen: (type: string, message: string): void =>
           setState({ isOpen: true, type, message }),
-        onClose: () => setState({ isOpen: false, type: "", message: "" }),
+        onClose: () =>
+          setState({
+            isOpen: false,
+            type: "end",
+            message: "Goodbye I will speak to you very soon",
+          }),
       }}
     >
       {children}
