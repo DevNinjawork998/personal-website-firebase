@@ -17,7 +17,7 @@ import { useAlertContext } from "../context/alertContext";
 
 const LandingSection = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { submit } = useSubmit();
+  useSubmit();
   useAlertContext();
 
   return (
