@@ -7,7 +7,6 @@ type CardContent = {
   url: string;
 };
 
-// OnClick function for Car
 const Card = (card: CardContent) => {
   return (
     <div
