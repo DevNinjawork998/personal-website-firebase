@@ -18,7 +18,7 @@ const Card = (card: CardContent) => {
         width: "500px",
       }}
     >
-      <a href={card.url} /*onClick = { handleClick }*/>
+      <a href={card.url}>
         <Image src={card.imageSrc} />
       </a>
       <Heading>{card.title}</Heading>
