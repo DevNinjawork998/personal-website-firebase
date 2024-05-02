@@ -12,7 +12,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import FullScreenSection from "./FullScreenSection";
-import useSubmit from "../hooks/useSubmit";
+import useSubmit from "../hooks/useSubmit.js";
 import { useAlertContext } from "../context/alertContext";
 
 type FormData = {
@@ -27,8 +27,21 @@ const initialDataForm: FormData = {
   querType: "",
 };
 const LandingSection = () => {
+  const [data, setData] = useState(initialDataForm);
+
+  function updateFields(fields: Partial<FormData>) {
+    setData((prev) => {
+      return {
+        ...prev,
+        ...fields,
+      };
+    });
+  }
+
+  function onSubmit(e: FormEvent) {
+    e.preventDefault();
+  }
   useSubmit();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   useAlertContext();
 
   return (
