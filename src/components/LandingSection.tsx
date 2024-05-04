@@ -17,7 +17,7 @@ const LandingSection = () => (
     justifyContent="center"
     alignItems="center"
     isDarkBackground
-    backgroundColor="rgba(0,0,0,0.4)"
+    backgroundColor="rgba(0,0,0,0.5)"
     backgroundImage
   >
     <Box>
