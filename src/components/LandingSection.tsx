@@ -6,7 +6,7 @@ import profilePic from "../images/IMG_2796.png";
 const greeting = "Hello, I am Jack!";
 const bio1 = "Aspiring Software Engineer at bp Malaysia";
 const bio2 =
-  "Core Specilisation in React.js framwork, TypeScript, ASP.Net, Azure";
+  "Core Specilisation in React.js, Next.js, TypeScript, ASP.Net, Azure Cloud,  Graphql";
 const Location = "Location: Kuala Lumpur, Malaysian";
 
 // function for getting current age
