@@ -52,8 +52,8 @@ const LandingSection = () => (
           <VStack spacing={4} paddingBottom={4}>
             <Heading size="xl">{bio1}</Heading>
             <Heading size="xl">{bio2}</Heading>
-            <Text size="sm">{Location}</Text>
-            <Text size="sm">Age: {currentage}</Text>
+            <Text size="md">{Location}</Text>
+            <Text size="md" >Age: {currentage}</Text>
           </VStack>
         </div>
       </VStack>
