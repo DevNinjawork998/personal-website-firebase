@@ -13,7 +13,6 @@ import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  // apiKey: "AIzaSyBKghiJtbL3y0nyjSQ6uNYadZAxliyKxuA",
   authDomain: "personal-website-3580d.firebaseapp.com",
   projectId: "personal-website-3580d",
   storageBucket: "personal-website-3580d.appspot.com",
