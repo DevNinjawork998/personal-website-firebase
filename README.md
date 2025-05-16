@@ -7,7 +7,7 @@ Will be improve the website from time to time. Adding more interactive elements 
 
 List of libraries used:
 
-* ## React App with TypeScript Template
+- ## React App with TypeScript Template
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -52,8 +52,7 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-
-* ## Chakra UI
+- ## Chakra UI
 
 Chakra UI comes pre-configured with this lab, so you don't have to worry about installing it or setting it up.
 
@@ -61,7 +60,6 @@ The components from this library you will need to use are already imported from 
 If you don't see a component already imported, it's because you probably won't need it.
 In any case, feel free to check their official [documentation](https://chakra-ui.com/docs/components) to see all the components at your disposal and their corresponding props.
 
-* ## Google Analytics
+- ## Google Analytics
 
 Implemented Google Analytics to analyse and capture user traffic data to further understand number of visits and demographics.
-

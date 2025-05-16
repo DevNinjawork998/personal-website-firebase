@@ -9,7 +9,7 @@ import Alert from "./components/Alert";
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getPerformance } from "firebase/performance";
+// import { getPerformance } from "firebase/performance";s
 
 const firebaseConfig = {
   apiKey: "AIzaSyBKghiJtbL3y0nyjSQ6uNYadZAxliyKxuA",
@@ -25,7 +25,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const analytics = getAnalytics(app);
-const perf = getPerformance(app);
+// const perf = getPerformance(app);
 
 function App() {
   return (
