@@ -12,7 +12,7 @@ import { getAnalytics } from "firebase/analytics";
 // import { getPerformance } from "firebase/performance";s
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  apiKey: "AIzaSyBKghiJtbL3y0nyjSQ6uNYadZAxliyKxuA",
   authDomain: "personal-website-3580d.firebaseapp.com",
   projectId: "personal-website-3580d",
   storageBucket: "personal-website-3580d.appspot.com",
