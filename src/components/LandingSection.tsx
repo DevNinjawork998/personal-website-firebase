@@ -22,40 +22,34 @@ const LandingSection = () => (
   >
     <Box>
       <VStack spacing={8} paddingLeft="2rem" paddingRight="2rem">
-        <div className="profile-picture">
+        <Box
+          w="300px"
+          h="300px"
+          borderRadius="50%"
+          overflow="hidden"
+          boxShadow="2xl"
+          border="4px solid white"
+        >
           <Image
             src={profilePic}
-            style={{
-              width: "440px",
-              height: "450px",
-              borderRadius: "100%",
-              alignItems: "center",
-              alignContent: "center",
-              justifyContent: "center",
-            }}
+            alt="Jack's profile picture"
+            w="100%"
+            h="100%"
+            objectFit="cover"
+            objectPosition="center"
           />
-        </div>
-        <div
-          className="Description"
-          style={{
-            textAlign: "center",
-          }}
-        >
-          <Heading
-            size="2xl"
-            style={{
-              paddingBottom: "2rem",
-            }}
-          >
+        </Box>
+        <VStack spacing={4} textAlign="center" color="white">
+          <Heading size="2xl" mb={4}>
             {greeting}
           </Heading>
-          <VStack spacing={4} paddingBottom={4}>
+          <VStack spacing={4}>
             <Heading size="xl">{bio1}</Heading>
             <Heading size="xl">{bio2}</Heading>
-            <Text size="md">{Location}</Text>
-            <Text size="md" >Age: {currentage}</Text>
+            <Text fontSize="lg">{Location}</Text>
+            <Text fontSize="lg">Age: {currentage}</Text>
           </VStack>
-        </div>
+        </VStack>
       </VStack>
     </Box>
   </FullScreenSection>
