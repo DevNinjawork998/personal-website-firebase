@@ -24,13 +24,13 @@ const projects = [
     getImageSrc: () => require("../images/BreakfastImage.jpg"),
     url: "https://github.com/jack-ooi-bp/BuberBreakfast",
   },
-  // {
-  //   title: "Event planner",
-  //   description:
-  //     "A mobile application for leisure seekers to discover unique events and activities in their city with a few taps",
-  //   getImageSrc: () => require("../images/photo4.jpg"),
-  //   url: "",
-  // },
+  {
+    title: "Cocktail Ecommerce App",
+    description:
+      "A Cocktail Ecommerce App, using Next.js Framework to create a Cocktail Ecommerce App, demonstrate the use of React Hooks, Intergration with Stripe and prisma prostgress DB",
+    getImageSrc: () => require("../images/Cocktail.png"),
+    url: "https://cocktail-business-project.vercel.app/",
+  },
 ];
 
 const ProjectsSection = () => {
