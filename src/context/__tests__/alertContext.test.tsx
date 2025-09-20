@@ -32,7 +32,7 @@ describe("AlertContext", () => {
 
     const alertState = screen.getByTestId("alert-state");
     expect(alertState).toHaveTextContent(
-      "closed - success - Thank for submiting your query"
+      "closed - success - Thank for submitting your query"
     );
   });
 

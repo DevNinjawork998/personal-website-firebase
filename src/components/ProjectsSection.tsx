@@ -9,57 +9,40 @@ import {
   Icon,
   Divider,
   useBreakpointValue,
+  Spinner,
+  Alert,
+  AlertIcon,
+  Button,
 } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 import Card from "./Card";
 import { motion } from "framer-motion";
+import { useProjects } from "../hooks/useProjects";
+
+// Import all images at the top level for better performance
+import photo1 from "../images/photo1.jpg";
+import pokemon from "../images/Pokemon.jpg";
+import breakfast from "../images/BreakfastImage.jpg";
+import cocktail from "../images/Cocktail.png";
+import anzPortal from "../images/ANZ OneFleet Portal.png";
 
 const MotionBox = motion(Box);
 
-const projects = [
-  {
-    title: "Simple Calculator",
-    description:
-      "My first front-end development project, built using HTML, JavaScript, and CSS to create a fully functional calculator with basic arithmetic operations.",
-    getImageSrc: () => require("../images/photo1.jpg"),
-    url: "https://personalcalculator.web.app/",
-    tech: ["HTML", "CSS", "JavaScript"],
-  },
-  {
-    title: "Pokemon Database",
-    description:
-      "A React.js application that creates an interactive Pokemon database, demonstrating the use of React Hooks and Reducer for state management. Features pagination for seamless navigation through the Pokemon collection.",
-    getImageSrc: () => require("../images/Pokemon.jpg"),
-    url: "https://pokemondatabase.web.app/",
-    tech: ["ReactJs", "JavaScript", "API"],
-  },
-  {
-    title: "BuberBreakfast",
-    description:
-      "A C# backend service that hosts a comprehensive breakfast menu database. The application utilizes API integration to fetch and display corresponding breakfast dishes with detailed information.",
-    getImageSrc: () => require("../images/BreakfastImage.jpg"),
-    url: "https://github.com/jack-ooi-bp/BuberBreakfast",
-    tech: ["C#", "ASP.NET", "API"],
-  },
-  {
-    title: "Cocktail Ecommerce App",
-    description:
-      "A full-stack e-commerce application built with Next.js for cocktail sales. Demonstrates React Hooks implementation, Stripe payment integration, and PostgreSQL database management using Prisma ORM.",
-    getImageSrc: () => require("../images/Cocktail.png"),
-    url: "https://cocktail-business-project.vercel.app/",
-    tech: ["Next.js", "Stripe", "PostgreSQL", "Vercel"],
-  },
-  {
-    title: "ANZ OneFleet Portal",
-    description:
-      "ANZ OneFleet Web App - a comprehensive web application for fleet managers to manage their fleet transactions with BP. Features include fleet card management, report generation, and payment processing through the web application.",
-    getImageSrc: () => require("../images/ANZ OneFleet Portal.png"),
-    url: "https://onefleet.bp.com.au/",
-    tech: ["Enterprise", "Web App", "NextJs", "TypeScript"],
-  },
-];
+// Image mapping for cleaner code
+const imageMap: { [key: string]: string } = {
+  "photo1.jpg": photo1,
+  "Pokemon.jpg": pokemon,
+  "BreakfastImage.jpg": breakfast,
+  "Cocktail.png": cocktail,
+  "ANZ OneFleet Portal.png": anzPortal,
+};
+
+const getImageSrc = (imageName: string): string => {
+  return imageMap[imageName] || "";
+};
 
 const ProjectsSection = () => {
+  const { projects, loading, error, refetch } = useProjects();
   const columns = useBreakpointValue({ base: 1, md: 2, lg: 3 });
 
   const containerVariants = {
@@ -84,6 +67,53 @@ const ProjectsSection = () => {
       },
     },
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <FullScreenSection
+        backgroundColor="rgba(0,0,0,0.8)"
+        isDarkBackground
+        p={{ base: 6, md: 8, lg: 12 }}
+        alignItems="center"
+        justifyContent="center"
+        spacing={8}
+        position="relative"
+      >
+        <VStack spacing={4}>
+          <Spinner size="xl" color="white" />
+          <Text color="gray.300" fontSize="lg">
+            Loading projects...
+          </Text>
+        </VStack>
+      </FullScreenSection>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <FullScreenSection
+        backgroundColor="rgba(0,0,0,0.8)"
+        isDarkBackground
+        p={{ base: 6, md: 8, lg: 12 }}
+        alignItems="center"
+        justifyContent="center"
+        spacing={8}
+        position="relative"
+      >
+        <VStack spacing={4} maxW="600px">
+          <Alert status="error" borderRadius="md">
+            <AlertIcon />
+            {error}
+          </Alert>
+          <Button onClick={refetch} colorScheme="blue">
+            Try Again
+          </Button>
+        </VStack>
+      </FullScreenSection>
+    );
+  }
 
   return (
     <FullScreenSection
@@ -176,7 +206,7 @@ const ProjectsSection = () => {
           >
             {projects.map((project, index) => (
               <MotionBox
-                key={project.title}
+                key={project.id}
                 variants={itemVariants}
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}
@@ -184,7 +214,7 @@ const ProjectsSection = () => {
                 <Card
                   title={project.title}
                   description={project.description}
-                  imageSrc={project.getImageSrc()}
+                  imageSrc={getImageSrc(project.imageSrc)}
                   url={project.url}
                   tech={project.tech}
                 />

@@ -7,25 +7,7 @@ import Footer from "./components/Footer";
 import { AlertProvider } from "./context/alertContext";
 import Alert from "./components/Alert";
 
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// import { getPerformance } from "firebase/performance";s
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBxl3XAJPdJCsulNW_y986yWZI71RRNnkI",
-  authDomain: "personal-website-3580d.firebaseapp.com",
-  projectId: "personal-website-3580d",
-  storageBucket: "personal-website-3580d.appspot.com",
-  messagingSenderId: "508647798578",
-  appId: "1:508647798578:web:82dc231a174aa0cbb0892b",
-  measurementId: "G-QGWC8Z9P92",
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const analytics = getAnalytics(app);
-// const perf = getPerformance(app);
+// Firebase is now initialized in config/firebase.ts
 
 function App() {
   return (

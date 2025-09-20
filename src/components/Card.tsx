@@ -92,6 +92,21 @@ const Card = (card: CardContent) => {
                 _groupHover={{
                   transform: "scale(1.05)",
                 }}
+                fallback={
+                  <Box
+                    w="full"
+                    h="250px"
+                    bg="gray.600"
+                    borderRadius="lg"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    color="gray.400"
+                    fontSize="sm"
+                  >
+                    Image not available
+                  </Box>
+                }
               />
               <Box
                 className="overlay"

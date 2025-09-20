@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow read access to projects collection for all users
+    match /projects/{document} {
+      allow read: if true;
+      allow write: if false; // Only allow writes through admin SDK or Firebase console
+    }
+  }
+}
