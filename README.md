@@ -63,3 +63,94 @@ In any case, feel free to check their official [documentation](https://chakra-ui
 - ## Google Analytics
 
 Implemented Google Analytics to analyse and capture user traffic data to further understand number of visits and demographics.
+
+- ## EmailJS Integration
+
+The contact form uses EmailJS for client-side email functionality, allowing users to send messages directly from the website without requiring a backend server.
+
+### Features
+
+- **Client-side email sending** using EmailJS service
+- **Form validation** with real-time error feedback
+- **Fallback mechanism** with mailto links and clipboard copy
+- **Responsive design** with glassmorphism UI effects
+- **Loading states** and success/error notifications
+
+### EmailJS Configuration
+
+The EmailJS service is configured using environment variables in `.env.local`:
+
+```bash
+REACT_APP_EMAILJS_SERVICE_ID=your_service_id
+REACT_APP_EMAILJS_PUBLIC_KEY=your_public_key
+REACT_APP_EMAILJS_TEMPLATE_ID=your_template_id
+```
+
+### Setup Instructions
+
+1. **Create EmailJS Account**: Sign up at [EmailJS](https://www.emailjs.com/)
+2. **Create Email Service**: Connect your email provider (Gmail, Outlook, etc.)
+3. **Create Email Template**: Design your email template with placeholders
+4. **Get Credentials**: Copy your Service ID, Public Key, and Template ID
+5. **Update Environment Variables**: Add your credentials to `.env.local`
+6. **Test the Form**: Submit a test message to verify functionality
+
+### Fallback System
+
+If EmailJS is not configured or fails:
+
+1. **Primary Fallback**: Opens user's email client with pre-filled message
+2. **Secondary Fallback**: Copies formatted email content to clipboard
+3. **User Notification**: Shows success message with instructions
+
+### File Structure
+
+```
+src/
+├── services/
+│   └── emailService.ts          # EmailJS service implementation
+├── components/
+│   └── ContactMeSection.tsx     # Contact form component
+└── context/
+    └── alertContext.tsx         # Alert notification context
+```
+
+### Usage
+
+The contact form automatically handles:
+
+- Form validation (required fields, email format, message length)
+- Email sending via EmailJS
+- Error handling and user feedback
+- Fallback mechanisms for reliability
+
+### Security Notes
+
+- EmailJS public keys are safe to expose in client-side code
+- Environment variables are baked into the build at compile time
+- No sensitive server-side credentials are required
+
+### Current Implementation
+
+The EmailJS service includes hardcoded fallback values to ensure functionality even if environment variables are not set:
+
+```typescript
+const EMAILJS_SERVICE_ID =
+  process.env.REACT_APP_EMAILJS_SERVICE_ID || "service_hwqll8d";
+const EMAILJS_TEMPLATE_ID =
+  process.env.REACT_APP_EMAILJS_TEMPLATE_ID || "ySL3BCd11PVoaUDpM";
+const EMAILJS_PUBLIC_KEY =
+  process.env.REACT_APP_EMAILJS_PUBLIC_KEY || "template_c5rhw4u";
+```
+
+**Note**: The hardcoded values are for development/testing purposes. For production, always use environment variables.
+
+### Deployment
+
+For Firebase Hosting deployment:
+
+1. **Build the project**: `npm run build`
+2. **Deploy to Firebase**: `firebase deploy`
+3. **Environment variables** are automatically included in the build
+
+The contact form will work immediately after deployment with the configured EmailJS settings.
