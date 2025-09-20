@@ -1,29 +1,53 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
 import React from "react";
 
-const AlertContext = createContext({});
+interface AlertContextType {
+  isOpen: boolean;
+  type: string;
+  message: string;
+  onOpen: (type: string, message: string) => void;
+  onClose: () => void;
+}
 
-export const AlertProvider = ({ children }: any) => {
+const AlertContext = createContext<AlertContextType>({
+  isOpen: false,
+  type: "success",
+  message: "Thank for submitting your query",
+  onOpen: () => {},
+  onClose: () => {},
+});
+
+interface AlertProviderProps {
+  children: ReactNode;
+}
+
+export const AlertProvider = ({ children }: AlertProviderProps) => {
   const [state, setState] = useState({
     isOpen: false,
     // Type can be either "success" or "error"
     type: "success",
     // Message to be displayed, can be any string
-    message: "Thank for submiting your query",
+    message: "Thank for submitting your query",
   });
+
+  const onOpen = (type: string, message: string): void => {
+    setState({ isOpen: true, type, message });
+  };
+
+  const onClose = (): void => {
+    setState({
+      isOpen: false,
+      type: "end",
+      message: "Goodbye I will speak to you very soon",
+    });
+  };
 
   return (
     <AlertContext.Provider
       value={{
         ...state,
-        onOpen: (type: string, message: string): void =>
-          setState({ isOpen: true, type, message }),
-        onClose: () =>
-          setState({
-            isOpen: false,
-            type: "end",
-            message: "Goodbye I will speak to you very soon",
-          }),
+        onOpen,
+        onClose,
       }}
     >
       {children}
@@ -31,4 +55,4 @@ export const AlertProvider = ({ children }: any) => {
   );
 };
 
-export const useAlertContext = () => useContext(AlertContext);
+export const useAlertContext = (): AlertContextType => useContext(AlertContext);
