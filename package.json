@@ -31,7 +31,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "CI=false && react-scripts build",
+    "build": "CI=true && react-scripts build",
     "test": "react-scripts test",
     "test:coverage": "react-scripts test --coverage --watchAll=false",
     "test:ci": "CI=true react-scripts test --coverage --watchAll=false",
@@ -63,6 +63,7 @@
   },
   "overrides": {
     "nth-check": ">=2.0.1",
-    "postcss": ">=8.4.31"
+    "postcss": ">=8.4.31",
+    "webpack-dev-server": ">=4.15.3"
   }
 }
