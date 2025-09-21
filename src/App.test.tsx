@@ -9,7 +9,7 @@ describe("App Component", () => {
     // Check if all main sections are present
     expect(screen.getByText(/Hello, I am Jack/)).toBeInTheDocument();
     expect(screen.getByText(/Featured Projects/)).toBeInTheDocument();
-    expect(screen.getByText(/Contact me/)).toBeInTheDocument();
+    expect(screen.getByText(/Get In Touch/)).toBeInTheDocument();
   });
 
   test("renders landing section with correct content", () => {
@@ -39,11 +39,13 @@ describe("App Component", () => {
     render(<App />);
 
     // Check contact form elements
-    expect(screen.getByLabelText(/Name/)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Email Address/)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Type of enquiry/)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Your message/)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Submit/ })).toBeInTheDocument();
+    expect(screen.getByLabelText(/First Name \*/)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Email Address \*/)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Type of Inquiry/)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Your Message \*/)).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /Send Message/ })
+    ).toBeInTheDocument();
   });
 
   test("renders profile image", () => {

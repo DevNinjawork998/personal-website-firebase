@@ -65,10 +65,16 @@ describe("ProjectsSection Component", () => {
     // Check specific URLs by looking for href attributes
     expect(
       screen.getByRole("link", { name: /Simple Calculator/ })
-    ).toHaveAttribute("href", "https://personalcalculator.web.app/");
+    ).toHaveAttribute(
+      "href",
+      "https://github.com/DevNinjawork998/Simple-Calculator"
+    );
 
     expect(
       screen.getByRole("link", { name: /Pokemon DataBase/ })
-    ).toHaveAttribute("href", "https://pokemondatabase.web.app/");
+    ).toHaveAttribute(
+      "href",
+      "https://github.com/DevNinjawork998/Pokemon-Database"
+    );
   });
 });

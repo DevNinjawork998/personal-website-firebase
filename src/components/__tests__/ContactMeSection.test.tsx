@@ -6,40 +6,41 @@ import ContactMeSection from "../ContactMeSection";
 describe("ContactMeSection Component", () => {
   test("renders section heading", () => {
     render(<ContactMeSection />);
-    expect(screen.getByText("Contact me")).toBeInTheDocument();
+    expect(screen.getByText("Get In Touch")).toBeInTheDocument();
   });
 
   test("renders all form fields", () => {
     render(<ContactMeSection />);
 
     // Check form fields are present
-    expect(screen.getByLabelText("Name")).toBeInTheDocument();
-    expect(screen.getByLabelText("Email Address")).toBeInTheDocument();
-    expect(screen.getByLabelText("Type of enquiry")).toBeInTheDocument();
-    expect(screen.getByLabelText("Your message")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Submit/ })).toBeInTheDocument();
+    expect(screen.getByLabelText("First Name *")).toBeInTheDocument();
+    expect(screen.getByLabelText("Email Address *")).toBeInTheDocument();
+    expect(screen.getByLabelText("Type of Inquiry")).toBeInTheDocument();
+    expect(screen.getByLabelText("Your Message *")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /Send Message/ })
+    ).toBeInTheDocument();
   });
 
   test("renders select options", () => {
     render(<ContactMeSection />);
 
-    const select = screen.getByLabelText("Type of enquiry");
+    const select = screen.getByLabelText("Type of Inquiry");
     expect(select).toBeInTheDocument();
 
     // Check options are present
-    expect(screen.getByText("Freelance project proposal")).toBeInTheDocument();
-    expect(
-      screen.getByText("Open source consultancy session")
-    ).toBeInTheDocument();
+    expect(screen.getByText("Freelance Project Proposal")).toBeInTheDocument();
+    expect(screen.getByText("Collaboration Opportunity")).toBeInTheDocument();
+    expect(screen.getByText("Technical Consultation")).toBeInTheDocument();
     expect(screen.getByText("Other")).toBeInTheDocument();
   });
 
   test("allows user input in form fields", async () => {
     render(<ContactMeSection />);
 
-    const nameInput = screen.getByLabelText("Name");
-    const emailInput = screen.getByLabelText("Email Address");
-    const messageTextarea = screen.getByLabelText("Your message");
+    const nameInput = screen.getByLabelText("First Name *");
+    const emailInput = screen.getByLabelText("Email Address *");
+    const messageTextarea = screen.getByLabelText("Your Message *");
 
     // Test name input
     fireEvent.change(nameInput, { target: { value: "John Doe" } });
@@ -59,31 +60,33 @@ describe("ContactMeSection Component", () => {
   test("allows selection of enquiry type", async () => {
     render(<ContactMeSection />);
 
-    const select = screen.getByLabelText("Type of enquiry");
+    const select = screen.getByLabelText("Type of Inquiry");
 
     // Select an option
     fireEvent.change(select, { target: { value: "hireMe" } });
     expect(select).toHaveValue("hireMe");
 
     // Select another option
-    fireEvent.change(select, { target: { value: "openSource" } });
-    expect(select).toHaveValue("openSource");
+    fireEvent.change(select, { target: { value: "collaboration" } });
+    expect(select).toHaveValue("collaboration");
   });
 
   test("form submission prevents default behavior", async () => {
     render(<ContactMeSection />);
 
-    const form = screen.getByRole("button", { name: /Submit/ }).closest("form");
-    const submitButton = screen.getByRole("button", { name: /Submit/ });
+    const form = screen
+      .getByRole("button", { name: /Send Message/ })
+      .closest("form");
+    const submitButton = screen.getByRole("button", { name: /Send Message/ });
 
     // Mock preventDefault
     const preventDefault = jest.fn();
 
     // Fill form
-    fireEvent.change(screen.getByLabelText("Name"), {
+    fireEvent.change(screen.getByLabelText("First Name *"), {
       target: { value: "Test User" },
     });
-    fireEvent.change(screen.getByLabelText("Email Address"), {
+    fireEvent.change(screen.getByLabelText("Email Address *"), {
       target: { value: "test@example.com" },
     });
 
@@ -97,16 +100,16 @@ describe("ContactMeSection Component", () => {
   test("has proper heading structure", () => {
     render(<ContactMeSection />);
     const heading = screen.getByRole("heading", { level: 1 });
-    expect(heading).toHaveTextContent("Contact me");
+    expect(heading).toHaveTextContent("Get In Touch");
   });
 
   test("form fields have correct types", () => {
     render(<ContactMeSection />);
 
-    const emailInput = screen.getByLabelText("Email Address");
+    const emailInput = screen.getByLabelText("Email Address *");
     expect(emailInput).toHaveAttribute("type", "email");
 
-    const nameInput = screen.getByLabelText("Name");
+    const nameInput = screen.getByLabelText("First Name *");
     // Check that the input exists (type="text" is default for input elements)
     expect(nameInput).toBeInTheDocument();
   });

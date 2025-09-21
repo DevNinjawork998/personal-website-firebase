@@ -14,7 +14,7 @@ describe("LandingSection Component", () => {
       screen.getByText(/Aspiring Software Engineer at bp Malaysia/)
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/Core Specilisation in React.js, Next.js, TypeScript/)
+      screen.getByText(/Core Specialisation in React.js, Next.js, TypeScript/)
     ).toBeInTheDocument();
   });
 

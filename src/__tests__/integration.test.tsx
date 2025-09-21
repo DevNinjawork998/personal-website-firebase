@@ -7,11 +7,11 @@ describe("Integration Tests", () => {
     render(<App />);
 
     // Fill out the contact form
-    const nameInput = screen.getByLabelText("Name");
-    const emailInput = screen.getByLabelText("Email Address");
-    const enquirySelect = screen.getByLabelText("Type of enquiry");
-    const messageTextarea = screen.getByLabelText("Your message");
-    const submitButton = screen.getByRole("button", { name: /Submit/ });
+    const nameInput = screen.getByLabelText("First Name *");
+    const emailInput = screen.getByLabelText("Email Address *");
+    const enquirySelect = screen.getByLabelText("Type of Inquiry");
+    const messageTextarea = screen.getByLabelText("Your Message *");
+    const submitButton = screen.getByRole("button", { name: /Send Message/ });
 
     fireEvent.change(nameInput, { target: { value: "John Doe" } });
     fireEvent.change(emailInput, { target: { value: "john@example.com" } });
@@ -36,9 +36,9 @@ describe("Integration Tests", () => {
     render(<App />);
 
     // Check that all sections are present and accessible
-    expect(screen.getByText(/Hello, I am Jack/)).toBeInTheDocument();
+    expect(screen.getByText(/Hello, I am Jack!/)).toBeInTheDocument();
     expect(screen.getByText(/Featured Projects/)).toBeInTheDocument();
-    expect(screen.getByText(/Contact me/)).toBeInTheDocument();
+    expect(screen.getByText(/Get In Touch/)).toBeInTheDocument();
 
     // Check that project links are clickable
     const projectLinks = screen.getAllByRole("link");
@@ -77,9 +77,9 @@ describe("Integration Tests", () => {
   test("form validation and user interaction", async () => {
     render(<App />);
 
-    const nameInput = screen.getByLabelText("Name");
-    const emailInput = screen.getByLabelText("Email Address");
-    const enquirySelect = screen.getByLabelText("Type of enquiry");
+    const nameInput = screen.getByLabelText("First Name *");
+    const emailInput = screen.getByLabelText("Email Address *");
+    const enquirySelect = screen.getByLabelText("Type of Inquiry");
 
     // Test that inputs accept user input
     fireEvent.change(nameInput, { target: { value: "Test User" } });
@@ -89,8 +89,8 @@ describe("Integration Tests", () => {
     expect(emailInput).toHaveValue("test@example.com");
 
     // Test select options
-    fireEvent.change(enquirySelect, { target: { value: "openSource" } });
-    expect(enquirySelect).toHaveValue("openSource");
+    fireEvent.change(enquirySelect, { target: { value: "hireMe" } });
+    expect(enquirySelect).toHaveValue("hireMe");
 
     // Test changing selection
     fireEvent.change(enquirySelect, { target: { value: "other" } });
@@ -118,8 +118,8 @@ describe("Integration Tests", () => {
     expect(h1Elements.length).toBeGreaterThan(0);
 
     // Check form labels are properly associated
-    const nameInput = screen.getByLabelText("Name");
-    const emailInput = screen.getByLabelText("Email Address");
+    const nameInput = screen.getByLabelText("First Name *");
+    const emailInput = screen.getByLabelText("Email Address *");
     expect(nameInput).toBeInTheDocument();
     expect(emailInput).toBeInTheDocument();
 
