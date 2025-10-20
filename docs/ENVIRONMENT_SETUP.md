@@ -104,11 +104,11 @@ Key section of the workflow:
 For Firebase Hosting deployment, you also need:
 
 1. Go to **Settings** → **Secrets and variables** → **Actions**
-2. Add: `FIREBASE_SERVICE_ACCOUNT` (JSON content of your service account key)
+2. Add: `FIREBASE_SERVICE_ACCOUNT_PERSONAL_WEBSITE_3580D` (JSON content of your service account key)
 
 To get this:
 
-- Run `firebase init hosting:github` in your project, OR
+- Run `firebase init hosting:github` in your project (it will create the secret automatically), OR
 - Go to Firebase Console → Project Settings → Service Accounts → Generate New Private Key
 - Copy the entire JSON content as the secret value
 
