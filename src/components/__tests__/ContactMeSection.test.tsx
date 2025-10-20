@@ -17,9 +17,7 @@ describe("ContactMeSection Component", () => {
     expect(screen.getByLabelText("Email Address *")).toBeInTheDocument();
     expect(screen.getByLabelText("Type of Inquiry")).toBeInTheDocument();
     expect(screen.getByLabelText("Your Message *")).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /Send Message/ })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Send Message/ })).toBeInTheDocument();
   });
 
   test("renders select options", () => {
@@ -74,9 +72,7 @@ describe("ContactMeSection Component", () => {
   test("form submission prevents default behavior", async () => {
     render(<ContactMeSection />);
 
-    const form = screen
-      .getByRole("button", { name: /Send Message/ })
-      .closest("form");
+    const form = screen.getByRole("button", { name: /Send Message/ }).closest("form");
     const submitButton = screen.getByRole("button", { name: /Send Message/ });
 
     // Mock preventDefault

@@ -11,12 +11,8 @@ const TestComponent = () => {
       <div data-testid="alert-state">
         {isOpen ? "open" : "closed"} - {type} - {message}
       </div>
-      <button onClick={() => onOpen("success", "Test success message")}>
-        Open Success Alert
-      </button>
-      <button onClick={() => onOpen("error", "Test error message")}>
-        Open Error Alert
-      </button>
+      <button onClick={() => onOpen("success", "Test success message")}>Open Success Alert</button>
+      <button onClick={() => onOpen("error", "Test error message")}>Open Error Alert</button>
       <button onClick={onClose}>Close Alert</button>
     </div>
   );
@@ -31,9 +27,7 @@ describe("AlertContext", () => {
     );
 
     const alertState = screen.getByTestId("alert-state");
-    expect(alertState).toHaveTextContent(
-      "closed - success - Thank for submitting your query"
-    );
+    expect(alertState).toHaveTextContent("closed - success - Thank for submitting your query");
   });
 
   test("onOpen updates state correctly", () => {
@@ -48,9 +42,7 @@ describe("AlertContext", () => {
 
     fireEvent.click(openSuccessButton);
 
-    expect(alertState).toHaveTextContent(
-      "open - success - Test success message"
-    );
+    expect(alertState).toHaveTextContent("open - success - Test success message");
   });
 
   test("onOpen with error type updates state correctly", () => {
@@ -81,15 +73,11 @@ describe("AlertContext", () => {
 
     // First open the alert
     fireEvent.click(openSuccessButton);
-    expect(alertState).toHaveTextContent(
-      "open - success - Test success message"
-    );
+    expect(alertState).toHaveTextContent("open - success - Test success message");
 
     // Then close it
     fireEvent.click(closeButton);
-    expect(alertState).toHaveTextContent(
-      "closed - end - Goodbye I will speak to you very soon"
-    );
+    expect(alertState).toHaveTextContent("closed - end - Goodbye I will speak to you very soon");
   });
 
   test("context functions are available", () => {
@@ -119,9 +107,7 @@ describe("AlertContext", () => {
 
     // Open success alert
     fireEvent.click(openSuccessButton);
-    expect(alertState).toHaveTextContent(
-      "open - success - Test success message"
-    );
+    expect(alertState).toHaveTextContent("open - success - Test success message");
 
     // Switch to error alert
     fireEvent.click(openErrorButton);
@@ -129,8 +115,6 @@ describe("AlertContext", () => {
 
     // Close alert
     fireEvent.click(closeButton);
-    expect(alertState).toHaveTextContent(
-      "closed - end - Goodbye I will speak to you very soon"
-    );
+    expect(alertState).toHaveTextContent("closed - end - Goodbye I will speak to you very soon");
   });
 });

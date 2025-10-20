@@ -16,12 +16,8 @@ describe("App Component", () => {
     render(<App />);
 
     // Check landing section specific content
-    expect(
-      screen.getByText(/Aspiring Software Engineer at bp Malaysia/)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/Location: Kuala Lumpur, Malaysian/)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Aspiring Software Engineer at bp Malaysia/)).toBeInTheDocument();
+    expect(screen.getByText(/Location: Kuala Lumpur, Malaysian/)).toBeInTheDocument();
     expect(screen.getByText(/Age:/)).toBeInTheDocument();
   });
 
@@ -43,9 +39,7 @@ describe("App Component", () => {
     expect(screen.getByLabelText(/Email Address \*/)).toBeInTheDocument();
     expect(screen.getByLabelText(/Type of Inquiry/)).toBeInTheDocument();
     expect(screen.getByLabelText(/Your Message \*/)).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /Send Message/ })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Send Message/ })).toBeInTheDocument();
   });
 
   test("renders profile image", () => {

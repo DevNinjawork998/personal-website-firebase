@@ -37,10 +37,8 @@ const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return <AlertProvider>{children}</AlertProvider>;
 };
 
-const customRender = (
-  ui: ReactElement,
-  options?: Omit<RenderOptions, "wrapper">
-) => render(ui, { wrapper: AllTheProviders, ...options });
+const customRender = (ui: ReactElement, options?: Omit<RenderOptions, "wrapper">) =>
+  render(ui, { wrapper: AllTheProviders, ...options });
 
 // Re-export everything
 export * from "@testing-library/react";
