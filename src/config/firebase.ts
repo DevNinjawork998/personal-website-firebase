@@ -1,15 +1,16 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
+import { getAnalytics, Analytics } from "firebase/analytics";
 
+// Firebase configuration from environment variables
 const firebaseConfig = {
-  apiKey: "AIzaSyBxl3XAJPdJCsulNW_y986yWZI71RRNnkI",
-  authDomain: "personal-website-3580d.firebaseapp.com",
-  projectId: "personal-website-3580d",
-  storageBucket: "personal-website-3580d.appspot.com",
-  messagingSenderId: "508647798578",
-  appId: "1:508647798578:web:82dc231a174aa0cbb0892b",
-  measurementId: "G-QGWC8Z9P92",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
@@ -18,7 +19,15 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firestore
 export const db = getFirestore(app);
 
-// Initialize Analytics
-export const analytics = getAnalytics(app);
+// Initialize Analytics (only in production and when supported)
+let analytics: Analytics | null = null;
+try {
+  if (typeof window !== "undefined" && process.env.NODE_ENV === "production") {
+    analytics = getAnalytics(app);
+  }
+} catch (error) {
+  console.warn("Analytics not available:", error);
+}
 
+export { analytics };
 export default app;
