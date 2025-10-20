@@ -22,14 +22,8 @@ type CardContent = {
 };
 
 const Card = (card: CardContent) => {
-  const cardBg = useColorModeValue(
-    "rgba(255, 255, 255, 0.1)",
-    "rgba(0, 0, 0, 0.2)"
-  );
-  const borderColor = useColorModeValue(
-    "rgba(255, 255, 255, 0.2)",
-    "rgba(255, 255, 255, 0.1)"
-  );
+  const cardBg = useColorModeValue("rgba(255, 255, 255, 0.1)", "rgba(0, 0, 0, 0.2)");
+  const borderColor = useColorModeValue("rgba(255, 255, 255, 0.2)", "rgba(255, 255, 255, 0.1)");
 
   return (
     <Box maxW="400px" w="full" textAlign="center" p={0} position="relative">
@@ -135,13 +129,7 @@ const Card = (card: CardContent) => {
 
           <VStack spacing={3} align="stretch">
             <HStack justify="space-between" align="center">
-              <Heading
-                size="lg"
-                color="white"
-                fontWeight="bold"
-                fontSize="xl"
-                lineHeight="1.2"
-              >
+              <Heading size="lg" color="white" fontWeight="bold" fontSize="xl" lineHeight="1.2">
                 {card.title}
               </Heading>
               <Badge
@@ -157,13 +145,7 @@ const Card = (card: CardContent) => {
               </Badge>
             </HStack>
 
-            <Text
-              fontSize="sm"
-              color="gray.300"
-              textAlign="left"
-              lineHeight="1.6"
-              noOfLines={4}
-            >
+            <Text fontSize="sm" color="gray.300" textAlign="left" lineHeight="1.6" noOfLines={4}>
               {card.description}
             </Text>
 

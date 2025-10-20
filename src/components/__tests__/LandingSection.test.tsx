@@ -10,9 +10,7 @@ describe("LandingSection Component", () => {
 
   test("renders bio information", () => {
     render(<LandingSection />);
-    expect(
-      screen.getByText(/Aspiring Software Engineer at bp Malaysia/)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Aspiring Software Engineer at bp Malaysia/)).toBeInTheDocument();
     expect(
       screen.getByText(/Core Specialisation in React.js, Next.js, TypeScript/)
     ).toBeInTheDocument();
@@ -20,9 +18,7 @@ describe("LandingSection Component", () => {
 
   test("renders location information", () => {
     render(<LandingSection />);
-    expect(
-      screen.getByText("Location: Kuala Lumpur, Malaysian")
-    ).toBeInTheDocument();
+    expect(screen.getByText("Location: Kuala Lumpur, Malaysian")).toBeInTheDocument();
   });
 
   test("renders age information", () => {

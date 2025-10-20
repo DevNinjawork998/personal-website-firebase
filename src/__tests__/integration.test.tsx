@@ -27,9 +27,7 @@ describe("Integration Tests", () => {
     expect(nameInput).toHaveValue("John Doe");
     expect(emailInput).toHaveValue("john@example.com");
     expect(enquirySelect).toHaveValue("hireMe");
-    expect(messageTextarea).toHaveValue(
-      "I would like to hire you for a project"
-    );
+    expect(messageTextarea).toHaveValue("I would like to hire you for a project");
   });
 
   test("navigation between sections works correctly", () => {

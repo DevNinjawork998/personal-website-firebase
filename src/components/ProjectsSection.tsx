@@ -178,9 +178,8 @@ const ProjectsSection = () => {
               maxW="600px"
               lineHeight="1.6"
             >
-              A showcase of my development journey, featuring projects that
-              demonstrate my skills in front-end, back-end, and full-stack
-              development.
+              A showcase of my development journey, featuring projects that demonstrate my skills in
+              front-end, back-end, and full-stack development.
             </Text>
 
             <Divider

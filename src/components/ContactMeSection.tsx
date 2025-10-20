@@ -143,9 +143,7 @@ const ContactMeSection = () => {
         const isFallback = !process.env.REACT_APP_EMAILJS_SERVICE_ID;
 
         toast({
-          title: isFallback
-            ? "Email client opened!"
-            : "Message sent successfully!",
+          title: isFallback ? "Email client opened!" : "Message sent successfully!",
           description: isFallback
             ? "Your email client should open with a pre-filled message. If not, please email thooi998@gmail.com directly."
             : "I'll get back to you within 24 hours.",
@@ -157,8 +155,7 @@ const ContactMeSection = () => {
         throw new Error(response.message);
       }
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Failed to send message";
+      const errorMessage = error instanceof Error ? error.message : "Failed to send message";
       onOpen("error", errorMessage);
 
       toast({
@@ -230,8 +227,8 @@ const ContactMeSection = () => {
               maxW="600px"
               lineHeight="1.6"
             >
-              Have a project in mind or want to collaborate? I'd love to hear
-              from you. Send me a message and I'll respond within 24 hours.
+              Have a project in mind or want to collaborate? I'd love to hear from you. Send me a
+              message and I'll respond within 24 hours.
             </Text>
           </VStack>
         </motion.div>
@@ -267,9 +264,7 @@ const ContactMeSection = () => {
                       id="firstName"
                       name="firstName"
                       value={formData.firstName}
-                      onChange={(e) =>
-                        handleInputChange("firstName", e.target.value)
-                      }
+                      onChange={(e) => handleInputChange("firstName", e.target.value)}
                       placeholder="Your first name"
                       bg="rgba(255, 255, 255, 0.1)"
                       border="1px solid"
@@ -292,9 +287,7 @@ const ContactMeSection = () => {
                       id="lastName"
                       name="lastName"
                       value={formData.lastName}
-                      onChange={(e) =>
-                        handleInputChange("lastName", e.target.value)
-                      }
+                      onChange={(e) => handleInputChange("lastName", e.target.value)}
                       placeholder="Your last name"
                       bg="rgba(255, 255, 255, 0.1)"
                       border="1px solid"
@@ -320,9 +313,7 @@ const ContactMeSection = () => {
                       name="email"
                       type="email"
                       value={formData.email}
-                      onChange={(e) =>
-                        handleInputChange("email", e.target.value)
-                      }
+                      onChange={(e) => handleInputChange("email", e.target.value)}
                       placeholder="your.email@example.com"
                       bg="rgba(255, 255, 255, 0.1)"
                       border="1px solid"
@@ -345,9 +336,7 @@ const ContactMeSection = () => {
                       id="phone"
                       name="phone"
                       value={formData.phone}
-                      onChange={(e) =>
-                        handleInputChange("phone", e.target.value)
-                      }
+                      onChange={(e) => handleInputChange("phone", e.target.value)}
                       placeholder="+1 (555) 123-4567"
                       bg="rgba(255, 255, 255, 0.1)"
                       border="1px solid"
@@ -371,9 +360,7 @@ const ContactMeSection = () => {
                     id="company"
                     name="company"
                     value={formData.company}
-                    onChange={(e) =>
-                      handleInputChange("company", e.target.value)
-                    }
+                    onChange={(e) => handleInputChange("company", e.target.value)}
                     placeholder="Your company name"
                     bg="rgba(255, 255, 255, 0.1)"
                     border="1px solid"
@@ -396,9 +383,7 @@ const ContactMeSection = () => {
                     id="queryType"
                     name="queryType"
                     value={formData.queryType}
-                    onChange={(e) =>
-                      handleInputChange("queryType", e.target.value)
-                    }
+                    onChange={(e) => handleInputChange("queryType", e.target.value)}
                     bg="rgba(255, 255, 255, 0.1)"
                     border="1px solid"
                     borderColor="rgba(255, 255, 255, 0.2)"
@@ -441,9 +426,7 @@ const ContactMeSection = () => {
                     id="message"
                     name="message"
                     value={formData.message}
-                    onChange={(e) =>
-                      handleInputChange("message", e.target.value)
-                    }
+                    onChange={(e) => handleInputChange("message", e.target.value)}
                     placeholder="Tell me about your project, idea, or how I can help you..."
                     height="200px"
                     bg="rgba(255, 255, 255, 0.1)"
@@ -518,8 +501,7 @@ const ContactMeSection = () => {
             </Text>
             {!process.env.REACT_APP_EMAILJS_SERVICE_ID && (
               <Text color="gray.300" fontSize="sm">
-                If your email client didn't open, please email me directly at
-                thooi998@gmail.com
+                If your email client didn't open, please email me directly at thooi998@gmail.com
               </Text>
             )}
           </Box>

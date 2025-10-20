@@ -1,13 +1,4 @@
-import {
-  Heading,
-  Text,
-  VStack,
-  Image,
-  Box,
-  HStack,
-  Badge,
-  Icon,
-} from "@chakra-ui/react";
+import { Heading, Text, VStack, Image, Box, HStack, Badge, Icon } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
@@ -20,14 +11,7 @@ const bio1 = "Aspiring Software Engineer at bp Malaysia";
 const Location = "Location: Kuala Lumpur, Malaysian";
 
 // Skills array for interactive display
-const skills = [
-  "React.js",
-  "Next.js",
-  "TypeScript",
-  "ASP.Net",
-  "Azure Cloud",
-  "GraphQL",
-];
+const skills = ["React.js", "Next.js", "TypeScript", "ASP.Net", "Azure Cloud", "GraphQL"];
 
 // function for getting current age
 var currentage = new Date().getFullYear() - 1998;
@@ -71,8 +55,7 @@ const LandingSection = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = (scrollTop / docHeight) * 100;
       setScrollProgress(progress);
     };
@@ -104,14 +87,7 @@ const LandingSection = () => {
       overflow="hidden"
     >
       {/* Animated background particles */}
-      <Box
-        position="absolute"
-        top="0"
-        left="0"
-        right="0"
-        bottom="0"
-        pointerEvents="none"
-      >
+      <Box position="absolute" top="0" left="0" right="0" bottom="0" pointerEvents="none">
         {[...Array(20)].map((_, i) => (
           <motion.div
             key={i}
@@ -267,11 +243,7 @@ const LandingSection = () => {
                           borderRadius="full"
                           fontSize="sm"
                           fontWeight="medium"
-                          bg={
-                            index === currentSkillIndex
-                              ? "purple.500"
-                              : "purple.700"
-                          }
+                          bg={index === currentSkillIndex ? "purple.500" : "purple.700"}
                           _hover={{
                             bg: "purple.400",
                             transform: "scale(1.05)",

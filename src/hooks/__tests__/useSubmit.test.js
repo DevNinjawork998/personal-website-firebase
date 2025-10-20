@@ -48,8 +48,7 @@ describe("useSubmit Hook", () => {
 
     expect(result.current.response).toEqual({
       type: "success",
-      message:
-        "Thanks for your submission John, we will get back to you shortly!",
+      message: "Thanks for your submission John, we will get back to you shortly!",
     });
     expect(result.current.isLoading).toBe(false);
   });
@@ -81,8 +80,7 @@ describe("useSubmit Hook", () => {
 
     expect(result.current.response).toEqual({
       type: "success",
-      message:
-        "Thanks for your submission Jane, we will get back to you shortly!",
+      message: "Thanks for your submission Jane, we will get back to you shortly!",
     });
   });
 

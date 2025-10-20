@@ -1,11 +1,7 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import {
-  faGithub,
-  faLinkedin,
-  faStackOverflow,
-} from "@fortawesome/free-brands-svg-icons";
+import { faGithub, faLinkedin, faStackOverflow } from "@fortawesome/free-brands-svg-icons";
 import {
   Box,
   HStack,
@@ -230,10 +226,7 @@ function Header() {
         <DrawerOverlay />
         <DrawerContent bg="rgba(0, 0, 0, 0.95)" backdropFilter="blur(10px)">
           <DrawerCloseButton color="white" />
-          <DrawerHeader
-            color="white"
-            borderBottom="1px solid rgba(255, 255, 255, 0.1)"
-          >
+          <DrawerHeader color="white" borderBottom="1px solid rgba(255, 255, 255, 0.1)">
             Navigation
           </DrawerHeader>
           <DrawerBody>
@@ -282,12 +275,7 @@ function Header() {
               </motion.a>
 
               {/* Mobile Social Links */}
-              <VStack
-                spacing={4}
-                mt={8}
-                pt={8}
-                borderTop="1px solid rgba(255, 255, 255, 0.1)"
-              >
+              <VStack spacing={4} mt={8} pt={8} borderTop="1px solid rgba(255, 255, 255, 0.1)">
                 <Text color="gray.300" fontSize="sm">
                   Social Media
                 </Text>

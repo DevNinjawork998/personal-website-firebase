@@ -6,11 +6,7 @@ import Green_background from "../../src/images/IMG_5160.png";
 /**
  * Illustrates the use of children prop and spread operator with parallax effects
  */
-const FullScreenSection = ({
-  children,
-  isDarkBackground,
-  ...boxProps
-}: any) => {
+const FullScreenSection = ({ children, isDarkBackground, ...boxProps }: any) => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -53,9 +49,7 @@ const FullScreenSection = ({
         left={0}
         right={0}
         bottom={0}
-        backgroundColor={
-          isDarkBackground ? "rgba(0, 0, 0, 0.3)" : "rgba(255, 255, 255, 0.3)"
-        }
+        backgroundColor={isDarkBackground ? "rgba(0, 0, 0, 0.3)" : "rgba(255, 255, 255, 0.3)"}
         zIndex={-1}
       />
 

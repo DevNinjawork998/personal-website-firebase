@@ -28,9 +28,7 @@ describe("ProjectsSection Component", () => {
     expect(
       screen.getByText(/Using React.js Framework to create a Pokemon Database/)
     ).toBeInTheDocument();
-    expect(
-      screen.getByText(/This was a projet base on C#/)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/This was a projet base on C#/)).toBeInTheDocument();
     expect(
       screen.getByText(/A Cocktail Ecommerce App, using Next.js Framework/)
     ).toBeInTheDocument();
@@ -63,16 +61,12 @@ describe("ProjectsSection Component", () => {
     expect(links.length).toBe(4); // Should have 4 project links
 
     // Check specific URLs by looking for href attributes
-    expect(
-      screen.getByRole("link", { name: /Simple Calculator/ })
-    ).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /Simple Calculator/ })).toHaveAttribute(
       "href",
       "https://github.com/DevNinjawork998/Simple-Calculator"
     );
 
-    expect(
-      screen.getByRole("link", { name: /Pokemon DataBase/ })
-    ).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /Pokemon DataBase/ })).toHaveAttribute(
       "href",
       "https://github.com/DevNinjawork998/Pokemon-Database"
     );

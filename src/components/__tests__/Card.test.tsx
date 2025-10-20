@@ -18,9 +18,7 @@ describe("Card Component", () => {
     render(<Card {...mockProps} />);
 
     expect(screen.getByText("Test Project")).toBeInTheDocument();
-    expect(
-      screen.getByText("This is a test project description")
-    ).toBeInTheDocument();
+    expect(screen.getByText("This is a test project description")).toBeInTheDocument();
   });
 
   test("renders image with correct src", () => {
