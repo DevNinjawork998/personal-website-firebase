@@ -32,6 +32,24 @@ jobs:
             - name: Run tests
               run: npm run test:ci
 
+            - name: Debug - Check Environment Variables
+              env:
+                  REACT_APP_EMAILJS_SERVICE_ID: ${{ secrets.REACT_APP_EMAILJS_SERVICE_ID }}
+                  REACT_APP_FIREBASE_PROJECT_ID: ${{ secrets.REACT_APP_FIREBASE_PROJECT_ID }}
+                  REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY }}
+              run: |
+                  echo "🔍 Checking if secrets are accessible..."
+                  echo "EMAILJS_SERVICE_ID length: ${#REACT_APP_EMAILJS_SERVICE_ID}"
+                  echo "FIREBASE_PROJECT_ID length: ${#REACT_APP_FIREBASE_PROJECT_ID}"
+                  echo "FIREBASE_API_KEY length: ${#REACT_APP_FIREBASE_API_KEY}"
+                  if [ -z "$REACT_APP_FIREBASE_PROJECT_ID" ]; then
+                    echo "❌ ERROR: REACT_APP_FIREBASE_PROJECT_ID is empty!"
+                    exit 1
+                  else
+                    echo "✅ REACT_APP_FIREBASE_PROJECT_ID is set (length: ${#REACT_APP_FIREBASE_PROJECT_ID})"
+                  fi
+                  echo "First 10 chars of PROJECT_ID: ${REACT_APP_FIREBASE_PROJECT_ID:0:10}"
+
             - name: Build application
               env:
                   # Inject GitHub secrets as environment variables during build
