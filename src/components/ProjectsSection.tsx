@@ -25,6 +25,7 @@ import pokemon from "../images/Pokemon.jpg";
 import breakfast from "../images/BreakfastImage.jpg";
 import cocktail from "../images/Cocktail.png";
 import anzPortal from "../images/ANZ OneFleet Portal.png";
+import digicraft from "../images/Digicraft.png";
 
 const MotionBox = motion(Box);
 
@@ -35,6 +36,7 @@ const imageMap: { [key: string]: string } = {
   "BreakfastImage.jpg": breakfast,
   "Cocktail.png": cocktail,
   "ANZ OneFleet Portal.png": anzPortal,
+  "Digicraft.png": digicraft,
 };
 
 const getImageSrc = (imageName: string): string => {
