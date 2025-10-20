@@ -1,5 +1,5 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp, FirebaseApp } from "firebase/app";
+import { getFirestore, Firestore } from "firebase/firestore";
 import { getAnalytics, Analytics } from "firebase/analytics";
 
 // Firebase configuration from environment variables
@@ -14,17 +14,10 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-let app;
-let db;
+const app: FirebaseApp = initializeApp(firebaseConfig);
 
-try {
-  app = initializeApp(firebaseConfig);
-  // Initialize Firestore
-  db = getFirestore(app);
-} catch (error) {
-  console.error("Firebase initialization error:", error);
-  throw error;
-}
+// Initialize Firestore
+const db: Firestore = getFirestore(app);
 
 // Initialize Analytics (only in production and when supported)
 let analytics: Analytics | null = null;
