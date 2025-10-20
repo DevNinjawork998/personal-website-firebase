@@ -120,7 +120,7 @@ const LandingSection = () => {
         left="0"
         right="0"
         height="3px"
-        bg="linear-gradient(90deg, #667eea, #764ba2)"
+        bg="linear-gradient(90deg, #2193b0, #6dd5ed)"
         transform={`scaleX(${scrollProgress / 100})`}
         transformOrigin="left"
         zIndex="1000"
@@ -169,7 +169,7 @@ const LandingSection = () => {
                 right="-4px"
                 bottom="-4px"
                 borderRadius="50%"
-                background="linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c)"
+                background="linear-gradient(45deg, #2193b0, #6dd5ed, #4568dc, #b06ab3)"
                 opacity="0"
                 transition="opacity 0.3s ease"
                 _groupHover={{ opacity: 0.7 }}
@@ -188,7 +188,7 @@ const LandingSection = () => {
               <Heading
                 size="2xl"
                 mb={4}
-                bgGradient="linear(to-r, #667eea, #764ba2)"
+                bgGradient="linear(to-r, #2193b0, #6dd5ed)"
                 bgClip="text"
                 fontWeight="bold"
               >

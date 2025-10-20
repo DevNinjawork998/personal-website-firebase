@@ -49,7 +49,7 @@ const Card = (card: CardContent) => {
           left: 0,
           right: 0,
           height: "2px",
-          background: "linear-gradient(90deg, #667eea 0%, #764ba2 100%)",
+          background: "linear-gradient(90deg, #2193b0 0%, #6dd5ed 100%)",
           opacity: 0,
           transition: "opacity 0.3s ease",
         }}

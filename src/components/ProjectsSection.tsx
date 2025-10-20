@@ -133,7 +133,7 @@ const ProjectsSection = () => {
         right="10%"
         w="200px"
         h="200px"
-        bg="linear-gradient(45deg, #667eea, #764ba2)"
+        bg="linear-gradient(45deg, #134e5e, #71b280)"
         borderRadius="full"
         opacity={0.1}
         filter="blur(40px)"
@@ -144,7 +144,7 @@ const ProjectsSection = () => {
         left="5%"
         w="150px"
         h="150px"
-        bg="linear-gradient(45deg, #f093fb, #f5576c)"
+        bg="linear-gradient(45deg, #4568dc, #b06ab3)"
         borderRadius="full"
         opacity={0.1}
         filter="blur(30px)"
@@ -166,7 +166,7 @@ const ProjectsSection = () => {
                 color="white"
                 fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
                 fontWeight="bold"
-                bgGradient="linear(to-r, #667eea, #764ba2)"
+                bgGradient="linear(to-r, #2193b0, #6dd5ed)"
                 bgClip="text"
               >
                 Featured Projects
