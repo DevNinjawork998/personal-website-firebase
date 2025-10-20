@@ -37,7 +37,8 @@ export const fetchProjects = async (): Promise<Project[]> => {
 
     return projects;
   } catch (error) {
-    console.error("Error fetching projects:", error);
-    throw new Error("Failed to fetch projects");
+    console.error("Error fetching projects from Firestore:", error);
+    // Return empty array instead of throwing to prevent app crash
+    return [];
   }
 };

@@ -14,10 +14,17 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+let app;
+let db;
 
-// Initialize Firestore
-export const db = getFirestore(app);
+try {
+  app = initializeApp(firebaseConfig);
+  // Initialize Firestore
+  db = getFirestore(app);
+} catch (error) {
+  console.error("Firebase initialization error:", error);
+  throw error;
+}
 
 // Initialize Analytics (only in production and when supported)
 let analytics: Analytics | null = null;
@@ -29,5 +36,5 @@ try {
   console.warn("Analytics not available:", error);
 }
 
-export { analytics };
+export { db, analytics, app };
 export default app;
