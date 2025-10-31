@@ -51,22 +51,6 @@ This application uses environment variables to securely manage API keys and conf
 3. Click **"New repository secret"**
 4. Add each secret:
 
-**EmailJS Secrets:**
-
-- Name: `REACT_APP_EMAILJS_SERVICE_ID`, Value: `service_hwqll8d`
-- Name: `REACT_APP_EMAILJS_TEMPLATE_ID`, Value: `template_c5rhw4u`
-- Name: `REACT_APP_EMAILJS_PUBLIC_KEY`, Value: `ySL3BCd11PVoaUDpM`
-
-**Firebase Secrets:**
-
-- Name: `REACT_APP_FIREBASE_API_KEY`, Value: `AIzaSyBxl3XAJPdJCsulNW_y986yWZI71RRNnkI`
-- Name: `REACT_APP_FIREBASE_AUTH_DOMAIN`, Value: `personal-website-3580d.firebaseapp.com`
-- Name: `REACT_APP_FIREBASE_PROJECT_ID`, Value: `personal-website-3580d`
-- Name: `REACT_APP_FIREBASE_STORAGE_BUCKET`, Value: `personal-website-3580d.appspot.com`
-- Name: `REACT_APP_FIREBASE_MESSAGING_SENDER_ID`, Value: `508647798578`
-- Name: `REACT_APP_FIREBASE_APP_ID`, Value: `1:508647798578:web:82dc231a174aa0cbb0892b`
-- Name: `REACT_APP_FIREBASE_MEASUREMENT_ID`, Value: `G-QGWC8Z9P92`
-
 ### Step 2: GitHub Actions workflow
 
 The workflow file at `.github/workflows/deploy.yml` will automatically:
