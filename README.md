@@ -159,7 +159,7 @@ The project includes GitHub Actions workflows for automated deployment:
 
 1. Add GitHub secrets (see `SETUP_CHECKLIST.md`)
    - 10 environment variable secrets (EmailJS + Firebase config)
-   - 1 Firebase service account secret: `FIREBASE_SERVICE_ACCOUNT_PERSONAL_WEBSITE_3580D`
+   - 1 Firebase service account secret: `FIREBASE_SERVICE_ACCOUNT_[YOUR_PROJECT_ID]`
 2. Push to trigger deployment
 
 See [`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml) for workflow details.

@@ -88,7 +88,7 @@ Key section of the workflow:
 For Firebase Hosting deployment, you also need:
 
 1. Go to **Settings** → **Secrets and variables** → **Actions**
-2. Add: `FIREBASE_SERVICE_ACCOUNT_PERSONAL_WEBSITE_3580D` (JSON content of your service account key)
+2. Add: `FIREBASE_SERVICE_ACCOUNT_[YOUR_PROJECT_ID]` (JSON content of your service account key)
 
 To get this:
 

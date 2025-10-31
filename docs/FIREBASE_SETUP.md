@@ -59,7 +59,7 @@ Images are handled through a mapping system in `ProjectsSection.tsx`:
 
 ### Adding New Projects
 
-1. Go to [Firebase Console](https://console.firebase.google.com/project/personal-website-3580d/firestore)
+1. Go to [Firebase Console](https://console.firebase.google.com/) and select your project
 2. Navigate to Firestore Database
 3. Click on the "projects" collection
 4. Add a new document with the required fields

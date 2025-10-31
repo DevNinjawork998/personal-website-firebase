@@ -39,7 +39,7 @@ npm start
 
 **Deployment (1):**
 
-- `FIREBASE_SERVICE_ACCOUNT_PERSONAL_WEBSITE_3580D` ← Get from Firebase Console
+- `FIREBASE_SERVICE_ACCOUNT_[YOUR_PROJECT_ID]` ← Get from Firebase Console (name varies by project)
 
 ### Deploy
 
