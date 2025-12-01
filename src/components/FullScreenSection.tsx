@@ -16,10 +16,13 @@ const FullScreenSection = ({ children, isDarkBackground, ...boxProps }: any) => 
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.7, 1, 0.7]);
 
+  // Extract backgroundColor from boxProps to prevent passing it twice
+  const { backgroundColor, ...otherBoxProps } = boxProps;
+
   return (
     <VStack
       minWidth="-moz-fit-content"
-      backgroundColor={boxProps.backgroundColor}
+      backgroundColor={backgroundColor}
       color={isDarkBackground ? "white" : "black"}
       position="relative"
       overflow="hidden"
@@ -59,7 +62,7 @@ const FullScreenSection = ({ children, isDarkBackground, ...boxProps }: any) => 
         minHeight="100vh"
         position="relative"
         zIndex={1}
-        {...boxProps}
+        {...otherBoxProps}
       >
         {children}
       </VStack>

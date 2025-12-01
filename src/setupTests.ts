@@ -49,7 +49,11 @@ beforeAll(() => {
   console.error = (...args) => {
     if (
       typeof args[0] === "string" &&
-      args[0].includes("Warning: ReactDOM.render is no longer supported")
+      (args[0].includes("Warning: ReactDOM.render is no longer supported") ||
+       args[0].includes("Warning: `ReactDOMTestUtils.act` is deprecated") ||
+       args[0].includes("ReactDOMTestUtils.act") ||
+       args[0].includes("The current testing environment is not configured to support act") ||
+       args[0].includes("not wrapped in act(...)"))
     ) {
       return;
     }
@@ -59,7 +63,9 @@ beforeAll(() => {
   console.warn = (...args) => {
     if (
       typeof args[0] === "string" &&
-      (args[0].includes("componentWillReceiveProps") || args[0].includes("componentWillMount"))
+      (args[0].includes("componentWillReceiveProps") || 
+       args[0].includes("componentWillMount") ||
+       args[0].includes("ReactDOMTestUtils.act"))
     ) {
       return;
     }
@@ -496,18 +502,17 @@ jest.mock("framer-motion", () => {
 // Mock FullScreenSection to avoid complex framer-motion integration issues
 jest.mock("./components/FullScreenSection", () => {
   const React = require("react");
-  return ({ children, ...props }: any) => {
-    const filteredProps = {
-      ...props,
-      // Remove Chakra UI specific props that cause warnings
-      isDarkBackground: undefined,
-      backgroundColor: undefined,
-      alignItems: undefined,
-      justifyContent: undefined,
-      minHeight: undefined,
-      padding: undefined,
-      margin: undefined,
-    };
+  return ({ children, isDarkBackground, backgroundColor, alignItems, justifyContent, minHeight, padding, margin, position, spacing, py, ...props }: any) => {
+    // Explicitly destructure and exclude custom props that shouldn't be passed to DOM elements
+    // Only keep valid HTML attributes
+    const filteredProps = Object.keys(props).reduce((acc: any, key: string) => {
+      // Filter out any Chakra UI or custom props
+      if (!key.startsWith('_') && !['sx', 'css', 'as'].includes(key)) {
+        acc[key] = props[key];
+      }
+      return acc;
+    }, {});
+    
     return React.createElement("div", filteredProps, children);
   };
 });
