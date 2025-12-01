@@ -1,6 +1,17 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "../test-utils";
+import { render, screen, fireEvent, waitFor, act } from "../test-utils";
 import App from "../App";
+import { emailService } from "../services/emailService";
+
+// Mock the email service to prevent navigation errors in tests
+jest.mock("../services/emailService", () => ({
+  emailService: {
+    sendContactEmail: jest.fn().mockResolvedValue({
+      success: true,
+      message: "Thank you! Your message has been sent successfully.",
+    }),
+  },
+}));
 
 describe("Integration Tests", () => {
   test("complete contact form submission flow", async () => {
@@ -13,21 +24,33 @@ describe("Integration Tests", () => {
     const messageTextarea = screen.getByLabelText("Your Message *");
     const submitButton = screen.getByRole("button", { name: /Send Message/ });
 
-    fireEvent.change(nameInput, { target: { value: "John Doe" } });
-    fireEvent.change(emailInput, { target: { value: "john@example.com" } });
-    fireEvent.change(enquirySelect, { target: { value: "hireMe" } });
-    fireEvent.change(messageTextarea, {
-      target: { value: "I would like to hire you for a project" },
+    await act(async () => {
+      fireEvent.change(nameInput, { target: { value: "John Doe" } });
+      fireEvent.change(emailInput, { target: { value: "john@example.com" } });
+      fireEvent.change(enquirySelect, { target: { value: "hireMe" } });
+      fireEvent.change(messageTextarea, {
+        target: { value: "I would like to hire you for a project" },
+      });
     });
 
     // Submit the form
-    fireEvent.click(submitButton);
+    await act(async () => {
+      fireEvent.click(submitButton);
+      // Wait for async operations to complete
+      await waitFor(() => {
+        expect(emailService.sendContactEmail).toHaveBeenCalled();
+      });
+    });
 
-    // Verify form data is maintained (since we're not actually submitting)
-    expect(nameInput).toHaveValue("John Doe");
-    expect(emailInput).toHaveValue("john@example.com");
-    expect(enquirySelect).toHaveValue("hireMe");
-    expect(messageTextarea).toHaveValue("I would like to hire you for a project");
+    // Verify the email service was called with correct data
+    expect(emailService.sendContactEmail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        firstName: "John Doe",
+        email: "john@example.com",
+        queryType: "hireMe",
+        message: "I would like to hire you for a project",
+      })
+    );
   });
 
   test("navigation between sections works correctly", () => {
