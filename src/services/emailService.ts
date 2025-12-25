@@ -1,10 +1,11 @@
 import emailjs from "@emailjs/browser";
+import { env } from "../config/env";
 
 // EmailJS configuration
 // These values are injected at build time from environment variables
-const EMAILJS_SERVICE_ID: string | undefined = process.env.REACT_APP_EMAILJS_SERVICE_ID;
-const EMAILJS_TEMPLATE_ID: string | undefined = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
-const EMAILJS_PUBLIC_KEY: string | undefined = process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
+const EMAILJS_SERVICE_ID: string | undefined = env.EMAILJS_SERVICE_ID;
+const EMAILJS_TEMPLATE_ID: string | undefined = env.EMAILJS_TEMPLATE_ID;
+const EMAILJS_PUBLIC_KEY: string | undefined = env.EMAILJS_PUBLIC_KEY;
 
 // Check if EmailJS is properly configured
 const isEmailJSConfigured = EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && EMAILJS_PUBLIC_KEY;

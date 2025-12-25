@@ -1,13 +1,14 @@
 import { renderHook, act } from "@testing-library/react";
+import { vi, describe, test, expect, beforeEach, afterEach } from "vitest";
 import useSubmit from "../useSubmit";
 
 describe("useSubmit Hook", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   test("initial state is correct", () => {
@@ -38,7 +39,7 @@ describe("useSubmit Hook", () => {
   });
 
   test("submit function returns success response when random >= 0.5", async () => {
-    jest.spyOn(Math, "random").mockReturnValue(0.7); // Greater than 0.5, should succeed
+    vi.spyOn(Math, "random").mockReturnValue(0.7); // Greater than 0.5, should succeed
 
     const { result } = renderHook(() => useSubmit());
 
@@ -54,7 +55,7 @@ describe("useSubmit Hook", () => {
   });
 
   test("submit function returns error response when random < 0.5", async () => {
-    jest.spyOn(Math, "random").mockReturnValue(0.3); // Less than 0.5, should fail
+    vi.spyOn(Math, "random").mockReturnValue(0.3); // Less than 0.5, should fail
 
     const { result } = renderHook(() => useSubmit());
 
@@ -70,7 +71,7 @@ describe("useSubmit Hook", () => {
   });
 
   test("submit function handles different user names", async () => {
-    jest.spyOn(Math, "random").mockReturnValue(0.7); // Should succeed
+    vi.spyOn(Math, "random").mockReturnValue(0.7); // Should succeed
 
     const { result } = renderHook(() => useSubmit());
 
@@ -85,7 +86,7 @@ describe("useSubmit Hook", () => {
   });
 
   test("submit function resets loading state on error", async () => {
-    jest.spyOn(Math, "random").mockReturnValue(0.3); // Should fail
+    vi.spyOn(Math, "random").mockReturnValue(0.3); // Should fail
 
     const { result } = renderHook(() => useSubmit());
 
