@@ -22,6 +22,7 @@ import { CheckIcon, EmailIcon } from "@chakra-ui/icons";
 import FullScreenSection from "./FullScreenSection";
 import { useAlertContext } from "../context/alertContext";
 import { emailService, ContactFormData } from "../services/emailService";
+import { env } from "../config/env";
 
 type FormData = {
   firstName: string;
@@ -140,7 +141,7 @@ const ContactMeSection = () => {
         }, 5000);
 
         // Check if this is a fallback method (no EmailJS configured)
-        const isFallback = !process.env.REACT_APP_EMAILJS_SERVICE_ID;
+        const isFallback = !env.EMAILJS_SERVICE_ID;
 
         toast({
           title: isFallback ? "Email client opened!" : "Message sent successfully!",
@@ -495,11 +496,11 @@ const ContactMeSection = () => {
           >
             <Icon as={CheckIcon} color="green.400" boxSize={8} mb={2} />
             <Text color="green.400" fontWeight="semibold" mb={2}>
-              {!process.env.REACT_APP_EMAILJS_SERVICE_ID
+              {!env.EMAILJS_SERVICE_ID
                 ? "Email client opened! Check your default email application."
                 : "Message sent successfully! I'll get back to you soon."}
             </Text>
-            {!process.env.REACT_APP_EMAILJS_SERVICE_ID && (
+            {!env.EMAILJS_SERVICE_ID && (
               <Text color="gray.300" fontSize="sm">
                 If your email client didn't open, please email me directly at thooi998@gmail.com
               </Text>
