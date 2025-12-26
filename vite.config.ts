@@ -23,7 +23,7 @@ export default defineConfig({
     outDir: 'build',
     sourcemap: true,
   },
-  envPrefix: 'VITE_',
+  envPrefix: ['VITE_', 'REACT_APP_'],
   test: {
     globals: true,
     environment: 'jsdom',
