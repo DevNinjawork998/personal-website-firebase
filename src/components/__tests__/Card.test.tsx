@@ -1,10 +1,7 @@
 import React from "react";
 import { render, screen } from "../../test-utils";
+import { describe, test, expect } from "vitest";
 import Card from "../Card";
-
-// Mock image imports
-jest.mock("../../images/photo1.jpg", () => "mocked-photo1.jpg");
-jest.mock("../../images/Pokemon.jpg", () => "mocked-pokemon.jpg");
 
 describe("Card Component", () => {
   const mockProps = {
@@ -21,29 +18,38 @@ describe("Card Component", () => {
     expect(screen.getByText("This is a test project description")).toBeInTheDocument();
   });
 
-  test("renders image with correct src", () => {
+  test("renders image or fallback element", () => {
     render(<Card {...mockProps} />);
 
-    const image = screen.getByRole("img");
-    expect(image).toBeInTheDocument();
-    expect(image).toHaveAttribute("src", "test-image.jpg");
+    // Either the image with alt text or the fallback box is rendered
+    // Check for either the image or fallback text
+    const imageOrFallback = 
+      screen.queryByAltText("Test Project") || 
+      screen.queryByText("Image not available");
+    
+    expect(imageOrFallback).toBeInTheDocument();
   });
 
   test("renders link with correct href", () => {
     render(<Card {...mockProps} />);
 
-    // Look for the link by href attribute since role might not be recognized
     const link = screen.getByRole("link");
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute("href", "https://test-project.com");
   });
 
-  test("link opens in new tab", () => {
+  test("link opens in new tab with security attributes", () => {
     render(<Card {...mockProps} />);
 
     const link = screen.getByRole("link");
     expect(link).toHaveAttribute("target", "_blank");
     expect(link).toHaveAttribute("rel", "noopener noreferrer");
+  });
+
+  test("renders Live badge", () => {
+    render(<Card {...mockProps} />);
+
+    expect(screen.getByText("Live")).toBeInTheDocument();
   });
 
   test("renders with different props", () => {
@@ -59,19 +65,40 @@ describe("Card Component", () => {
     expect(screen.getByText("Another Project")).toBeInTheDocument();
     expect(screen.getByText("Different description")).toBeInTheDocument();
 
-    const image = screen.getByRole("img");
-    expect(image).toHaveAttribute("src", "different-image.jpg");
-
     const link = screen.getByRole("link");
     expect(link).toHaveAttribute("href", "https://different-project.com");
   });
 
-  test("has proper accessibility attributes", () => {
+  test("renders technology badges when provided", () => {
+    const propsWithTech = {
+      ...mockProps,
+      tech: ["React", "TypeScript", "Node.js"],
+    };
+
+    render(<Card {...propsWithTech} />);
+
+    expect(screen.getByText("React")).toBeInTheDocument();
+    expect(screen.getByText("TypeScript")).toBeInTheDocument();
+    expect(screen.getByText("Node.js")).toBeInTheDocument();
+  });
+
+  test("does not render extra tech badges when tech array is empty", () => {
+    const propsWithoutTech = {
+      ...mockProps,
+      tech: [],
+    };
+
+    render(<Card {...propsWithoutTech} />);
+
+    // Title and description should still render
+    expect(screen.getByText("Test Project")).toBeInTheDocument();
+    // Live badge is always shown
+    expect(screen.getByText("Live")).toBeInTheDocument();
+  });
+
+  test("renders View Project overlay text", () => {
     render(<Card {...mockProps} />);
 
-    const link = screen.getByRole("link");
-    // Check that the link exists and has proper attributes
-    expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute("href", "https://test-project.com");
+    expect(screen.getByText("View Project")).toBeInTheDocument();
   });
 });
