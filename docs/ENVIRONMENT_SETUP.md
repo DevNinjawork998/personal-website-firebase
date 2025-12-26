@@ -22,9 +22,11 @@ This application uses environment variables to securely manage API keys and conf
 - `REACT_APP_FIREBASE_APP_ID` - Firebase app ID
 - `REACT_APP_FIREBASE_MEASUREMENT_ID` - Firebase measurement ID (Analytics)
 
-**Important:** In React apps built with Create React App, environment variables are embedded into the JavaScript bundle at **build time**, not runtime.
+**Important:** This is a Vite application. Environment variables are embedded into the JavaScript bundle at **build time**, not runtime. Vite only exposes variables prefixed with `VITE_` to the app.
 
 ## 💻 Local Development
+
+For local development, use `VITE_` prefix in your `.env` file:
 
 1. **Create `.env` file:**
 
@@ -32,12 +34,19 @@ This application uses environment variables to securely manage API keys and conf
    cp .env.example .env
    ```
 
-2. **Add your values** - Edit `.env` with actual credentials (see `.env.example` for format)
+2. **Add your values** with `VITE_` prefix:
+
+   ```bash
+   VITE_FIREBASE_API_KEY=your-api-key
+   VITE_FIREBASE_AUTH_DOMAIN=your-auth-domain
+   VITE_FIREBASE_PROJECT_ID=your-project-id
+   # etc.
+   ```
 
 3. **Restart dev server:**
 
    ```bash
-   npm start
+   npm run dev
    ```
 
 **Note:** `.env` is gitignored and never committed.
@@ -67,21 +76,24 @@ Key section of the workflow:
 ```yaml
 - name: Build application
   env:
-    # These secrets are injected during build
+    # Map GitHub secrets (REACT_APP_*) to Vite env vars (VITE_*)
+    # Vite only exposes variables prefixed with VITE_ to the app
     # EmailJS Configuration
-    REACT_APP_EMAILJS_SERVICE_ID: ${{ secrets.REACT_APP_EMAILJS_SERVICE_ID }}
-    REACT_APP_EMAILJS_TEMPLATE_ID: ${{ secrets.REACT_APP_EMAILJS_TEMPLATE_ID }}
-    REACT_APP_EMAILJS_PUBLIC_KEY: ${{ secrets.REACT_APP_EMAILJS_PUBLIC_KEY }}
+    VITE_EMAILJS_SERVICE_ID: ${{ secrets.REACT_APP_EMAILJS_SERVICE_ID }}
+    VITE_EMAILJS_TEMPLATE_ID: ${{ secrets.REACT_APP_EMAILJS_TEMPLATE_ID }}
+    VITE_EMAILJS_PUBLIC_KEY: ${{ secrets.REACT_APP_EMAILJS_PUBLIC_KEY }}
     # Firebase Configuration
-    REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY }}
-    REACT_APP_FIREBASE_AUTH_DOMAIN: ${{ secrets.REACT_APP_FIREBASE_AUTH_DOMAIN }}
-    REACT_APP_FIREBASE_PROJECT_ID: ${{ secrets.REACT_APP_FIREBASE_PROJECT_ID }}
-    REACT_APP_FIREBASE_STORAGE_BUCKET: ${{ secrets.REACT_APP_FIREBASE_STORAGE_BUCKET }}
-    REACT_APP_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.REACT_APP_FIREBASE_MESSAGING_SENDER_ID }}
-    REACT_APP_FIREBASE_APP_ID: ${{ secrets.REACT_APP_FIREBASE_APP_ID }}
-    REACT_APP_FIREBASE_MEASUREMENT_ID: ${{ secrets.REACT_APP_FIREBASE_MEASUREMENT_ID }}
+    VITE_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY }}
+    VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.REACT_APP_FIREBASE_AUTH_DOMAIN }}
+    VITE_FIREBASE_PROJECT_ID: ${{ secrets.REACT_APP_FIREBASE_PROJECT_ID }}
+    VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.REACT_APP_FIREBASE_STORAGE_BUCKET }}
+    VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.REACT_APP_FIREBASE_MESSAGING_SENDER_ID }}
+    VITE_FIREBASE_APP_ID: ${{ secrets.REACT_APP_FIREBASE_APP_ID }}
+    VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.REACT_APP_FIREBASE_MEASUREMENT_ID }}
   run: npm run build
 ```
+
+**Note:** GitHub secrets use `REACT_APP_*` naming (historical), but they are mapped to `VITE_*` environment variables during the build because Vite only exposes variables prefixed with `VITE_` to the application.
 
 ### Step 3: Add Firebase service account for deployment (if not already done)
 
@@ -106,7 +118,7 @@ To get this:
 
 **Variables showing as undefined:**
 
-- Variable names must start with `REACT_APP_`
+- Local `.env` variable names must start with `VITE_`
 - No spaces around `=` in `.env` file
 - Must restart server after `.env` changes
 
