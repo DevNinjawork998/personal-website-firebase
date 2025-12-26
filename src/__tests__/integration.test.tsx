@@ -170,6 +170,9 @@ describe("Integration Tests", () => {
 
     expect(screen.getByText("React.js")).toBeInTheDocument();
     expect(screen.getByText("TypeScript")).toBeInTheDocument();
-    expect(screen.getByText("ASP.Net")).toBeInTheDocument();
+    expect(screen.getByText("Python")).toBeInTheDocument();
+    expect(screen.getByText("AWS")).toBeInTheDocument();
+    expect(screen.getByText("SQL")).toBeInTheDocument();
+    expect(screen.getByText("GraphQL")).toBeInTheDocument();
   });
 });
