@@ -11,7 +11,7 @@ const bio1 = "Aspiring Software Engineer at bp Malaysia";
 const Location = "Location: Kuala Lumpur, Malaysian";
 
 // Skills array for interactive display
-const skills = ["React.js", "Next.js", "TypeScript", "ASP.Net", "Azure Cloud", "GraphQL"];
+const skills = ["React.js", "Next.js", "TypeScript", "GraphQL", "Python","AWS", "SQL"];
 
 // function for getting current age
 var currentage = new Date().getFullYear() - 1998;
