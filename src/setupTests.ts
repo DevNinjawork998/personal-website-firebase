@@ -21,17 +21,17 @@ console.error = (...args) => {
 // Patch CSSStyleDeclaration to handle Chakra UI CSS variables
 // This prevents errors when jsdom tries to parse CSS variable values
 const originalSetProperty = CSSStyleDeclaration.prototype.setProperty;
-CSSStyleDeclaration.prototype.setProperty = function(
+CSSStyleDeclaration.prototype.setProperty = function (
   property: string,
   value: string | null,
   priority?: string
 ) {
   try {
     // Skip CSS variables that jsdom can't parse
-    if (value && typeof value === 'string' && value.includes('var(--chakra')) {
+    if (value && typeof value === "string" && value.includes("var(--chakra")) {
       return;
     }
-    return originalSetProperty.call(this, property, value, priority || '');
+    return originalSetProperty.call(this, property, value, priority || "");
   } catch (error) {
     // Silently ignore CSS parsing errors for Chakra UI variables
     return;
@@ -104,15 +104,28 @@ vi.mock("@emailjs/browser", () => ({
 // Mock framer-motion - simplified mock that renders children properly
 vi.mock("framer-motion", async () => {
   const React = await import("react");
-  
+
   // Create simple wrapper components that render children
   const createMotionComponent = (tag: string) => {
     const Component = React.forwardRef(({ children, ...props }: any, ref: any) => {
       // Filter out framer-motion specific props
       const {
-        initial, animate, exit, transition, whileHover, whileTap, 
-        whileInView, variants, viewport, drag, dragConstraints,
-        onDragStart, onDragEnd, layout, layoutId, ...rest
+        initial,
+        animate,
+        exit,
+        transition,
+        whileHover,
+        whileTap,
+        whileInView,
+        variants,
+        viewport,
+        drag,
+        dragConstraints,
+        onDragStart,
+        onDragEnd,
+        layout,
+        layoutId,
+        ...rest
       } = props;
       return React.createElement(tag, { ...rest, ref }, children);
     });
@@ -126,19 +139,32 @@ vi.mock("framer-motion", async () => {
     (Component: React.ComponentType<any>) => {
       const WrappedComponent = React.forwardRef(({ children, ...props }: any, ref: any) => {
         const {
-          initial, animate, exit, transition, whileHover, whileTap,
-          whileInView, variants, viewport, drag, dragConstraints,
-          onDragStart, onDragEnd, layout, layoutId, ...rest
+          initial,
+          animate,
+          exit,
+          transition,
+          whileHover,
+          whileTap,
+          whileInView,
+          variants,
+          viewport,
+          drag,
+          dragConstraints,
+          onDragStart,
+          onDragEnd,
+          layout,
+          layoutId,
+          ...rest
         } = props;
         return React.createElement(Component, { ...rest, ref }, children);
       });
-      WrappedComponent.displayName = `motion(${Component.displayName || Component.name || 'Component'})`;
+      WrappedComponent.displayName = `motion(${Component.displayName || Component.name || "Component"})`;
       return WrappedComponent;
     },
     {
       // Proxy handler for motion.div, motion.span, etc.
       get: (target, prop: string) => {
-        if (typeof prop === 'string' && prop !== 'then') {
+        if (typeof prop === "string" && prop !== "then") {
           return createMotionComponent(prop);
         }
         return (target as any)[prop];
@@ -169,7 +195,8 @@ vi.mock("framer-motion", async () => {
       scrollXProgress: mockMotionValue(0),
       scrollYProgress: mockMotionValue(0),
     }),
-    useTransform: (value: any, inputRange: any, outputRange: any) => mockMotionValue(outputRange?.[0] ?? 0),
+    useTransform: (value: any, inputRange: any, outputRange: any) =>
+      mockMotionValue(outputRange?.[0] ?? 0),
     useSpring: (value: any) => mockMotionValue(typeof value === "number" ? value : 0),
     useMotionValue: mockMotionValue,
   };

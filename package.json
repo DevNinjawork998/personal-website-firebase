@@ -73,6 +73,7 @@
     "webpack-dev-server": ">=5.2.1",
     "tar": ">=7.5.3",
     "minimatch": ">=10.2.1",
-    "@tootallnate/once": ">=3.0.1"
+    "@tootallnate/once": ">=3.0.1",
+    "uuid": "^14.0.0"
   }
 }

@@ -118,10 +118,10 @@ describe("App Component", () => {
 
     // Check that the contact section heading is rendered
     expect(screen.getByText("Get In Touch")).toBeInTheDocument();
-    
+
     // Check that the submit button is present (basic form validation)
     const buttons = screen.getAllByRole("button");
-    const sendButton = buttons.find(btn => btn.textContent?.includes("Send"));
+    const sendButton = buttons.find((btn) => btn.textContent?.includes("Send"));
     expect(sendButton).toBeDefined();
   });
 
@@ -143,7 +143,7 @@ describe("App Component", () => {
 
   test("renders multiple headings for sections", () => {
     render(<App />);
-    
+
     // App contains multiple sections with headings
     const headings = screen.getAllByRole("heading");
     expect(headings.length).toBeGreaterThan(0);

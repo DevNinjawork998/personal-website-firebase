@@ -23,10 +23,9 @@ describe("Card Component", () => {
 
     // Either the image with alt text or the fallback box is rendered
     // Check for either the image or fallback text
-    const imageOrFallback = 
-      screen.queryByAltText("Test Project") || 
-      screen.queryByText("Image not available");
-    
+    const imageOrFallback =
+      screen.queryByAltText("Test Project") || screen.queryByText("Image not available");
+
     expect(imageOrFallback).toBeInTheDocument();
   });
 

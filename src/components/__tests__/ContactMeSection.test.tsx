@@ -26,9 +26,7 @@ describe("ContactMeSection Component", () => {
 
   test("renders section description", () => {
     render(<ContactMeSection />);
-    expect(
-      screen.getByText(/Have a project in mind or want to collaborate/)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Have a project in mind or want to collaborate/)).toBeInTheDocument();
   });
 
   test("renders all form fields by placeholder", () => {

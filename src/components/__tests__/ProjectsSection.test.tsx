@@ -70,7 +70,7 @@ describe("ProjectsSection Component", () => {
     });
 
     render(<ProjectsSection />);
-    
+
     expect(screen.getByText("Loading projects...")).toBeInTheDocument();
   });
 
@@ -84,7 +84,7 @@ describe("ProjectsSection Component", () => {
     });
 
     render(<ProjectsSection />);
-    
+
     expect(screen.getByText("Failed to load projects")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Try Again" })).toBeInTheDocument();
   });
@@ -158,9 +158,7 @@ describe("ProjectsSection Component", () => {
 
     render(<ProjectsSection />);
 
-    expect(
-      screen.getByText(/A showcase of my development journey/)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/A showcase of my development journey/)).toBeInTheDocument();
   });
 
   test("renders project links", () => {

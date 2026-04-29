@@ -109,7 +109,7 @@ describe("Integration Tests", () => {
     expect(links.length).toBeGreaterThan(0);
 
     // At least some links should have href attributes
-    const linksWithHref = links.filter(link => link.hasAttribute("href"));
+    const linksWithHref = links.filter((link) => link.hasAttribute("href"));
     expect(linksWithHref.length).toBeGreaterThan(0);
   });
 
@@ -125,7 +125,7 @@ describe("Integration Tests", () => {
 
     // Find form inputs by placeholder
     const nameInput = screen.getByPlaceholderText("Your first name");
-    
+
     // Test that input accepts user input
     await act(async () => {
       fireEvent.change(nameInput, { target: { value: "Test User" } });
@@ -161,7 +161,7 @@ describe("Integration Tests", () => {
     render(<App />);
 
     const buttons = screen.getAllByRole("button");
-    const sendButton = buttons.find(btn => btn.textContent?.includes("Send"));
+    const sendButton = buttons.find((btn) => btn.textContent?.includes("Send"));
     expect(sendButton).toBeDefined();
   });
 
