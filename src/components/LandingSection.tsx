@@ -183,7 +183,7 @@ const LandingSection = () => {
                   letterSpacing="0.12em"
                   textTransform="uppercase"
                 >
-                  Est. 1998
+                  Est. 1997
                 </Text>
                 <Text
                   fontSize="xs"
