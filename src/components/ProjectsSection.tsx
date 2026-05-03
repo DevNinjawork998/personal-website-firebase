@@ -9,6 +9,7 @@ import breakfast from "../images/BreakfastImage.jpg";
 import cocktail from "../images/Cocktail.png";
 import anzPortal from "../images/ANZ OneFleet Portal.png";
 import digicraft from "../images/Digicraft.png";
+import infiniteCabinet from "../images/InfiniteCabinet.png";
 
 const MotionBox = motion(Box);
 
@@ -21,6 +22,7 @@ const imageMap: Record<string, string> = {
   "Cocktail.png": cocktail,
   "ANZ OneFleet Portal.png": anzPortal,
   "Digicraft.png": digicraft,
+  "InfiniteCabinet.png": infiniteCabinet
 };
 
 const ProjectsSection = () => {

@@ -28,6 +28,9 @@ const marqueeItems = [
   "NODE",
   "REACT",
   "NEXT.JS",
+  "FIREBASE",
+  "PRISMA",
+  "DOCKER",
 ];
 
 const scrollTo = (id: string) => {
@@ -100,6 +103,10 @@ const LandingSection = () => {
               <Box as="span" color="white" fontWeight="600">
                 bp Malaysia
               </Box>
+              {" "}and
+              <Box as="span" color="white" fontWeight="600">
+               owner of JNS Nexion Enterprise
+              </Box>
               . I build performant, thoughtful web experiences with React, TypeScript and a healthy
               obsession for detail.
             </Text>
@@ -164,6 +171,8 @@ const LandingSection = () => {
                 objectPosition="center top"
                 borderRadius="4px"
                 filter="grayscale(100%)"
+                transition="filter 0.4s ease"
+                _hover={{ filter: "grayscale(0%)" }}
                 display="block"
               />
               <Flex justify="space-between" mt={3} px={1}>
@@ -174,7 +183,7 @@ const LandingSection = () => {
                   letterSpacing="0.12em"
                   textTransform="uppercase"
                 >
-                  Est. 1997
+                  Est. 1998
                 </Text>
                 <Text
                   fontSize="xs"
@@ -192,11 +201,7 @@ const LandingSection = () => {
 
       {/* Skills marquee */}
       <Box borderTop="1px solid rgba(255,255,255,0.05)" py={6} overflow="hidden">
-        <Box
-          display="flex"
-          width="max-content"
-          animation={`${scrollLeft} 28s linear infinite`}
-        >
+        <Box display="flex" width="max-content" animation={`${scrollLeft} 28s linear infinite`}>
           {[...marqueeItems, ...marqueeItems].map((item, i) => (
             <HStack key={i} spacing={0} mr={0} flexShrink={0}>
               <Text

@@ -1,4 +1,4 @@
-Scaffold a new React component for this project following established conventions.
+# Scaffold a new React component for this project following established conventions
 
 Ask the user for the component name if not provided as an argument.
 

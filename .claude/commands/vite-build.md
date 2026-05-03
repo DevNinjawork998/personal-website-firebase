@@ -1,4 +1,4 @@
-Run the full Vite production build pipeline and summarize the result.
+# Run the full Vite production build pipeline and summarize the result
 
 Steps:
 

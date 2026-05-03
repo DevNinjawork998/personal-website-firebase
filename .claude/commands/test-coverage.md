@@ -1,4 +1,4 @@
-Run the test suite with coverage and summarize the results.
+# Run the test suite with coverage and summarize the results
 
 Steps:
 

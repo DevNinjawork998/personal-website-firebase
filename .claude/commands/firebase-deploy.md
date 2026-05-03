@@ -1,4 +1,4 @@
-Build and deploy the project to Firebase Hosting.
+# Build and deploy the project to Firebase Hosting
 
 Steps:
 
