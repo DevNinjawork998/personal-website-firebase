@@ -3,6 +3,7 @@ Scaffold a new React component for this project following established convention
 Ask the user for the component name if not provided as an argument.
 
 Rules:
+
 - Place the component in `src/components/<ComponentName>.tsx`
 - Use Chakra UI 2 primitives (Box, Flex, Text, etc.) for layout and styling — no raw CSS classes
 - Add Framer Motion animations consistent with existing components (scroll-triggered reveal is the pattern used in LandingSection, ProjectsSection, etc.)
