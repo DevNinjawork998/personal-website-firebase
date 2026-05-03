@@ -1,230 +1,141 @@
-import FullScreenSection from "./FullScreenSection";
-import {
-  Heading,
-  SimpleGrid,
-  Box,
-  Text,
-  VStack,
-  HStack,
-  Icon,
-  Divider,
-  useBreakpointValue,
-  Spinner,
-  Alert,
-  AlertIcon,
-  Button,
-} from "@chakra-ui/react";
-import { StarIcon } from "@chakra-ui/icons";
-import Card from "./Card";
+import { Box, Flex, Heading, Text, VStack, Spinner } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import Card from "./Card";
 import { useProjects } from "../hooks/useProjects";
 
-// Import all images at the top level for better performance
 import photo1 from "../images/photo1.jpg";
 import pokemon from "../images/Pokemon.jpg";
 import breakfast from "../images/BreakfastImage.jpg";
 import cocktail from "../images/Cocktail.png";
 import anzPortal from "../images/ANZ OneFleet Portal.png";
 import digicraft from "../images/Digicraft.png";
+import infiniteCabinet from "../images/InfiniteCabinet.png";
 
 const MotionBox = motion(Box);
 
-// Image mapping for cleaner code
-const imageMap: { [key: string]: string } = {
+const GOLD = "#C9A843";
+
+const imageMap: Record<string, string> = {
   "photo1.jpg": photo1,
   "Pokemon.jpg": pokemon,
   "BreakfastImage.jpg": breakfast,
   "Cocktail.png": cocktail,
   "ANZ OneFleet Portal.png": anzPortal,
   "Digicraft.png": digicraft,
-};
-
-const getImageSrc = (imageName: string): string => {
-  return imageMap[imageName] || "";
+  "InfiniteCabinet.png": infiniteCabinet
 };
 
 const ProjectsSection = () => {
   const { projects, loading, error, refetch } = useProjects();
-  const columns = useBreakpointValue({ base: 1, md: 2, lg: 3 });
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
-  };
-
-  // Loading state
   if (loading) {
     return (
-      <FullScreenSection
-        backgroundColor="rgba(0,0,0,0.8)"
-        isDarkBackground
-        p={{ base: 6, md: 8, lg: 12 }}
-        alignItems="center"
-        justifyContent="center"
-        spacing={8}
-        position="relative"
-      >
-        <VStack spacing={4}>
-          <Spinner size="xl" color="white" />
-          <Text color="gray.300" fontSize="lg">
-            Loading projects...
-          </Text>
-        </VStack>
-      </FullScreenSection>
+      <Box as="section" id="work" bg="#0D0C0A" py={{ base: 20, md: 28 }}>
+        <Box maxW="1200px" mx="auto" px={{ base: 6, md: 12, lg: 16 }}>
+          <Flex align="center" justify="center" minH="300px">
+            <VStack spacing={4}>
+              <Spinner size="lg" color={GOLD} />
+              <Text color="rgba(255,255,255,0.4)" fontSize="sm" fontFamily="'Inter', sans-serif">
+                Loading projects...
+              </Text>
+            </VStack>
+          </Flex>
+        </Box>
+      </Box>
     );
   }
 
-  // Error state
   if (error) {
     return (
-      <FullScreenSection
-        backgroundColor="rgba(0,0,0,0.8)"
-        isDarkBackground
-        p={{ base: 6, md: 8, lg: 12 }}
-        alignItems="center"
-        justifyContent="center"
-        spacing={8}
-        position="relative"
-      >
-        <VStack spacing={4} maxW="600px">
-          <Alert status="error" borderRadius="md">
-            <AlertIcon />
-            {error}
-          </Alert>
-          <Button onClick={refetch} colorScheme="blue">
-            Try Again
-          </Button>
-        </VStack>
-      </FullScreenSection>
+      <Box as="section" id="work" bg="#0D0C0A" py={{ base: 20, md: 28 }}>
+        <Box maxW="1200px" mx="auto" px={{ base: 6, md: 12, lg: 16 }}>
+          <Flex align="center" justify="center" minH="300px" direction="column" gap={4}>
+            <Text color="rgba(255,255,255,0.5)" fontFamily="'Inter', sans-serif">
+              {error}
+            </Text>
+            <Box
+              as="button"
+              onClick={refetch}
+              fontSize="sm"
+              color={GOLD}
+              textDecoration="underline"
+              fontFamily="'Inter', sans-serif"
+              cursor="pointer"
+              bg="transparent"
+              border="none"
+            >
+              Try again
+            </Box>
+          </Flex>
+        </Box>
+      </Box>
     );
   }
 
   return (
-    <FullScreenSection
-      backgroundColor="rgba(0,0,0,0.8)"
-      isDarkBackground
-      p={{ base: 6, md: 8, lg: 12 }}
-      alignItems="flex-start"
-      spacing={8}
-      position="relative"
-    >
-      {/* Background decoration */}
-      <Box
-        position="absolute"
-        top="10%"
-        right="10%"
-        w="200px"
-        h="200px"
-        bg="linear-gradient(45deg, #134e5e, #71b280)"
-        borderRadius="full"
-        opacity={0.1}
-        filter="blur(40px)"
-      />
-      <Box
-        position="absolute"
-        bottom="20%"
-        left="5%"
-        w="150px"
-        h="150px"
-        bg="linear-gradient(45deg, #4568dc, #b06ab3)"
-        borderRadius="full"
-        opacity={0.1}
-        filter="blur(30px)"
-      />
-
-      <VStack spacing={8} w="full" align="stretch">
-        <MotionBox
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={containerVariants}
-        >
-          <VStack spacing={4} align="center" textAlign="center">
-            <HStack spacing={2} align="center">
-              <Icon as={StarIcon} color="yellow.400" boxSize={6} />
-              <Heading
-                as="h1"
-                id="projects-section"
-                color="white"
-                fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
-                fontWeight="bold"
-                bgGradient="linear(to-r, #2193b0, #6dd5ed)"
-                bgClip="text"
-              >
-                Featured Projects
-              </Heading>
-              <Icon as={StarIcon} color="yellow.400" boxSize={6} />
-            </HStack>
-
-            <Text
-              color="gray.300"
-              fontSize={{ base: "md", md: "lg" }}
-              maxW="600px"
-              lineHeight="1.6"
-            >
-              A showcase of my development journey, featuring projects that demonstrate my skills in
-              front-end, back-end, and full-stack development.
-            </Text>
-
-            <Divider
-              borderColor="rgba(255, 255, 255, 0.2)"
-              w="100px"
-              borderWidth="2px"
-              borderRadius="full"
-            />
-          </VStack>
-        </MotionBox>
-
-        <MotionBox
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={containerVariants}
-        >
-          <SimpleGrid
-            columns={columns}
-            spacing={{ base: 6, md: 8, lg: 10 }}
-            w="full"
-            justifyItems="center"
+    <Box as="section" id="work" bg="#0D0C0A" py={{ base: 20, md: 28 }}>
+      <Box maxW="1200px" mx="auto" px={{ base: 6, md: 12, lg: 16 }}>
+        <Flex align="center" gap={2} mb={4}>
+          <Box h="1px" w="16px" bg={GOLD} flexShrink={0} />
+          <Text
+            fontSize="xs"
+            fontFamily="'Inter', sans-serif"
+            fontWeight="500"
+            letterSpacing="0.2em"
+            textTransform="uppercase"
+            color={GOLD}
           >
-            {projects.map((project, index) => (
-              <MotionBox
-                key={project.id}
-                variants={itemVariants}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Card
-                  title={project.title}
-                  description={project.description}
-                  imageSrc={getImageSrc(project.imageSrc)}
-                  url={project.url}
-                  tech={project.tech}
-                />
-              </MotionBox>
-            ))}
-          </SimpleGrid>
-        </MotionBox>
-      </VStack>
-    </FullScreenSection>
+            Selected Work
+          </Text>
+        </Flex>
+
+        <Flex justify="space-between" align="flex-end" mb={12}>
+          <Heading
+            as="h2"
+            fontFamily="'Cormorant Garamond', serif"
+            fontWeight="600"
+            fontSize={{ base: "4xl", md: "5xl", lg: "6xl" }}
+            color="white"
+            lineHeight="1.05"
+          >
+            {`Things I've built.`}
+          </Heading>
+          <Text
+            fontSize="sm"
+            fontFamily="'Inter', sans-serif"
+            color={GOLD}
+            letterSpacing="0.06em"
+            display={{ base: "none", md: "block" }}
+          >
+            {projects.length} project{projects.length !== 1 ? "s" : ""}
+          </Text>
+        </Flex>
+
+        <VStack spacing={5} align="stretch">
+          {projects.map((project, index) => (
+            <MotionBox
+              key={project.id}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+            >
+              <Card
+                title={project.title}
+                description={project.description}
+                imageSrc={imageMap[project.imageSrc] ?? ""}
+                url={project.url}
+                tech={project.tech}
+                category={project.category}
+                year={project.year}
+                index={index}
+              />
+            </MotionBox>
+          ))}
+        </VStack>
+      </Box>
+    </Box>
   );
 };
+
 export default ProjectsSection;

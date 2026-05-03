@@ -3,21 +3,9 @@ import { render, screen } from "./test-utils";
 import { vi, describe, test, expect, beforeEach, afterEach } from "vitest";
 import App from "./App";
 import { useProjects } from "./hooks/useProjects";
-import { act } from "react";
 
-// Mock the useProjects hook
 vi.mock("./hooks/useProjects", () => ({
   useProjects: vi.fn(),
-}));
-
-// Mock email service
-vi.mock("./services/emailService", () => ({
-  emailService: {
-    sendContactEmail: vi.fn().mockResolvedValue({
-      success: true,
-      message: "Message sent!",
-    }),
-  },
 }));
 
 const mockProjects = [
@@ -28,6 +16,8 @@ const mockProjects = [
     imageSrc: "photo1.jpg",
     url: "https://github.com/DevNinjawork998/Simple-Calculator",
     tech: ["HTML", "CSS", "JavaScript"],
+    category: "FRONTEND",
+    year: 2022,
     order: 1,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -39,6 +29,8 @@ const mockProjects = [
     imageSrc: "Pokemon.jpg",
     url: "https://github.com/DevNinjawork998/Pokemon-Database",
     tech: ["React", "PokeAPI"],
+    category: "REACT · API",
+    year: 2023,
     order: 2,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -50,6 +42,8 @@ const mockProjects = [
     imageSrc: "BreakfastImage.jpg",
     url: "https://github.com/DevNinjawork998/BuberBreakfast",
     tech: ["C#", "ASP.NET"],
+    category: "BACKEND",
+    year: 2023,
     order: 3,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -61,6 +55,8 @@ const mockProjects = [
     imageSrc: "Cocktail.png",
     url: "https://github.com/DevNinjawork998/Cocktail-App",
     tech: ["Next.js", "React"],
+    category: "FULLSTACK",
+    year: 2024,
     order: 4,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -69,7 +65,6 @@ const mockProjects = [
 
 describe("App Component", () => {
   beforeEach(() => {
-    vi.useFakeTimers();
     vi.mocked(useProjects).mockReturnValue({
       projects: mockProjects,
       loading: false,
@@ -79,72 +74,54 @@ describe("App Component", () => {
   });
 
   afterEach(() => {
-    vi.useRealTimers();
     vi.clearAllMocks();
   });
 
-  test("renders landing section with static content", () => {
+  test("renders hero headline", () => {
     render(<App />);
-
-    // Test static content that doesn't require animation
-    expect(screen.getByText(/Kuala Lumpur, Malaysian/)).toBeInTheDocument();
-    expect(screen.getByText(/Age:/)).toBeInTheDocument();
-    expect(screen.getByText("Core Specialisation in:")).toBeInTheDocument();
+    expect(screen.getByText(/Crafting digital/)).toBeInTheDocument();
+    expect(screen.getAllByText(/Jack Ooi/).length).toBeGreaterThan(0);
   });
 
-  test("renders Featured Projects section", () => {
+  test("renders selected work section", () => {
     render(<App />);
-
-    expect(screen.getByText("Featured Projects")).toBeInTheDocument();
+    expect(screen.getByText(/Things I've built/)).toBeInTheDocument();
   });
 
   test("renders all project cards", () => {
     render(<App />);
-
     expect(screen.getByText("Simple Calculator")).toBeInTheDocument();
     expect(screen.getByText("Pokemon DataBase")).toBeInTheDocument();
     expect(screen.getByText("BuberBreakfast")).toBeInTheDocument();
     expect(screen.getByText("Cocktail Ecommerce App")).toBeInTheDocument();
   });
 
-  test("renders Get In Touch section", () => {
+  test("renders contact section", () => {
     render(<App />);
-
-    expect(screen.getByText("Get In Touch")).toBeInTheDocument();
+    expect(screen.getByText(/Have a project in mind/)).toBeInTheDocument();
+    expect(screen.getByText(/Let's make it real/)).toBeInTheDocument();
   });
 
-  test("renders contact form section", () => {
+  test("renders email CTA link in contact section", () => {
     render(<App />);
-
-    // Check that the contact section heading is rendered
-    expect(screen.getByText("Get In Touch")).toBeInTheDocument();
-
-    // Check that the submit button is present (basic form validation)
-    const buttons = screen.getAllByRole("button");
-    const sendButton = buttons.find((btn) => btn.textContent?.includes("Send"));
-    expect(sendButton).toBeDefined();
+    const emailLinks = screen.getAllByRole("link");
+    const mailtoLink = emailLinks.find((l) => l.getAttribute("href")?.startsWith("mailto:"));
+    expect(mailtoLink).toBeDefined();
   });
 
   test("renders profile image", () => {
     render(<App />);
-
-    const profileImage = screen.getByAltText("Jack's profile picture");
+    const profileImage = screen.getByAltText("Jack Ooi");
     expect(profileImage).toBeInTheDocument();
   });
 
-  test("renders skills badges", () => {
+  test("renders about section", () => {
     render(<App />);
-
-    expect(screen.getByText("React.js")).toBeInTheDocument();
-    // Next.js appears multiple times (in skills and projects), use getAllByText
-    expect(screen.getAllByText("Next.js").length).toBeGreaterThan(0);
-    expect(screen.getByText("TypeScript")).toBeInTheDocument();
+    expect(screen.getByText(/I turn ideas into interfaces/)).toBeInTheDocument();
   });
 
   test("renders multiple headings for sections", () => {
     render(<App />);
-
-    // App contains multiple sections with headings
     const headings = screen.getAllByRole("heading");
     expect(headings.length).toBeGreaterThan(0);
   });

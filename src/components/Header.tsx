@@ -1,299 +1,179 @@
-import { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import { faGithub, faLinkedin, faStackOverflow } from "@fortawesome/free-brands-svg-icons";
 import {
   Box,
+  Flex,
   HStack,
+  Text,
+  Button,
   useBreakpointValue,
   IconButton,
-  useDisclosure,
   Drawer,
   DrawerBody,
-  DrawerHeader,
-  DrawerOverlay,
   DrawerContent,
+  DrawerOverlay,
   DrawerCloseButton,
   VStack,
-  Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
-import { motion } from "framer-motion";
 
-const socials = [
-  {
-    icon: faEnvelope,
-    url: "mailto: thooi998@gmail.com",
-  },
-  {
-    icon: faGithub,
-    url: "https://github.com/DevNinjawork998",
-  },
+const GOLD = "#C9A843";
+const BG = "#0D0C0A";
 
-  {
-    icon: faLinkedin,
-    url: "https://www.linkedin.com/in/thooi998",
-  },
-
-  {
-    icon: faStackOverflow,
-    url: "https://stackoverflow.com/users/15035136/ooi-teng-hao",
-  },
+const navLinks = [
+  { label: "About", id: "about" },
+  { label: "Work", id: "work" },
+  { label: "Contact", id: "contact" },
 ];
 
-//Function Header Element for scrolling
+const scrollTo = (id: string) => {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: "smooth" });
+};
+
 function Header() {
-  const [navbar, setNavbar] = useState(false);
-  const [isScrolling, setIsScrolling] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const isMobile = useBreakpointValue({ base: true, md: false });
-
-  // Function for handling clicks
-  const handleClick = (anchor: unknown) => () => {
-    const id = `${anchor}-section`;
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-    onClose(); // Close mobile menu after click
-  };
-
-  // Enhanced scroll detection
-  useEffect(() => {
-    let lastScrollY = window.scrollY;
-    let ticking = false;
-
-    const updateNavbar = () => {
-      const scrollY = window.scrollY;
-
-      if (scrollY >= 100) {
-        setNavbar(true);
-      } else {
-        setNavbar(false);
-      }
-
-      // Detect scroll direction
-      if (scrollY > lastScrollY && scrollY > 100) {
-        setIsScrolling(true);
-      } else {
-        setIsScrolling(false);
-      }
-
-      lastScrollY = scrollY;
-      ticking = false;
-    };
-
-    const onScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(updateNavbar);
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const MotionBox = motion(Box);
-  const MotionHStack = motion(HStack);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <MotionBox
+      <Box
+        as="header"
         position="fixed"
         top={0}
         left={0}
         right={0}
-        zIndex="1000"
-        bg={navbar ? "rgba(0, 0, 0, 0.9)" : "rgba(0, 0, 0, 0.3)"}
-        backdropFilter="blur(10px)"
-        borderBottom={navbar ? "1px solid rgba(255, 255, 255, 0.1)" : "none"}
-        initial={{ y: 0 }}
-        animate={{
-          y: isScrolling ? -100 : 0,
-          opacity: navbar ? 1 : 0.9,
-        }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
+        zIndex={1000}
+        bg={BG}
+        borderBottom="1px solid rgba(201,168,67,0.12)"
       >
-        <Box color="white" maxWidth="auto" margin="auto">
-          <HStack
-            px={{ base: 4, md: 8, lg: 16 }}
-            py={4}
-            justifyContent="space-between"
-            alignItems="center"
+        <Flex
+          maxW="1200px"
+          mx="auto"
+          px={{ base: 6, md: 12, lg: 16 }}
+          py={5}
+          align="center"
+          justify="space-between"
+        >
+          {/* Logo */}
+          <Text
+            fontFamily="'Inter', sans-serif"
+            fontWeight="700"
+            fontSize="xl"
+            color="white"
+            letterSpacing="-0.02em"
+            cursor="pointer"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            _hover={{ color: "white" }}
           >
-            {/* Social Media Links */}
-            <MotionHStack
-              spacing={{ base: 4, md: 6, lg: 8 }}
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              {socials.map(({ icon, url }, index) => (
-                <motion.a
-                  key={url}
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.2, rotate: 5 }}
-                  whileTap={{ scale: 0.9 }}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 + index * 0.1 }}
+            Jack.
+          </Text>
+
+          {/* Desktop nav */}
+          {!isMobile && (
+            <HStack spacing={10}>
+              {navLinks.map(({ label, id }) => (
+                <Text
+                  key={id}
+                  as="button"
+                  fontSize="sm"
+                  color="rgba(255,255,255,0.6)"
+                  fontWeight="400"
+                  fontFamily="'Inter', sans-serif"
+                  letterSpacing="0.02em"
+                  cursor="pointer"
+                  _hover={{ color: "white" }}
+                  transition="color 0.2s"
+                  onClick={() => scrollTo(id)}
+                  bg="transparent"
+                  border="none"
                 >
-                  <FontAwesomeIcon
-                    icon={icon}
-                    size="2xl"
-                    style={{
-                      filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.3))",
-                      transition: "all 0.3s ease",
-                    }}
-                  />
-                </motion.a>
+                  {label}
+                </Text>
               ))}
-            </MotionHStack>
+            </HStack>
+          )}
 
-            {/* Desktop Navigation */}
+          {/* CTA + mobile toggle */}
+          <HStack spacing={4}>
             {!isMobile && (
-              <MotionHStack
-                spacing={8}
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 }}
+              <Button
+                onClick={() => scrollTo("contact")}
+                variant="outline"
+                borderColor={GOLD}
+                color="white"
+                size="sm"
+                borderRadius="full"
+                px={6}
+                fontFamily="'Inter', sans-serif"
+                fontSize="xs"
+                fontWeight="500"
+                letterSpacing="0.08em"
+                textTransform="uppercase"
+                _hover={{ bg: "rgba(201,168,67,0.08)", borderColor: GOLD }}
+                _active={{ bg: "rgba(201,168,67,0.15)" }}
               >
-                <motion.a
-                  href="#projects"
-                  onClick={handleClick("projects")}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  style={{
-                    textDecoration: "none",
-                    color: "white",
-                    fontWeight: "500",
-                    padding: "8px 16px",
-                    borderRadius: "8px",
-                    transition: "all 0.3s ease",
-                    background: "rgba(255, 255, 255, 0.1)",
-                    backdropFilter: "blur(10px)",
-                    border: "1px solid rgba(255, 255, 255, 0.2)",
-                  }}
-                >
-                  Projects
-                </motion.a>
-                <motion.a
-                  href="#contact-me"
-                  onClick={handleClick("contactme")}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  style={{
-                    textDecoration: "none",
-                    color: "white",
-                    fontWeight: "500",
-                    padding: "8px 16px",
-                    borderRadius: "8px",
-                    transition: "all 0.3s ease",
-                    background: "rgba(255, 255, 255, 0.1)",
-                    backdropFilter: "blur(10px)",
-                    border: "1px solid rgba(255, 255, 255, 0.2)",
-                  }}
-                >
-                  Contact Me
-                </motion.a>
-              </MotionHStack>
+                Get In Touch ↗
+              </Button>
             )}
-
-            {/* Mobile Menu Button */}
             {isMobile && (
               <IconButton
                 aria-label="Open menu"
                 icon={<HamburgerIcon />}
                 variant="ghost"
                 color="white"
-                size="lg"
                 onClick={onOpen}
-                _hover={{ bg: "rgba(255, 255, 255, 0.1)" }}
+                _hover={{ bg: "rgba(255,255,255,0.05)" }}
               />
             )}
           </HStack>
-        </Box>
-      </MotionBox>
+        </Flex>
+      </Box>
 
-      {/* Mobile Drawer */}
+      {/* Mobile drawer */}
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
-        <DrawerContent bg="rgba(0, 0, 0, 0.95)" backdropFilter="blur(10px)">
-          <DrawerCloseButton color="white" />
-          <DrawerHeader color="white" borderBottom="1px solid rgba(255, 255, 255, 0.1)">
-            Navigation
-          </DrawerHeader>
-          <DrawerBody>
-            <VStack spacing={6} mt={8}>
-              <motion.a
-                href="#projects"
-                onClick={handleClick("projects")}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                style={{
-                  textDecoration: "none",
-                  color: "white",
-                  fontSize: "18px",
-                  fontWeight: "500",
-                  padding: "12px 24px",
-                  borderRadius: "8px",
-                  background: "rgba(255, 255, 255, 0.1)",
-                  backdropFilter: "blur(10px)",
-                  border: "1px solid rgba(255, 255, 255, 0.2)",
-                  width: "100%",
-                  textAlign: "center",
-                }}
-              >
-                Projects
-              </motion.a>
-              <motion.a
-                href="#contact-me"
-                onClick={handleClick("contactme")}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                style={{
-                  textDecoration: "none",
-                  color: "white",
-                  fontSize: "18px",
-                  fontWeight: "500",
-                  padding: "12px 24px",
-                  borderRadius: "8px",
-                  background: "rgba(255, 255, 255, 0.1)",
-                  backdropFilter: "blur(10px)",
-                  border: "1px solid rgba(255, 255, 255, 0.2)",
-                  width: "100%",
-                  textAlign: "center",
-                }}
-              >
-                Contact Me
-              </motion.a>
-
-              {/* Mobile Social Links */}
-              <VStack spacing={4} mt={8} pt={8} borderTop="1px solid rgba(255, 255, 255, 0.1)">
-                <Text color="gray.300" fontSize="sm">
-                  Social Media
+        <DrawerContent bg={BG} borderLeft="1px solid rgba(201,168,67,0.15)">
+          <DrawerCloseButton color="white" top={5} right={5} />
+          <DrawerBody pt={16} px={8}>
+            <VStack spacing={8} align="flex-start">
+              {navLinks.map(({ label, id }) => (
+                <Text
+                  key={id}
+                  fontSize="2xl"
+                  fontFamily="'Cormorant Garamond', serif"
+                  fontWeight="600"
+                  color="white"
+                  cursor="pointer"
+                  _hover={{ color: GOLD }}
+                  transition="color 0.2s"
+                  onClick={() => {
+                    scrollTo(id);
+                    onClose();
+                  }}
+                >
+                  {label}
                 </Text>
-                <HStack spacing={6}>
-                  {socials.map(({ icon, url }) => (
-                    <motion.a
-                      key={url}
-                      href={url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.2, rotate: 5 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      <FontAwesomeIcon icon={icon} size="2xl" />
-                    </motion.a>
-                  ))}
-                </HStack>
-              </VStack>
+              ))}
+              <Box pt={4} borderTop="1px solid rgba(201,168,67,0.2)" w="full">
+                <Button
+                  onClick={() => {
+                    scrollTo("contact");
+                    onClose();
+                  }}
+                  variant="outline"
+                  borderColor={GOLD}
+                  color="white"
+                  w="full"
+                  borderRadius="full"
+                  fontFamily="'Inter', sans-serif"
+                  fontSize="xs"
+                  letterSpacing="0.08em"
+                  textTransform="uppercase"
+                  _hover={{ bg: "rgba(201,168,67,0.08)" }}
+                >
+                  Get In Touch ↗
+                </Button>
+              </Box>
             </VStack>
           </DrawerBody>
         </DrawerContent>
@@ -301,4 +181,5 @@ function Header() {
     </>
   );
 }
+
 export default Header;

@@ -1,30 +1,45 @@
-import { Box, Flex, HStack } from "@chakra-ui/react";
-
-// Function to get current year for Copyright section
-function getCurrentYear() {
-  const currentDate = new Date();
-  return currentDate.getFullYear();
-}
+import { Box, Flex, Text } from "@chakra-ui/react";
 
 const Footer = () => {
+  const year = new Date().getFullYear();
+
   return (
-    <Box backgroundColor="#18181b">
-      <footer>
-        <HStack>
-          <Flex
-            margin="0 auto"
-            px={12}
-            color="white"
-            justifyContent="center"
-            alignItems="center"
-            maxWidth="1024px"
-            height={16}
-          >
-            <p>Jack • © {getCurrentYear()}</p>
-          </Flex>
-        </HStack>
-      </footer>
+    <Box
+      as="footer"
+      bg="#0D0C0A"
+      borderTop="1px solid rgba(201,168,67,0.2)"
+      py={6}
+    >
+      <Flex
+        maxW="1200px"
+        mx="auto"
+        px={{ base: 6, md: 12, lg: 16 }}
+        justify="space-between"
+        align="center"
+      >
+        <Text
+          fontSize="xs"
+          fontFamily="'Inter', sans-serif"
+          fontWeight="400"
+          letterSpacing="0.14em"
+          textTransform="uppercase"
+          color="rgba(255,255,255,0.28)"
+        >
+          © {year} Jack Ooi
+        </Text>
+        <Text
+          fontSize="xs"
+          fontFamily="'Inter', sans-serif"
+          fontWeight="400"
+          letterSpacing="0.14em"
+          textTransform="uppercase"
+          color="rgba(255,255,255,0.28)"
+        >
+          Designed &amp; Built With Care
+        </Text>
+      </Flex>
     </Box>
   );
 };
+
 export default Footer;

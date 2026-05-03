@@ -8,6 +8,8 @@ export interface Project {
   imageSrc: string;
   url: string;
   tech: string[];
+  category?: string;
+  year?: number;
   order: number;
   createdAt: Date;
   updatedAt: Date;
@@ -29,6 +31,8 @@ export const fetchProjects = async (): Promise<Project[]> => {
         imageSrc: data.imageSrc,
         url: data.url,
         tech: data.tech || [],
+        category: data.category,
+        year: data.year,
         order: data.order || 0,
         createdAt: data.createdAt?.toDate() || new Date(),
         updatedAt: data.updatedAt?.toDate() || new Date(),

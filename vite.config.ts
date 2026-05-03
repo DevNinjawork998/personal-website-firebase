@@ -22,6 +22,21 @@ export default defineConfig({
   build: {
     outDir: 'build',
     sourcemap: true,
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('firebase')) return 'firebase';
+            if (id.includes('@chakra-ui') || id.includes('@emotion')) return 'chakra';
+            if (id.includes('framer-motion')) return 'framer-motion';
+            if (id.includes('@fortawesome')) return 'icons';
+            if (id.includes('react') || id.includes('react-dom')) return 'react-vendor';
+            return 'vendor';
+          }
+        },
+      },
+    },
   },
   envPrefix: 'VITE_',
   test: {

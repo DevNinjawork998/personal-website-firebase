@@ -1,17 +1,6 @@
-import {
-  Heading,
-  Image,
-  Text,
-  Box,
-  VStack,
-  HStack,
-  Icon,
-  Badge,
-  useColorModeValue,
-  Wrap,
-  WrapItem,
-} from "@chakra-ui/react";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { Box, Flex, Heading, Text, Image, Wrap, WrapItem, Badge } from "@chakra-ui/react";
+
+const GOLD = "#C9A843";
 
 type CardContent = {
   title: string;
@@ -19,165 +8,168 @@ type CardContent = {
   imageSrc: string;
   url: string;
   tech?: string[];
+  category?: string;
+  year?: number;
+  index: number;
 };
 
-const Card = (card: CardContent) => {
-  const cardBg = useColorModeValue("rgba(255, 255, 255, 0.1)", "rgba(0, 0, 0, 0.2)");
-  const borderColor = useColorModeValue("rgba(255, 255, 255, 0.2)", "rgba(255, 255, 255, 0.1)");
+const Card = ({ title, description, imageSrc, url, tech, category, year, index }: CardContent) => {
+  const number = String(index + 1).padStart(2, "0");
 
   return (
-    <Box maxW="400px" w="full" textAlign="center" p={0} position="relative">
-      <Box
-        bg={cardBg}
-        backdropFilter="blur(10px)"
-        borderRadius="xl"
-        border="1px solid"
-        borderColor={borderColor}
-        p={6}
-        transition="all 0.3s ease"
-        _hover={{
-          transform: "translateY(-8px)",
-          boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)",
-          borderColor: "rgba(255, 255, 255, 0.3)",
-        }}
-        position="relative"
-        overflow="hidden"
-        _before={{
-          content: '""',
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          height: "2px",
-          background: "linear-gradient(90deg, #2193b0 0%, #6dd5ed 100%)",
-          opacity: 0,
-          transition: "opacity 0.3s ease",
-        }}
-        _groupHover={{
-          _before: {
-            opacity: 1,
-          },
-        }}
-      >
-        <VStack spacing={5} align="stretch">
-          <Box position="relative" overflow="hidden" borderRadius="lg">
-            <Box
-              as="a"
-              href={card.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              cursor="pointer"
-              display="block"
-              position="relative"
-              _hover={{
-                "& .overlay": {
-                  opacity: 1,
-                },
-              }}
+    <Box
+      as="a"
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      display="block"
+      textDecoration="none"
+      border="1px solid rgba(201,168,67,0.22)"
+      borderRadius="12px"
+      overflow="hidden"
+      bg="rgba(255,255,255,0.015)"
+      _hover={{
+        borderColor: "rgba(201,168,67,0.55)",
+        bg: "rgba(255,255,255,0.03)",
+        textDecoration: "none",
+      }}
+      transition="all 0.3s ease"
+      cursor="pointer"
+    >
+      {/* Inner wrapper with role="group" enables _groupHover on children */}
+      <Box role="group" h="full">
+        <Flex direction={{ base: "column", md: "row" }} align="stretch">
+          {/* Left — number + image */}
+          <Box position="relative" w={{ base: "full", md: "42%" }} flexShrink={0}>
+            <Text
+              position="absolute"
+              top={5}
+              left={5}
+              fontFamily="'Inter', sans-serif"
+              fontWeight="400"
+              fontSize="sm"
+              color="rgba(255,255,255,0.3)"
+              letterSpacing="0.06em"
+              zIndex={1}
             >
-              <Image
-                src={card.imageSrc}
-                alt={card.title}
-                w="full"
-                h="250px"
-                objectFit="cover"
-                borderRadius="lg"
-                transition="transform 0.3s ease"
-                _groupHover={{
-                  transform: "scale(1.05)",
-                }}
-                fallback={
-                  <Box
-                    w="full"
-                    h="250px"
-                    bg="gray.600"
-                    borderRadius="lg"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    color="gray.400"
-                    fontSize="sm"
-                  >
-                    Image not available
-                  </Box>
-                }
-              />
-              <Box
-                className="overlay"
-                position="absolute"
-                top={0}
-                left={0}
-                right={0}
-                bottom={0}
-                bg="rgba(0, 0, 0, 0.7)"
-                opacity={0}
-                transition="opacity 0.3s ease"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                borderRadius="lg"
-              >
-                <HStack spacing={2} color="white">
-                  <Text fontSize="sm" fontWeight="semibold">
-                    View Project
-                  </Text>
-                  <Icon as={ExternalLinkIcon} boxSize={4} />
-                </HStack>
-              </Box>
-            </Box>
-          </Box>
-
-          <VStack spacing={3} align="stretch">
-            <HStack justify="space-between" align="center">
-              <Heading size="lg" color="white" fontWeight="bold" fontSize="xl" lineHeight="1.2">
-                {card.title}
-              </Heading>
-              <Badge
-                colorScheme="purple"
-                variant="subtle"
-                px={2}
-                py={1}
-                borderRadius="full"
-                fontSize="xs"
-                fontWeight="medium"
-              >
-                Live
-              </Badge>
-            </HStack>
-
-            <Text fontSize="sm" color="gray.300" textAlign="left" lineHeight="1.6" noOfLines={4}>
-              {card.description}
+              {number}
             </Text>
 
-            {card.tech && card.tech.length > 0 && (
+            <Image
+              src={imageSrc}
+              alt={title}
+              w="full"
+              h={{ base: "220px", md: "100%" }}
+              minH={{ md: "280px" }}
+              objectFit="cover"
+              display="block"
+              fallback={
+                <Box
+                  w="full"
+                  h="100%"
+                  minH="280px"
+                  bg="rgba(255,255,255,0.03)"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Text fontSize="sm" color="rgba(255,255,255,0.2)">
+                    No image
+                  </Text>
+                </Box>
+              }
+            />
+          </Box>
+
+          {/* Right — content */}
+          <Flex direction="column" justify="space-between" p={{ base: 6, md: 8 }} flex={1} gap={4}>
+            <Flex justify="space-between" align="center">
+              <Text
+                fontSize="xs"
+                fontFamily="'Inter', sans-serif"
+                fontWeight="500"
+                letterSpacing="0.18em"
+                textTransform="uppercase"
+                color="rgba(255,255,255,0.38)"
+              >
+                {category ?? "PROJECT"}
+              </Text>
+              {year && (
+                <Text
+                  fontSize="xs"
+                  fontFamily="'Inter', sans-serif"
+                  fontWeight="400"
+                  letterSpacing="0.1em"
+                  color="rgba(255,255,255,0.38)"
+                >
+                  {year}
+                </Text>
+              )}
+            </Flex>
+
+            <Heading
+              as="h3"
+              fontFamily="'Cormorant Garamond', serif"
+              fontWeight="600"
+              fontSize={{ base: "2xl", md: "3xl" }}
+              color="white"
+              lineHeight="1.2"
+              _groupHover={{ color: "white" }}
+            >
+              {title}{" "}
+              <Box
+                as="span"
+                color={GOLD}
+                fontFamily="'Inter', sans-serif"
+                fontWeight="300"
+                fontSize="xl"
+              >
+                {url ? "↗" : "→"}
+              </Box>
+            </Heading>
+
+            <Text
+              fontSize="sm"
+              color="rgba(255,255,255,0.5)"
+              lineHeight="1.7"
+              fontFamily="'Inter', sans-serif"
+              noOfLines={4}
+            >
+              {description}
+            </Text>
+
+            {tech && tech.length > 0 && (
               <Wrap spacing={2} mt={2}>
-                {card.tech.map((technology, index) => (
-                  <WrapItem key={index}>
+                {tech.map((t) => (
+                  <WrapItem key={t}>
                     <Badge
-                      colorScheme="blue"
                       variant="outline"
-                      px={2}
+                      px={3}
                       py={1}
-                      borderRadius="md"
+                      borderRadius="full"
                       fontSize="xs"
-                      fontWeight="medium"
-                      borderColor="rgba(255, 255, 255, 0.3)"
-                      color="gray.300"
-                      _hover={{
-                        borderColor: "blue.400",
-                        color: "blue.300",
+                      fontFamily="'Inter', sans-serif"
+                      fontWeight="400"
+                      letterSpacing="0.04em"
+                      borderColor="rgba(255,255,255,0.2)"
+                      color="rgba(255,255,255,0.55)"
+                      _groupHover={{
+                        borderColor: "rgba(255,255,255,0.3)",
+                        color: "rgba(255,255,255,0.7)",
                       }}
+                      transition="all 0.2s"
                     >
-                      {technology}
+                      {t}
                     </Badge>
                   </WrapItem>
                 ))}
               </Wrap>
             )}
-          </VStack>
-        </VStack>
+          </Flex>
+        </Flex>
       </Box>
     </Box>
   );
 };
+
 export default Card;
