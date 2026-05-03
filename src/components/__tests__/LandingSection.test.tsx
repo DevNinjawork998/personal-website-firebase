@@ -1,67 +1,56 @@
 import React from "react";
 import { render, screen } from "../../test-utils";
-import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, test, expect } from "vitest";
 import LandingSection from "../LandingSection";
-import { act } from "react";
 
 describe("LandingSection Component", () => {
-  beforeEach(() => {
-    vi.useFakeTimers();
-  });
-
-  afterEach(() => {
-    vi.useRealTimers();
-  });
-
   test("renders heading element that will display greeting", () => {
     render(<LandingSection />);
-
-    // The component renders a heading where the greeting will appear
-    // The typing animation is handled by useState/useEffect
     const headings = screen.getAllByRole("heading");
     expect(headings.length).toBeGreaterThan(0);
   });
 
-  test("renders skills section immediately", () => {
+  test("renders hero headline text", () => {
     render(<LandingSection />);
-
-    // Skills are rendered immediately (not animated)
-    expect(screen.getByText("Core Specialisation in:")).toBeInTheDocument();
-    expect(screen.getByText("React.js")).toBeInTheDocument();
-    expect(screen.getByText("Next.js")).toBeInTheDocument();
-    expect(screen.getByText("TypeScript")).toBeInTheDocument();
-    expect(screen.getByText("Python")).toBeInTheDocument();
-    expect(screen.getByText("AWS")).toBeInTheDocument();
-    expect(screen.getByText("SQL")).toBeInTheDocument();
-    expect(screen.getByText("GraphQL")).toBeInTheDocument();
+    expect(screen.getByText(/Crafting digital/)).toBeInTheDocument();
+    expect(screen.getByText(/precision/)).toBeInTheDocument();
+    expect(screen.getByText(/and care/)).toBeInTheDocument();
   });
 
-  test("renders location information", () => {
+  test("renders bio with name and company", () => {
     render(<LandingSection />);
-
-    // Location is static, not animated - use regex for emoji
-    expect(screen.getByText(/Kuala Lumpur, Malaysian/)).toBeInTheDocument();
+    expect(screen.getByText(/Jack Ooi/)).toBeInTheDocument();
+    expect(screen.getByText(/bp Malaysia/)).toBeInTheDocument();
   });
 
-  test("renders age information dynamically", () => {
+  test("renders eyebrow label with location", () => {
     render(<LandingSection />);
-
-    // Check that age is calculated correctly (current year - 1998)
-    const currentYear = new Date().getFullYear();
-    const expectedAge = currentYear - 1998;
-    expect(screen.getByText(new RegExp(`Age: ${expectedAge}`))).toBeInTheDocument();
+    expect(screen.getByText(/Software Engineer/)).toBeInTheDocument();
+    expect(screen.getByText(/Kuala Lumpur/)).toBeInTheDocument();
   });
 
   test("renders profile image with correct alt text", () => {
     render(<LandingSection />);
-
-    const profileImage = screen.getByAltText("Jack's profile picture");
+    const profileImage = screen.getByAltText("Jack Ooi");
     expect(profileImage).toBeInTheDocument();
   });
 
-  test("renders scroll indicator", () => {
+  test("renders est. and location metadata", () => {
     render(<LandingSection />);
+    expect(screen.getByText(/Est. 1997/i)).toBeInTheDocument();
+    expect(screen.getByText(/KL, MY/)).toBeInTheDocument();
+  });
 
-    expect(screen.getByText("Scroll to explore")).toBeInTheDocument();
+  test("renders skills marquee items", () => {
+    render(<LandingSection />);
+    const typescript = screen.getAllByText("TYPESCRIPT");
+    expect(typescript.length).toBeGreaterThan(0);
+    const graphql = screen.getAllByText("GRAPHQL");
+    expect(graphql.length).toBeGreaterThan(0);
+  });
+
+  test("renders CTA button", () => {
+    render(<LandingSection />);
+    expect(screen.getByRole("button", { name: /View selected work/i })).toBeInTheDocument();
   });
 });

@@ -9,22 +9,21 @@ describe("Card Component", () => {
     description: "This is a test project description",
     imageSrc: "test-image.jpg",
     url: "https://test-project.com",
+    index: 0,
   };
 
   test("renders card with title and description", () => {
     render(<Card {...mockProps} />);
 
-    expect(screen.getByText("Test Project")).toBeInTheDocument();
+    expect(screen.getByText(/Test Project/)).toBeInTheDocument();
     expect(screen.getByText("This is a test project description")).toBeInTheDocument();
   });
 
   test("renders image or fallback element", () => {
     render(<Card {...mockProps} />);
 
-    // Either the image with alt text or the fallback box is rendered
-    // Check for either the image or fallback text
     const imageOrFallback =
-      screen.queryByAltText("Test Project") || screen.queryByText("Image not available");
+      screen.queryByAltText("Test Project") || screen.queryByText("No image");
 
     expect(imageOrFallback).toBeInTheDocument();
   });
@@ -45,10 +44,16 @@ describe("Card Component", () => {
     expect(link).toHaveAttribute("rel", "noopener noreferrer");
   });
 
-  test("renders Live badge", () => {
+  test("renders project number", () => {
     render(<Card {...mockProps} />);
 
-    expect(screen.getByText("Live")).toBeInTheDocument();
+    expect(screen.getByText("01")).toBeInTheDocument();
+  });
+
+  test("renders project number based on index", () => {
+    render(<Card {...mockProps} index={2} />);
+
+    expect(screen.getByText("03")).toBeInTheDocument();
   });
 
   test("renders with different props", () => {
@@ -57,11 +62,12 @@ describe("Card Component", () => {
       description: "Different description",
       imageSrc: "different-image.jpg",
       url: "https://different-project.com",
+      index: 1,
     };
 
     render(<Card {...differentProps} />);
 
-    expect(screen.getByText("Another Project")).toBeInTheDocument();
+    expect(screen.getByText(/Another Project/)).toBeInTheDocument();
     expect(screen.getByText("Different description")).toBeInTheDocument();
 
     const link = screen.getByRole("link");
@@ -81,7 +87,7 @@ describe("Card Component", () => {
     expect(screen.getByText("Node.js")).toBeInTheDocument();
   });
 
-  test("does not render extra tech badges when tech array is empty", () => {
+  test("does not render tech section when tech array is empty", () => {
     const propsWithoutTech = {
       ...mockProps,
       tech: [],
@@ -89,15 +95,18 @@ describe("Card Component", () => {
 
     render(<Card {...propsWithoutTech} />);
 
-    // Title and description should still render
-    expect(screen.getByText("Test Project")).toBeInTheDocument();
-    // Live badge is always shown
-    expect(screen.getByText("Live")).toBeInTheDocument();
+    expect(screen.getByText(/Test Project/)).toBeInTheDocument();
   });
 
-  test("renders View Project overlay text", () => {
-    render(<Card {...mockProps} />);
+  test("renders category when provided", () => {
+    render(<Card {...mockProps} category="FRONTEND" />);
 
-    expect(screen.getByText("View Project")).toBeInTheDocument();
+    expect(screen.getByText("FRONTEND")).toBeInTheDocument();
+  });
+
+  test("renders year when provided", () => {
+    render(<Card {...mockProps} year={2023} />);
+
+    expect(screen.getByText("2023")).toBeInTheDocument();
   });
 });

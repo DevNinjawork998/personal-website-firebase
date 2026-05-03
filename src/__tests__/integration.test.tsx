@@ -1,24 +1,11 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "../test-utils";
+import { render, screen } from "../test-utils";
 import { vi, describe, test, expect, beforeEach, afterEach } from "vitest";
 import App from "../App";
-import { emailService } from "../services/emailService";
 import { useProjects } from "../hooks/useProjects";
-import { act } from "react";
 
-// Mock the useProjects hook
 vi.mock("../hooks/useProjects", () => ({
   useProjects: vi.fn(),
-}));
-
-// Mock the email service
-vi.mock("../services/emailService", () => ({
-  emailService: {
-    sendContactEmail: vi.fn().mockResolvedValue({
-      success: true,
-      message: "Thank you! Your message has been sent successfully.",
-    }),
-  },
 }));
 
 const mockProjects = [
@@ -29,6 +16,8 @@ const mockProjects = [
     imageSrc: "photo1.jpg",
     url: "https://github.com/DevNinjawork998/Simple-Calculator",
     tech: ["HTML", "CSS", "JavaScript"],
+    category: "FRONTEND",
+    year: 2022,
     order: 1,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -40,6 +29,8 @@ const mockProjects = [
     imageSrc: "Pokemon.jpg",
     url: "https://github.com/DevNinjawork998/Pokemon-Database",
     tech: ["React", "PokeAPI"],
+    category: "REACT · API",
+    year: 2023,
     order: 2,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -51,6 +42,8 @@ const mockProjects = [
     imageSrc: "BreakfastImage.jpg",
     url: "https://github.com/DevNinjawork998/BuberBreakfast",
     tech: ["C#", "ASP.NET"],
+    category: "BACKEND",
+    year: 2023,
     order: 3,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -62,6 +55,8 @@ const mockProjects = [
     imageSrc: "Cocktail.png",
     url: "https://github.com/DevNinjawork998/Cocktail-App",
     tech: ["Next.js", "React"],
+    category: "FULLSTACK",
+    year: 2024,
     order: 4,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -70,7 +65,6 @@ const mockProjects = [
 
 describe("Integration Tests", () => {
   beforeEach(() => {
-    vi.useFakeTimers();
     vi.clearAllMocks();
     vi.mocked(useProjects).mockReturnValue({
       projects: mockProjects,
@@ -81,21 +75,18 @@ describe("Integration Tests", () => {
   });
 
   afterEach(() => {
-    vi.useRealTimers();
+    vi.clearAllMocks();
   });
 
   test("all main sections are rendered", () => {
     render(<App />);
-
-    // Static content that doesn't require animation
-    expect(screen.getByText("Featured Projects")).toBeInTheDocument();
-    expect(screen.getByText("Get In Touch")).toBeInTheDocument();
-    expect(screen.getByText("Core Specialisation in:")).toBeInTheDocument();
+    expect(screen.getByText(/Things I've built/)).toBeInTheDocument();
+    expect(screen.getByText(/Have a project in mind/)).toBeInTheDocument();
+    expect(screen.getByText(/I turn ideas into interfaces/)).toBeInTheDocument();
   });
 
   test("project cards are rendered with correct data", () => {
     render(<App />);
-
     expect(screen.getByText("Simple Calculator")).toBeInTheDocument();
     expect(screen.getByText("Pokemon DataBase")).toBeInTheDocument();
     expect(screen.getByText("BuberBreakfast")).toBeInTheDocument();
@@ -104,75 +95,42 @@ describe("Integration Tests", () => {
 
   test("project links exist and have href attributes", () => {
     render(<App />);
-
     const links = screen.getAllByRole("link");
     expect(links.length).toBeGreaterThan(0);
-
-    // At least some links should have href attributes
     const linksWithHref = links.filter((link) => link.hasAttribute("href"));
     expect(linksWithHref.length).toBeGreaterThan(0);
   });
 
   test("profile image loads correctly", () => {
     render(<App />);
-
-    const profileImage = screen.getByAltText("Jack's profile picture");
+    const profileImage = screen.getByAltText("Jack Ooi");
     expect(profileImage).toBeInTheDocument();
-  });
-
-  test("form elements are interactive", async () => {
-    render(<App />);
-
-    // Find form inputs by placeholder
-    const nameInput = screen.getByPlaceholderText("Your first name");
-
-    // Test that input accepts user input
-    await act(async () => {
-      fireEvent.change(nameInput, { target: { value: "Test User" } });
-    });
-    expect(nameInput).toHaveValue("Test User");
-  });
-
-  test("age calculation is dynamic and correct", () => {
-    render(<App />);
-
-    const currentYear = new Date().getFullYear();
-    const expectedAge = currentYear - 1998;
-    expect(screen.getByText(new RegExp(`Age: ${expectedAge}`))).toBeInTheDocument();
   });
 
   test("accessibility: heading hierarchy exists", () => {
     render(<App />);
-
     const h1Elements = screen.getAllByRole("heading", { level: 1 });
     expect(h1Elements.length).toBeGreaterThan(0);
   });
 
   test("accessibility: images have alt text", () => {
     render(<App />);
-
     const images = screen.getAllByRole("img");
     images.forEach((img) => {
       expect(img).toHaveAttribute("alt");
     });
   });
 
-  test("form submit button exists", () => {
+  test("marquee contains tech skill names", () => {
     render(<App />);
-
-    const buttons = screen.getAllByRole("button");
-    const sendButton = buttons.find((btn) => btn.textContent?.includes("Send"));
-    expect(sendButton).toBeDefined();
+    const typescript = screen.getAllByText("TYPESCRIPT");
+    expect(typescript.length).toBeGreaterThan(0);
   });
 
-  test("skills section displays technologies", () => {
+  test("contact section has email link", () => {
     render(<App />);
-
-    expect(screen.getByText("React.js")).toBeInTheDocument();
-    expect(screen.getByText("TypeScript")).toBeInTheDocument();
-    expect(screen.getByText("Python")).toBeInTheDocument();
-    expect(screen.getByText("AWS")).toBeInTheDocument();
-    expect(screen.getByText("SQL")).toBeInTheDocument();
-    expect(screen.getByText("GraphQL")).toBeInTheDocument();
+    const links = screen.getAllByRole("link");
+    const mailtoLink = links.find((l) => l.getAttribute("href")?.startsWith("mailto:"));
+    expect(mailtoLink).toBeDefined();
   });
 });

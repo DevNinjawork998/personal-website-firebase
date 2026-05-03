@@ -1,10 +1,9 @@
 import React from "react";
-import { render, screen, waitFor } from "../../test-utils";
+import { render, screen } from "../../test-utils";
 import { vi, describe, test, expect, beforeEach } from "vitest";
 import ProjectsSection from "../ProjectsSection";
 import { useProjects } from "../../hooks/useProjects";
 
-// Mock the useProjects hook
 vi.mock("../../hooks/useProjects", () => ({
   useProjects: vi.fn(),
 }));
@@ -17,6 +16,8 @@ const mockProjects = [
     imageSrc: "photo1.jpg",
     url: "https://github.com/DevNinjawork998/Simple-Calculator",
     tech: ["HTML", "CSS", "JavaScript"],
+    category: "FRONTEND",
+    year: 2022,
     order: 1,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -28,6 +29,8 @@ const mockProjects = [
     imageSrc: "Pokemon.jpg",
     url: "https://github.com/DevNinjawork998/Pokemon-Database",
     tech: ["React", "PokeAPI"],
+    category: "REACT · API",
+    year: 2023,
     order: 2,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -39,6 +42,8 @@ const mockProjects = [
     imageSrc: "BreakfastImage.jpg",
     url: "https://github.com/DevNinjawork998/BuberBreakfast",
     tech: ["C#", "ASP.NET"],
+    category: "BACKEND",
+    year: 2023,
     order: 3,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -50,6 +55,8 @@ const mockProjects = [
     imageSrc: "Cocktail.png",
     url: "https://github.com/DevNinjawork998/Cocktail-App",
     tech: ["Next.js", "React"],
+    category: "FULLSTACK",
+    year: 2024,
     order: 4,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -70,23 +77,20 @@ describe("ProjectsSection Component", () => {
     });
 
     render(<ProjectsSection />);
-
     expect(screen.getByText("Loading projects...")).toBeInTheDocument();
   });
 
-  test("renders error state with retry button", () => {
-    const mockRefetch = vi.fn();
+  test("renders error state with error message", () => {
     vi.mocked(useProjects).mockReturnValue({
       projects: [],
       loading: false,
       error: "Failed to load projects",
-      refetch: mockRefetch,
+      refetch: vi.fn(),
     });
 
     render(<ProjectsSection />);
-
     expect(screen.getByText("Failed to load projects")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Try Again" })).toBeInTheDocument();
+    expect(screen.getByText("Try again")).toBeInTheDocument();
   });
 
   test("renders section heading when projects loaded", () => {
@@ -98,7 +102,19 @@ describe("ProjectsSection Component", () => {
     });
 
     render(<ProjectsSection />);
-    expect(screen.getByText("Featured Projects")).toBeInTheDocument();
+    expect(screen.getByText(/Things I've built/)).toBeInTheDocument();
+  });
+
+  test("renders selected work label", () => {
+    vi.mocked(useProjects).mockReturnValue({
+      projects: mockProjects,
+      loading: false,
+      error: null,
+      refetch: vi.fn(),
+    });
+
+    render(<ProjectsSection />);
+    expect(screen.getByText(/Selected Work/i)).toBeInTheDocument();
   });
 
   test("renders all project cards", () => {
@@ -110,7 +126,6 @@ describe("ProjectsSection Component", () => {
     });
 
     render(<ProjectsSection />);
-
     expect(screen.getByText("Simple Calculator")).toBeInTheDocument();
     expect(screen.getByText("Pokemon DataBase")).toBeInTheDocument();
     expect(screen.getByText("BuberBreakfast")).toBeInTheDocument();
@@ -126,7 +141,6 @@ describe("ProjectsSection Component", () => {
     });
 
     render(<ProjectsSection />);
-
     expect(
       screen.getByText(/This was first ever Front-End Development project/)
     ).toBeInTheDocument();
@@ -144,11 +158,11 @@ describe("ProjectsSection Component", () => {
     });
 
     render(<ProjectsSection />);
-    const heading = screen.getByText("Featured Projects");
-    expect(heading.tagName).toBe("H1");
+    const heading = screen.getByText(/Things I've built/);
+    expect(heading.tagName).toBe("H2");
   });
 
-  test("renders section description", () => {
+  test("renders project count", () => {
     vi.mocked(useProjects).mockReturnValue({
       projects: mockProjects,
       loading: false,
@@ -157,8 +171,7 @@ describe("ProjectsSection Component", () => {
     });
 
     render(<ProjectsSection />);
-
-    expect(screen.getByText(/A showcase of my development journey/)).toBeInTheDocument();
+    expect(screen.getByText(/4 projects/)).toBeInTheDocument();
   });
 
   test("renders project links", () => {
