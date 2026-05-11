@@ -37,7 +37,7 @@ describe("LandingSection Component", () => {
 
   test("renders est. and location metadata", () => {
     render(<LandingSection />);
-    expect(screen.getByText(/Est. 1997/i)).toBeInTheDocument();
+    expect(screen.getByText(/Est. 1998/i)).toBeInTheDocument();
     expect(screen.getByText(/KL, MY/)).toBeInTheDocument();
   });
 
