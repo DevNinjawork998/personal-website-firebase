@@ -150,3 +150,7 @@ debug.log
 .dev.vars*
 !.dev.vars.example
 !.env.example
+
+*.xlsx                                                                                                                                                                                                                                          
+*# Graphify knowledge graph (generated, not committed)                                                                   
+graphify-out/          
