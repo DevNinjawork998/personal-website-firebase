@@ -22,7 +22,7 @@ const imageMap: Record<string, string> = {
   "Cocktail.png": cocktail,
   "ANZ OneFleet Portal.png": anzPortal,
   "Digicraft.png": digicraft,
-  "InfiniteCabinet.png": infiniteCabinet
+  "InfiniteCabinet.png": infiniteCabinet,
 };
 
 const ProjectsSection = () => {

@@ -22,8 +22,7 @@ describe("Card Component", () => {
   test("renders image or fallback element", () => {
     render(<Card {...mockProps} />);
 
-    const imageOrFallback =
-      screen.queryByAltText("Test Project") || screen.queryByText("No image");
+    const imageOrFallback = screen.queryByAltText("Test Project") || screen.queryByText("No image");
 
     expect(imageOrFallback).toBeInTheDocument();
   });

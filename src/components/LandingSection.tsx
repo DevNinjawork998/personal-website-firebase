@@ -102,10 +102,10 @@ const LandingSection = () => {
               — an aspiring software engineer at{" "}
               <Box as="span" color="white" fontWeight="600">
                 bp Malaysia
-              </Box>
-              {" "}and
+              </Box>{" "}
+              and
               <Box as="span" color="white" fontWeight="600">
-               owner of JNS Nexion Enterprise
+                owner of JNS Nexion Enterprise
               </Box>
               . I build performant, thoughtful web experiences with React, TypeScript and a healthy
               obsession for detail.

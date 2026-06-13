@@ -4,12 +4,7 @@ const Footer = () => {
   const year = new Date().getFullYear();
 
   return (
-    <Box
-      as="footer"
-      bg="#0D0C0A"
-      borderTop="1px solid rgba(201,168,67,0.2)"
-      py={6}
-    >
+    <Box as="footer" bg="#0D0C0A" borderTop="1px solid rgba(201,168,67,0.2)" py={6}>
       <Flex
         maxW="1200px"
         mx="auto"
