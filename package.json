@@ -77,6 +77,7 @@
     "tar": ">=7.5.3",
     "minimatch": ">=10.2.1",
     "@tootallnate/once": ">=3.0.1",
-    "uuid": "^14.0.0"
+    "uuid": "^14.0.0",
+    "@opentelemetry/core": ">=2.8.0"
   }
 }
