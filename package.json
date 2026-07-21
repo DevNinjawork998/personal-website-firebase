@@ -79,5 +79,15 @@
     "@tootallnate/once": ">=3.0.1",
     "uuid": "^14.0.0",
     "@opentelemetry/core": ">=2.8.0"
+  },
+  "allowScripts": {
+    "@firebase/util@1.15.1": true,
+    "esbuild@0.28.1": true,
+    "fsevents@2.3.3": true,
+    "msw@2.15.0": true,
+    "protobufjs@7.6.5": true,
+    "re2@1.26.1": true,
+    "sharp@0.34.5": true,
+    "workerd@1.20260714.1": true
   }
 }
