@@ -21,25 +21,17 @@ export const fetchProjects = async (): Promise<Project[]> => {
     const q = query(projectsRef, orderBy("order", "asc"));
     const querySnapshot = await getDocs(q);
 
-    const projects: Project[] = [];
-    querySnapshot.forEach((doc) => {
+    return querySnapshot.docs.map((doc) => {
       const data = doc.data();
-      projects.push({
+      return {
+        ...data,
         id: doc.id,
-        title: data.title,
-        description: data.description,
-        imageSrc: data.imageSrc,
-        url: data.url,
         tech: data.tech || [],
-        category: data.category,
-        year: data.year,
         order: data.order || 0,
         createdAt: data.createdAt?.toDate() || new Date(),
         updatedAt: data.updatedAt?.toDate() || new Date(),
-      });
+      } as Project;
     });
-
-    return projects;
   } catch (error) {
     console.error("Error fetching projects from Firestore:", error);
     // Return empty array instead of throwing to prevent app crash

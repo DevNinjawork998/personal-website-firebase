@@ -1,14 +1,13 @@
 /// <reference types="node" />
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
-import svgr from "vite-plugin-svgr";
 import * as path from "path";
 
 import { cloudflare } from "@cloudflare/vite-plugin";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), svgr(), cloudflare()],
+  plugins: [react(), cloudflare()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -22,20 +21,6 @@ export default defineConfig({
     outDir: "build",
     sourcemap: true,
     chunkSizeWarningLimit: 1000,
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes("node_modules")) {
-            if (id.includes("firebase")) return "firebase";
-            if (id.includes("@chakra-ui") || id.includes("@emotion")) return "chakra";
-            if (id.includes("framer-motion")) return "framer-motion";
-            if (id.includes("@fortawesome")) return "icons";
-            if (id.includes("react") || id.includes("react-dom")) return "react-vendor";
-            return "vendor";
-          }
-        },
-      },
-    },
   },
   envPrefix: "VITE_",
   test: {
@@ -48,7 +33,7 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "json", "html"],
       include: ["src/**/*.{js,jsx,ts,tsx}"],
-      exclude: ["src/**/*.d.ts", "src/index.tsx", "src/reportWebVitals.ts", "src/setupTests.ts"],
+      exclude: ["src/**/*.d.ts", "src/index.tsx", "src/setupTests.ts"],
     },
   },
 });

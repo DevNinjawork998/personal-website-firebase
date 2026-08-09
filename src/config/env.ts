@@ -12,11 +12,6 @@ export const env = {
   FIREBASE_APP_ID: import.meta.env.VITE_FIREBASE_APP_ID,
   FIREBASE_MEASUREMENT_ID: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 
-  // EmailJS
-  EMAILJS_SERVICE_ID: import.meta.env.VITE_EMAILJS_SERVICE_ID,
-  EMAILJS_TEMPLATE_ID: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-  EMAILJS_PUBLIC_KEY: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
-
   // Environment
   PROD: import.meta.env.PROD,
   DEV: import.meta.env.DEV,

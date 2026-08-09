@@ -6,12 +6,6 @@ This guide explains how to configure environment variables for local development
 
 This application uses environment variables to securely manage API keys and configuration. The variables are:
 
-**EmailJS Configuration:**
-
-- `REACT_APP_EMAILJS_SERVICE_ID` - EmailJS service identifier
-- `REACT_APP_EMAILJS_TEMPLATE_ID` - EmailJS template identifier
-- `REACT_APP_EMAILJS_PUBLIC_KEY` - EmailJS public key
-
 **Firebase Configuration:**
 
 - `REACT_APP_FIREBASE_API_KEY` - Firebase API key
@@ -78,10 +72,6 @@ Key section of the workflow:
   env:
     # Map GitHub secrets (REACT_APP_*) to Vite env vars (VITE_*)
     # Vite only exposes variables prefixed with VITE_ to the app
-    # EmailJS Configuration
-    VITE_EMAILJS_SERVICE_ID: ${{ secrets.REACT_APP_EMAILJS_SERVICE_ID }}
-    VITE_EMAILJS_TEMPLATE_ID: ${{ secrets.REACT_APP_EMAILJS_TEMPLATE_ID }}
-    VITE_EMAILJS_PUBLIC_KEY: ${{ secrets.REACT_APP_EMAILJS_PUBLIC_KEY }}
     # Firebase Configuration
     VITE_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY }}
     VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.REACT_APP_FIREBASE_AUTH_DOMAIN }}
@@ -132,7 +122,7 @@ To get this:
 
 - Never commit `.env` files
 - Never hardcode secrets in source code
-- Firebase & EmailJS client keys are public by design (security is server-side)
+- Firebase client keys are public by design (security is server-side)
 - Keep service account keys out of frontend code
 
 ## 📝 Key Points

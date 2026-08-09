@@ -1,8 +1,7 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react";
 import { vi } from "vitest";
 import { ChakraProvider } from "@chakra-ui/react";
-import { AlertProvider } from "./context/alertContext";
 
 // Mock Firebase to prevent initialization errors in tests
 vi.mock("firebase/app", () => ({
@@ -32,17 +31,8 @@ vi.mock("@fortawesome/free-brands-svg-icons", () => ({
   faStackOverflow: { iconName: "stack-overflow" },
 }));
 
-// Custom render function that includes providers
-const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <ChakraProvider>
-      <AlertProvider>{children}</AlertProvider>
-    </ChakraProvider>
-  );
-};
-
 const customRender = (ui: ReactElement, options?: Omit<RenderOptions, "wrapper">) =>
-  render(ui, { wrapper: AllTheProviders, ...options });
+  render(ui, { wrapper: ChakraProvider, ...options });
 
 // Re-export everything
 export * from "@testing-library/react";

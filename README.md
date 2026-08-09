@@ -7,7 +7,7 @@ A modern, responsive personal portfolio website built with React and TypeScript,
 ### Core
 
 - **React** (v18.2) with **TypeScript** - UI framework
-- **Create React App** - Build tooling
+- **Vite** - Build tooling
 - **Chakra UI** - Component library & styling
 
 ### Services & Integration
@@ -16,20 +16,16 @@ A modern, responsive personal portfolio website built with React and TypeScript,
   - Firestore - Database for projects
   - Hosting - Deployment platform
   - Analytics - User tracking
-- **EmailJS** - Contact form email delivery
 - **Framer Motion** - Animations
-- **Formik + Yup** - Form handling & validation
 
 ### Testing & CI/CD
 
-- **Jest & React Testing Library** - Unit & integration tests
+- **Vitest & React Testing Library** - Unit & integration tests
 - **GitHub Actions** - Automated deployment
-- **MSW** - API mocking for tests
 
 ## 🎯 Features
 
 - ✨ Modern, responsive design with glassmorphism effects
-- 📧 Contact form with EmailJS integration & fallback mechanisms
 - 🗂️ Dynamic projects section powered by Firestore
 - 📊 Google Analytics integration
 - 🔒 Environment-based configuration
@@ -43,7 +39,6 @@ A modern, responsive personal portfolio website built with React and TypeScript,
 - Node.js (v20+)
 - npm or yarn
 - Firebase account
-- EmailJS account (for contact form)
 
 ### Installation
 
@@ -85,7 +80,6 @@ This project requires environment variables for external services. See detailed 
 
 **Required variables:**
 
-- EmailJS configuration (3 variables)
 - Firebase configuration (7 variables)
 
 ### Firebase Setup
@@ -94,13 +88,6 @@ This project requires environment variables for external services. See detailed 
 2. Enable Firestore Database
 3. Create a `projects` collection
 4. Add Firebase config to your `.env` file
-
-### EmailJS Setup
-
-1. Create account at [EmailJS.com](https://www.emailjs.com/)
-2. Set up email service (Gmail, Outlook, etc.)
-3. Create email template
-4. Add credentials to `.env` file
 
 ## 📁 Project Structure
 
@@ -113,10 +100,7 @@ src/
 │   ├── ContactMeSection.tsx
 │   └── ...
 ├── services/           # External integrations
-│   ├── emailService.ts    # EmailJS integration
 │   └── projectsService.ts # Firebase Firestore
-├── context/            # React context providers
-│   └── alertContext.tsx
 ├── hooks/              # Custom React hooks
 ├── config/             # Configuration files
 │   └── firebase.ts        # Firebase setup
@@ -158,23 +142,15 @@ The project includes GitHub Actions workflows for automated deployment:
 **Setup required:**
 
 1. Add GitHub secrets (see `SETUP_CHECKLIST.md`)
-   - 10 environment variable secrets (EmailJS + Firebase config)
+   - 7 environment variable secrets (Firebase config)
    - 1 Firebase service account secret: `FIREBASE_SERVICE_ACCOUNT_[YOUR_PROJECT_ID]`
 2. Push to trigger deployment
 
 See [`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml) for workflow details.
 
-## 📧 Contact Form Features
+## 📧 Contact Section
 
-The contact form includes:
-
-- ✅ Real-time validation
-- 📧 EmailJS integration for sending emails
-- 🔄 Smart fallback mechanisms:
-  1. Opens email client if EmailJS fails
-  2. Copies to clipboard as final fallback
-- 📱 Responsive design
-- ⏳ Loading states and notifications
+A static call-to-action: a `mailto:` link plus GitHub and LinkedIn links. No form, no third-party email service.
 
 ## 🗂️ Projects Section
 
@@ -203,7 +179,6 @@ Projects are stored in Firebase Firestore and can be:
 ## 🔐 Security Notes
 
 - Firebase API keys are public by design (security via Firestore rules)
-- EmailJS public keys are safe for client-side use
 - Never commit `.env` files
 - GitHub secrets are encrypted and injected at build time
 - Service account keys should never be in frontend code
@@ -212,16 +187,14 @@ Projects are stored in Firebase Firestore and can be:
 
 - **Setup Guide:** [`ENVIRONMENT_SETUP.md`](./ENVIRONMENT_SETUP.md)
 - **Quick Checklist:** [`SETUP_CHECKLIST.md`](./SETUP_CHECKLIST.md)
-- **EmailJS Setup:** [`EMAILJS_SETUP.md`](./EMAILJS_SETUP.md)
 - **Firebase Setup:** [`FIREBASE_SETUP.md`](./FIREBASE_SETUP.md)
 
 ## 📖 Learn More
 
-- [Create React App Documentation](https://create-react-app.dev/)
+- [Vite Documentation](https://vite.dev/)
 - [React Documentation](https://reactjs.org/)
 - [Chakra UI Components](https://chakra-ui.com/docs/components)
 - [Firebase Documentation](https://firebase.google.com/docs)
-- [EmailJS Documentation](https://www.emailjs.com/docs/)
 
 ## 🎨 UI Features
 

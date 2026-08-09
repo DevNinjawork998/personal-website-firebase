@@ -21,12 +21,6 @@ npm start
 
 **Add these secrets:**
 
-**EmailJS (3):**
-
-- `REACT_APP_EMAILJS_SERVICE_ID`
-- `REACT_APP_EMAILJS_TEMPLATE_ID`
-- `REACT_APP_EMAILJS_PUBLIC_KEY`
-
 **Firebase (7):**
 
 - `REACT_APP_FIREBASE_API_KEY`

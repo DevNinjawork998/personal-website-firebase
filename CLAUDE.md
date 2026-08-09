@@ -22,19 +22,17 @@ npx vitest run src/components/__tests__/Header.test.tsx
 
 ## Architecture
 
-This is a single-page personal portfolio with no client-side routing — navigation is anchor-based (`#landing`, `#projects-section`, `#contactme-section`) using `scrollIntoView()`.
+This is a single-page personal portfolio with no client-side routing — navigation is anchor-based (`#about`, `#work`, `#contact`) using `scrollIntoView()`.
 
 **Data flow:**
 
 - `ProjectsSection` → `useProjects` hook → `projectsService` → Firestore
-- `ContactMeSection` → Formik/Yup form → `emailService` (EmailJS → mailto fallback → clipboard fallback)
-- Global notifications via `AlertContext` (wraps the whole app in `App.tsx`)
+- `ContactMeSection` is a static CTA — a `mailto:` link plus social links, no form
 
 **Key directories:**
 
-- `src/services/` — External integrations (Firestore, EmailJS)
+- `src/services/` — External integrations (Firestore)
 - `src/hooks/` — `useProjects` for data fetching
-- `src/context/` — `alertContext.tsx` for global alert state
 - `src/config/env.ts` — Single place to access all `VITE_*` environment variables; always go through this file, never access `import.meta.env` directly elsewhere
 - `src/config/firebase.ts` — Firebase app initialization
 
@@ -42,13 +40,13 @@ This is a single-page personal portfolio with no client-side routing — navigat
 
 ## Environment Variables
 
-All env vars are prefixed `VITE_` (not `REACT_APP_`). For local development, copy `.env.example` to `.env` and fill in values. See `docs/ENVIRONMENT_SETUP.md` for the full list and `docs/FIREBASE_SETUP.md` / `docs/EMAILJS_SETUP.md` for service-specific setup.
+All env vars are prefixed `VITE_` (not `REACT_APP_`). For local development, copy `.env.example` to `.env` and fill in values. See `docs/ENVIRONMENT_SETUP.md` for the full list and `docs/FIREBASE_SETUP.md` for service-specific setup.
 
 The CI/CD pipeline (`.github/workflows/deploy.yml`) maps GitHub secrets to env vars and deploys to Firebase Hosting on push to master.
 
 ## Testing
 
-Tests use Vitest + React Testing Library with a jsdom environment. Mocks live in `src/__mocks__/`. Firebase and EmailJS are mocked in tests — do not add real credentials to test files.
+Tests use Vitest + React Testing Library with a jsdom environment. Firebase is mocked in `src/setupTests.ts` — do not add real credentials to test files.
 
 ## graphify
 
