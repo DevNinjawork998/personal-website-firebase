@@ -55,7 +55,9 @@
     "minimatch": ">=10.2.1",
     "@tootallnate/once": ">=3.0.1",
     "uuid": "^14.0.0",
-    "@opentelemetry/core": ">=2.8.0"
+    "@opentelemetry/core": ">=2.8.0",
+    "qs": ">=6.16.0",
+    "stream-json": ">=3.6.0"
   },
   "allowScripts": {
     "@firebase/util@1.15.1": true,
