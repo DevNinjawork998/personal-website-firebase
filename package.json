@@ -52,13 +52,13 @@
     "nth-check": ">=2.0.1",
     "postcss": ">=8.4.31",
     "tar": ">=7.5.3",
-    "minimatch": ">=10.2.1",
     "@tootallnate/once": ">=3.0.1",
     "uuid": "^14.0.0",
     "@opentelemetry/core": ">=2.8.0",
     "qs": ">=6.16.0",
     "stream-json": ">=3.6.0",
-    "@grpc/grpc-js": "^1.14.5"
+    "@grpc/grpc-js": "^1.14.5",
+    "basic-ftp": "^6.2.1"
   },
   "allowScripts": {
     "esbuild@0.28.1": true,
