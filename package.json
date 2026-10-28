@@ -58,7 +58,10 @@
     "qs": ">=6.16.0",
     "stream-json": ">=3.6.0",
     "@grpc/grpc-js": "^1.14.5",
-    "basic-ftp": "^6.2.1"
+    "basic-ftp": "^6.2.1",
+    "miniflare": {
+      "undici": "^7.30.1"
+    }
   },
   "allowScripts": {
     "fsevents@2.3.3": true,
@@ -67,6 +70,7 @@
     "protobufjs@7.6.6": true,
     "re2@1.27.0": true,
     "esbuild@0.28.2": true,
-    "workerd@1.20261012.1": true
+    "workerd@1.20261019.1": true,
+    "workerd@1.20261023.1": true
   }
 }
