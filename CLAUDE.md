@@ -5,19 +5,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run dev          # Start dev server on port 3000
-npm run build        # TypeScript check + Vite build (outputs to build/)
-npm test             # Run tests in watch mode
-npm run test:ci      # Run tests with verbose reporter (used in CI)
-npm run test:coverage # Generate coverage report
-npm run format       # Format with Prettier
-npm run format:check # Check Prettier compliance
+pnpm run dev         # Start dev server on port 3000
+pnpm run build       # TypeScript check + Vite build (outputs to build/)
+pnpm test            # Run tests in watch mode
+pnpm run test:ci     # Run tests with verbose reporter (used in CI)
+pnpm run test:coverage # Generate coverage report
+pnpm run format      # Format with Prettier
+pnpm run format:check # Check Prettier compliance
 ```
 
 Run a single test file:
 
 ```bash
-npx vitest run src/components/__tests__/Header.test.tsx
+pnpm exec vitest run src/components/__tests__/Header.test.tsx
 ```
 
 ## Architecture

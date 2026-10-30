@@ -10,7 +10,7 @@ cp .env.example .env
 # (See .env.example for variable names)
 
 # 3. Start dev server
-npm start
+pnpm start
 ```
 
 ## GitHub Actions (Production)

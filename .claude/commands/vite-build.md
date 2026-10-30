@@ -2,7 +2,7 @@
 
 Steps:
 
-1. Run `npm run build` (which runs `tsc && vite build`)
+1. Run `pnpm run build` (which runs `tsc && vite build`)
 2. If successful, list the key output files in `build/` with their sizes
 3. If it fails, identify whether the error is from TypeScript or from Vite bundling, and show the relevant error
 

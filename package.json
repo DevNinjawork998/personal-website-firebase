@@ -20,7 +20,7 @@
     "dev": "vite",
     "start": "vite",
     "build": "tsc --noEmit && vite build",
-    "preview": "npm run build && wrangler dev",
+    "preview": "pnpm run build && wrangler dev",
     "test": "vitest run",
     "test:ci": "vitest run --reporter=verbose",
     "test:watch": "vitest",
@@ -28,7 +28,7 @@
     "test:ui": "vitest --ui",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
     "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
-    "deploy": "npm run build && wrangler deploy"
+    "deploy": "pnpm run build && wrangler deploy"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.54.7",
@@ -37,6 +37,7 @@
     "@types/node": "^25.0.3",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
+    "@types/testing-library__jest-dom": "^5.14.9",
     "@vitejs/plugin-react": "^5.1.2",
     "@vitest/coverage-v8": "^4.1.12",
     "@vitest/ui": "^4.1.12",
@@ -48,29 +49,5 @@
     "vitest": "^4.1.12",
     "wrangler": "^4.131.0"
   },
-  "overrides": {
-    "nth-check": ">=2.0.1",
-    "postcss": ">=8.4.31",
-    "tar": ">=7.5.3",
-    "@tootallnate/once": ">=3.0.1",
-    "uuid": "^14.0.0",
-    "@opentelemetry/core": ">=2.8.0",
-    "qs": ">=6.16.0",
-    "stream-json": ">=3.6.0",
-    "@grpc/grpc-js": "^1.14.5",
-    "basic-ftp": "^6.2.1",
-    "miniflare": {
-      "undici": "^7.30.1"
-    }
-  },
-  "allowScripts": {
-    "fsevents@2.3.3": true,
-    "sharp@0.34.5": true,
-    "@firebase/util@1.15.3": true,
-    "protobufjs@7.6.6": true,
-    "re2@1.27.0": true,
-    "esbuild@0.28.2": true,
-    "workerd@1.20261019.1": true,
-    "workerd@1.20261023.1": true
-  }
+  "packageManager": "pnpm@12.16.1"
 }

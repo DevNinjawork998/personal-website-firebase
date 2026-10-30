@@ -40,7 +40,7 @@ For local development, use `VITE_` prefix in your `.env` file:
 3. **Restart dev server:**
 
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
 **Note:** `.env` is gitignored and never committed.
@@ -80,7 +80,7 @@ Key section of the workflow:
     VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.REACT_APP_FIREBASE_MESSAGING_SENDER_ID }}
     VITE_FIREBASE_APP_ID: ${{ secrets.REACT_APP_FIREBASE_APP_ID }}
     VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.REACT_APP_FIREBASE_MEASUREMENT_ID }}
-  run: npm run build
+  run: pnpm run build
 ```
 
 **Note:** GitHub secrets use `REACT_APP_*` naming (historical), but they are mapped to `VITE_*` environment variables during the build because Vite only exposes variables prefixed with `VITE_` to the application.

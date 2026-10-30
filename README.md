@@ -37,7 +37,7 @@ A modern, responsive personal portfolio website built with React and TypeScript,
 ### Prerequisites
 
 - Node.js (v20+)
-- npm or yarn
+- pnpm
 - Firebase account
 
 ### Installation
@@ -47,27 +47,27 @@ A modern, responsive personal portfolio website built with React and TypeScript,
 git clone <your-repo-url>
 
 # Install dependencies
-npm install
+pnpm install
 
 # Set up environment variables
 cp .env.example .env
 # Edit .env with your credentials
 
 # Start development server
-npm start
+pnpm start
 ```
 
 Visit [http://localhost:3000](http://localhost:3000) to view the app.
 
 ## 📜 Available Scripts
 
-| Command           | Description                                |
-| ----------------- | ------------------------------------------ |
-| `npm start`       | Start development server at localhost:3000 |
-| `npm test`        | Run tests in watch mode                    |
-| `npm run test:ci` | Run tests with coverage for CI             |
-| `npm run build`   | Build production bundle                    |
-| `npm run format`  | Format code with Prettier                  |
+| Command            | Description                                |
+| ------------------ | ------------------------------------------ |
+| `pnpm start`       | Start development server at localhost:3000 |
+| `pnpm test`        | Run tests in watch mode                    |
+| `pnpm run test:ci` | Run tests with coverage for CI             |
+| `pnpm run build`   | Build production bundle                    |
+| `pnpm run format`  | Format code with Prettier                  |
 
 ## 🔧 Configuration
 
@@ -111,13 +111,13 @@ src/
 
 ```bash
 # Run tests in watch mode
-npm test
+pnpm test
 
 # Run tests with coverage
-npm run test:coverage
+pnpm run test:coverage
 
 # Run tests for CI (non-interactive)
-npm run test:ci
+pnpm run test:ci
 ```
 
 ## 🚀 Deployment
@@ -126,7 +126,7 @@ npm run test:ci
 
 ```bash
 # Build the project
-npm run build
+pnpm run build
 
 # Deploy to Firebase
 firebase deploy
