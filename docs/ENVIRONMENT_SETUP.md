@@ -94,7 +94,7 @@ For Firebase Hosting deployment, you also need:
 
 To get this:
 
-- Run `firebase init hosting:github` in your project (it will create the secret automatically), OR
+- Run `pnpm dlx firebase-tools init hosting:github` in your project (it will create the secret automatically), OR
 - Go to Firebase Console → Project Settings → Service Accounts → Generate New Private Key
 - Copy the entire JSON content as the secret value
 

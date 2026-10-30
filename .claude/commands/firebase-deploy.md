@@ -3,7 +3,7 @@
 Steps:
 
 1. Run `pnpm run build` — this runs the TypeScript check then Vite build. Stop and report if it fails.
-2. Run `pnpm exec firebase deploy --only hosting` to deploy the `build/` output directory.
+2. Run `pnpm dlx firebase-tools deploy --only hosting` to deploy the `build/` output directory.
 3. Report the live URL from the deploy output.
 
-Note: The user must be logged in via `firebase login` and have the correct project selected (`firebase use`). If the deploy fails due to auth, tell the user to run `! firebase login` in the prompt.
+Note: The user must be logged in via `pnpm dlx firebase-tools login` and have the correct project selected (`firebase use`). If the deploy fails due to auth, tell the user to run `! firebase login` in the prompt.

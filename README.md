@@ -36,7 +36,7 @@ A modern, responsive personal portfolio website built with React and TypeScript,
 
 ### Prerequisites
 
-- Node.js (v20+)
+- Node.js (v26+)
 - pnpm
 - Firebase account
 
@@ -129,7 +129,7 @@ pnpm run test:ci
 pnpm run build
 
 # Deploy to Firebase
-firebase deploy
+pnpm dlx firebase-tools deploy
 ```
 
 ### Automated Deployment (GitHub Actions)
