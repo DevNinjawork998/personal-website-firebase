@@ -1,7 +1,7 @@
 import { Box, Flex, Text, Heading } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 
-const MotionBox = motion(Box);
+const MotionBox = motion.create(Box);
 
 const GOLD = "#C9A843";
 

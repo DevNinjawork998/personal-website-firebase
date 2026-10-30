@@ -11,7 +11,7 @@ import anzPortal from "../images/ANZ OneFleet Portal.png";
 import digicraft from "../images/Digicraft.png";
 import infiniteCabinet from "../images/InfiniteCabinet.png";
 
-const MotionBox = motion(Box);
+const MotionBox = motion.create(Box);
 
 const GOLD = "#C9A843";
 
