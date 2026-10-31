@@ -1,5 +1,7 @@
-import { describe, test, expect } from "vitest";
-import {
+import { render, screen } from "../../test-utils";
+import { describe, test, expect, vi } from "vitest";
+import { WebGLRenderer } from "three";
+import GoldField, {
   RING_RADIUS,
   compositionFor,
   driftShape,
@@ -9,6 +11,57 @@ import {
   stageAt,
   waveShape,
 } from "../GoldField";
+
+vi.mock("three", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("three")>()),
+  WebGLRenderer: vi.fn(),
+}));
+
+const fakeRenderer = () => ({
+  domElement: document.createElement("canvas"),
+  setPixelRatio: vi.fn(),
+  setSize: vi.fn(),
+  setAnimationLoop: vi.fn(),
+  render: vi.fn(),
+  dispose: vi.fn(),
+  forceContextLoss: vi.fn(),
+});
+
+const stubRenderer = (renderer: ReturnType<typeof fakeRenderer>) => {
+  vi.mocked(WebGLRenderer).mockImplementation(function () {
+    return renderer;
+  } as any);
+};
+
+describe("GoldField", () => {
+  test("leaves no canvas when WebGL is unavailable", () => {
+    vi.mocked(WebGLRenderer).mockImplementation(function () {
+      throw new Error("no WebGL");
+    } as any);
+    const { container } = render(<GoldField />);
+    expect(container.querySelector("canvas")).toBeNull();
+  });
+
+  test("mounts a canvas hidden from assistive tech", () => {
+    const renderer = fakeRenderer();
+    stubRenderer(renderer);
+    render(<GoldField />);
+    const field = screen.getByTestId("gold-field");
+    expect(field).toHaveAttribute("aria-hidden", "true");
+    expect(field).toContainElement(renderer.domElement);
+  });
+
+  test("releases the WebGL context on unmount", () => {
+    const renderer = fakeRenderer();
+    stubRenderer(renderer);
+    const { unmount } = render(<GoldField />);
+    unmount();
+    expect(renderer.setAnimationLoop).toHaveBeenLastCalledWith(null);
+    expect(renderer.dispose).toHaveBeenCalled();
+    expect(renderer.forceContextLoss).toHaveBeenCalled();
+    expect(renderer.domElement.isConnected).toBe(false);
+  });
+});
 
 // Anchors become 0, 500, 1050, 3050
 const TOPS = [950, 1500, 3500];

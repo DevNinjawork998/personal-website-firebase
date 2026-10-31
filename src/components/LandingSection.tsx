@@ -40,7 +40,7 @@ const scrollTo = (id: string) => {
 
 const LandingSection = () => {
   return (
-    <Box as="section" bg={BG} pt="80px" id="landing">
+    <Box as="section" pt="80px" id="landing">
       {/* Hero */}
       <Box maxW="1200px" mx="auto" px={{ base: 6, md: 12, lg: 16 }} py={{ base: 16, md: 24 }}>
         <Flex

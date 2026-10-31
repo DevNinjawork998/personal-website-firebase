@@ -40,6 +40,9 @@ class MockResizeObserver {
 }
 global.ResizeObserver = MockResizeObserver as any;
 
+// jsdom has no canvas contexts
+HTMLCanvasElement.prototype.getContext = (() => null) as any;
+
 // Mock Firebase
 vi.mock("firebase/app", () => ({
   initializeApp: vi.fn(() => ({})),

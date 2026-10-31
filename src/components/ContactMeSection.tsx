@@ -15,7 +15,7 @@ const socials = [
 
 const ContactMeSection = () => {
   return (
-    <Box as="section" id="contact" bg={BG} py={{ base: 20, md: 28 }}>
+    <Box as="section" id="contact" py={{ base: 20, md: 28 }}>
       <Box maxW="1200px" mx="auto" px={{ base: 6, md: 12, lg: 16 }}>
         {/* Bordered CTA card */}
         <Box

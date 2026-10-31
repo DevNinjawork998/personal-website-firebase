@@ -7,7 +7,7 @@ const GOLD = "#C9A843";
 
 const AboutSection = () => {
   return (
-    <Box as="section" id="about" bg="#0D0C0A" py={{ base: 20, md: 28 }}>
+    <Box as="section" id="about" py={{ base: 20, md: 28 }}>
       <Box maxW="1200px" mx="auto" px={{ base: 6, md: 12, lg: 16 }}>
         <Flex direction={{ base: "column", md: "row" }} gap={{ base: 10, md: 20 }}>
           {/* Left label */}

@@ -27,7 +27,7 @@ const Card = ({ title, description, imageSrc, url, tech, category, year, index }
       border="1px solid rgba(201,168,67,0.22)"
       borderRadius="12px"
       overflow="hidden"
-      bg="rgba(255,255,255,0.015)"
+      bg="rgba(13,12,10,0.72)"
       _hover={{
         borderColor: "rgba(201,168,67,0.55)",
         bg: "rgba(255,255,255,0.03)",

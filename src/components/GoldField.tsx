@@ -1,3 +1,24 @@
+import { useEffect, useRef } from "react";
+import { Box } from "@chakra-ui/react";
+import {
+  AdditiveBlending,
+  BufferAttribute,
+  BufferGeometry,
+  CanvasTexture,
+  PerspectiveCamera,
+  Points,
+  PointsMaterial,
+  Scene,
+  WebGLRenderer,
+} from "three";
+
+const GOLD = "#C9A843";
+const SECTION_IDS = ["about", "work", "contact"];
+const TAU = Math.PI * 2;
+const INTRO_MS = 1800;
+const MAX_TILT = 0.15;
+const WAVE_STAGE = 1;
+
 export type StageMix = { from: number; to: number; t: number };
 
 export type Composition = {
@@ -92,3 +113,159 @@ export const ringShape = (count: number) =>
 
 export const scatterShape = (count: number) =>
   buildShape(count, () => [spread(14), spread(10), spread(8)]);
+
+const lerp = (from: number, to: number, t: number) => from + (to - from) * t;
+
+const easeOut = (t: number) => 1 - (1 - t) ** 3;
+
+const sectionTop = (id: string) =>
+  (document.getElementById(id)?.getBoundingClientRect().top ?? Infinity) + window.scrollY;
+
+const softDot = () => {
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = 32;
+  const context = canvas.getContext("2d");
+  if (!context) return null;
+
+  const glow = context.createRadialGradient(16, 16, 0, 16, 16, 16);
+  glow.addColorStop(0, "rgba(255,255,255,1)");
+  glow.addColorStop(1, "rgba(255,255,255,0)");
+  context.fillStyle = glow;
+  context.fillRect(0, 0, 32, 32);
+  return new CanvasTexture(canvas);
+};
+
+const GoldField = () => {
+  const hostRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
+
+    let renderer: WebGLRenderer;
+    try {
+      renderer = new WebGLRenderer({ alpha: true });
+    } catch {
+      return;
+    }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    host.appendChild(renderer.domElement);
+
+    const count = window.innerWidth < PHONE_WIDTH ? 2500 : 6000;
+    const shapes = [sphereShape, waveShape, driftShape, ringShape].map((shape) => shape(count));
+    const scatter = scatterShape(count);
+    const positions = scatter.slice();
+
+    const attribute = new BufferAttribute(positions, 3);
+    const geometry = new BufferGeometry().setAttribute("position", attribute);
+    const dot = softDot();
+    const material = new PointsMaterial({
+      color: GOLD,
+      map: dot,
+      size: 0.03,
+      transparent: true,
+      opacity: 0,
+      depthWrite: false,
+      blending: AdditiveBlending,
+    });
+    const points = new Points(geometry, material);
+    const scene = new Scene().add(points);
+    const camera = new PerspectiveCamera(50, 1, 0.1, 100);
+    camera.position.z = 6;
+
+    let composition = compositionFor(host.clientWidth);
+    const resize = () => {
+      renderer.setSize(host.clientWidth, host.clientHeight);
+      camera.aspect = host.clientWidth / host.clientHeight;
+      camera.updateProjectionMatrix();
+      composition = compositionFor(host.clientWidth);
+    };
+    resize();
+    const observer = new ResizeObserver(resize);
+    observer.observe(host);
+
+    const tiltTarget = { x: 0, y: 0 };
+    const tilt = { x: 0, y: 0 };
+    const onPointerMove = (event: PointerEvent) => {
+      tiltTarget.x = (event.clientY / window.innerHeight - 0.5) * 2 * MAX_TILT;
+      tiltTarget.y = (event.clientX / window.innerWidth - 0.5) * 2 * MAX_TILT;
+    };
+    window.addEventListener("pointermove", onPointerMove);
+
+    let started: number | undefined;
+    let previous = 0;
+    let yaw = 0;
+
+    renderer.setAnimationLoop((time) => {
+      started ??= time;
+      const dt = Math.min((time - previous) / 1000, 0.05);
+      previous = time;
+      const assembled = easeOut(Math.min((time - started) / INTRO_MS, 1));
+
+      const { from, to, t } = stageAt(
+        window.scrollY,
+        SECTION_IDS.map(sectionTop),
+        window.innerHeight,
+        document.documentElement.scrollHeight - window.innerHeight
+      );
+
+      for (let i = 0; i < positions.length; i++) {
+        positions[i] = lerp(scatter[i], lerp(shapes[from][i], shapes[to][i], t), assembled);
+      }
+
+      const ripple = (from === WAVE_STAGE ? 1 - t : 0) + (to === WAVE_STAGE ? t : 0);
+      if (ripple > 0) {
+        for (let i = 1; i < positions.length; i += 3) {
+          positions[i] += ripple * 0.12 * Math.sin(positions[i - 1] * 1.4 + time / 1600);
+        }
+      }
+      attribute.needsUpdate = true;
+
+      const start = composition[from];
+      const end = composition[to];
+      points.position.set(lerp(start.x, end.x, t), lerp(start.y, end.y, t), 0);
+      points.scale.setScalar(lerp(start.scale, end.scale, t));
+      material.opacity += (lerp(start.opacity, end.opacity, t) - material.opacity) * 0.08;
+
+      // Flat forms have no spin, so they settle back to face the camera
+      const spin = lerp(start.spin, end.spin, t);
+      yaw += spin * dt;
+      if (spin === 0) yaw += (Math.round(yaw / TAU) * TAU - yaw) * 0.06;
+
+      tilt.x += (tiltTarget.x - tilt.x) * 0.05;
+      tilt.y += (tiltTarget.y - tilt.y) * 0.05;
+      points.rotation.set(tilt.x, yaw + tilt.y, 0);
+
+      renderer.render(scene, camera);
+    });
+
+    return () => {
+      renderer.setAnimationLoop(null);
+      observer.disconnect();
+      window.removeEventListener("pointermove", onPointerMove);
+      geometry.dispose();
+      material.dispose();
+      dot?.dispose();
+      renderer.dispose();
+      renderer.forceContextLoss();
+      renderer.domElement.remove();
+    };
+  }, []);
+
+  return (
+    <Box
+      ref={hostRef}
+      data-testid="gold-field"
+      aria-hidden
+      position="fixed"
+      top={0}
+      left={0}
+      w="100%"
+      h="100lvh"
+      zIndex={0}
+      pointerEvents="none"
+    />
+  );
+};
+
+export default GoldField;

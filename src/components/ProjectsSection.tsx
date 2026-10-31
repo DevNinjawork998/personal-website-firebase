@@ -30,7 +30,7 @@ const ProjectsSection = () => {
 
   if (loading) {
     return (
-      <Box as="section" id="work" bg="#0D0C0A" py={{ base: 20, md: 28 }}>
+      <Box as="section" id="work" py={{ base: 20, md: 28 }}>
         <Box maxW="1200px" mx="auto" px={{ base: 6, md: 12, lg: 16 }}>
           <Flex align="center" justify="center" minH="300px">
             <VStack spacing={4}>
@@ -47,7 +47,7 @@ const ProjectsSection = () => {
 
   if (error) {
     return (
-      <Box as="section" id="work" bg="#0D0C0A" py={{ base: 20, md: 28 }}>
+      <Box as="section" id="work" py={{ base: 20, md: 28 }}>
         <Box maxW="1200px" mx="auto" px={{ base: 6, md: 12, lg: 16 }}>
           <Flex align="center" justify="center" minH="300px" direction="column" gap={4}>
             <Text color="rgba(255,255,255,0.5)" fontFamily="'Inter', sans-serif">
@@ -73,7 +73,7 @@ const ProjectsSection = () => {
   }
 
   return (
-    <Box as="section" id="work" bg="#0D0C0A" py={{ base: 20, md: 28 }}>
+    <Box as="section" id="work" py={{ base: 20, md: 28 }}>
       <Box maxW="1200px" mx="auto" px={{ base: 6, md: 12, lg: 16 }}>
         <Flex align="center" gap={2} mb={4}>
           <Box h="1px" w="16px" bg={GOLD} flexShrink={0} />
