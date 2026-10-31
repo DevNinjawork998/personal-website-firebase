@@ -67,7 +67,7 @@ const Card = ({ title, description, imageSrc, url, tech, category, year, index }
       bg="rgba(13,12,10,0.72)"
       _hover={{
         borderColor: "rgba(201,168,67,0.55)",
-        bg: "rgba(255,255,255,0.03)",
+        bg: "rgba(20,18,14,0.78)",
         textDecoration: "none",
       }}
       sx={{ transition: "border-color 0.3s ease, background 0.3s ease" }}
