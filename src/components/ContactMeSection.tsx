@@ -1,7 +1,10 @@
 import { Box, Flex, Heading, Text, VStack } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
+
+const MotionBox = motion.create(Box);
 
 const GOLD = "#C9A843";
 const BG = "#0D0C0A";
@@ -15,10 +18,14 @@ const socials = [
 
 const ContactMeSection = () => {
   return (
-    <Box as="section" id="contact" bg={BG} py={{ base: 20, md: 28 }}>
+    <Box as="section" id="contact" py={{ base: 20, md: 28 }}>
       <Box maxW="1200px" mx="auto" px={{ base: 6, md: 12, lg: 16 }}>
         {/* Bordered CTA card */}
-        <Box
+        <MotionBox
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8 }}
           border="1px solid rgba(201,168,67,0.28)"
           borderRadius="16px"
           py={{ base: 16, md: 24 }}
@@ -120,7 +127,7 @@ const ContactMeSection = () => {
               ))}
             </Flex>
           </VStack>
-        </Box>
+        </MotionBox>
       </Box>
     </Box>
   );

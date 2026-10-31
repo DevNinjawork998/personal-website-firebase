@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "../../test-utils";
 import { describe, test, expect } from "vitest";
-import Card from "../Card";
+import Card, { tiltFrom } from "../Card";
 
 describe("Card Component", () => {
   const mockProps = {
@@ -107,5 +107,27 @@ describe("Card Component", () => {
     render(<Card {...mockProps} year={2023} />);
 
     expect(screen.getByText("2023")).toBeInTheDocument();
+  });
+});
+
+describe("tiltFrom", () => {
+  const RECT = { left: 100, top: 200, width: 400, height: 200 };
+
+  test("is flat at the centre", () => {
+    const { rotateX, rotateY } = tiltFrom(300, 300, RECT);
+    expect(rotateX).toBeCloseTo(0);
+    expect(rotateY).toBeCloseTo(0);
+  });
+
+  test("peaks at 3 degrees in the corners", () => {
+    expect(tiltFrom(500, 200, RECT)).toEqual({ rotateX: 3, rotateY: 3 });
+    expect(tiltFrom(100, 400, RECT)).toEqual({ rotateX: -3, rotateY: -3 });
+  });
+
+  test("stays flat for a zero-size rect", () => {
+    expect(tiltFrom(10, 10, { left: 0, top: 0, width: 0, height: 0 })).toEqual({
+      rotateX: 0,
+      rotateY: 0,
+    });
   });
 });

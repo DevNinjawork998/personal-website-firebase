@@ -1,5 +1,6 @@
 import { Box, Flex, Text, Heading } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import Hairline from "./Hairline";
 
 const MotionBox = motion.create(Box);
 
@@ -7,13 +8,13 @@ const GOLD = "#C9A843";
 
 const AboutSection = () => {
   return (
-    <Box as="section" id="about" bg="#0D0C0A" py={{ base: 20, md: 28 }}>
+    <Box as="section" id="about" py={{ base: 20, md: 28 }}>
       <Box maxW="1200px" mx="auto" px={{ base: 6, md: 12, lg: 16 }}>
         <Flex direction={{ base: "column", md: "row" }} gap={{ base: 10, md: 20 }}>
           {/* Left label */}
           <Box minW={{ md: "160px" }} pt={2}>
             <Flex align="center" gap={2}>
-              <Box h="1px" w="16px" bg={GOLD} flexShrink={0} />
+              <Hairline w="16px" />
               <Text
                 fontSize="xs"
                 fontFamily="'Inter', sans-serif"

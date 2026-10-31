@@ -1,6 +1,12 @@
-import { Box, Flex, Heading, Text, Image, Wrap, WrapItem, Badge } from "@chakra-ui/react";
+import { PointerEvent } from "react";
+import { Box, Flex, Heading, Text, Image, Wrap, WrapItem, Badge, chakra } from "@chakra-ui/react";
+import { motion, useReducedMotion, useSpring } from "framer-motion";
+
+const MotionAnchor = motion.create(chakra.a);
 
 const GOLD = "#C9A843";
+const MAX_TILT = 3;
+const TILT_SPRING = { stiffness: 150, damping: 26 };
 
 type CardContent = {
   title: string;
@@ -13,12 +19,43 @@ type CardContent = {
   index: number;
 };
 
+export const tiltFrom = (
+  clientX: number,
+  clientY: number,
+  rect: Pick<DOMRect, "left" | "top" | "width" | "height">
+) => {
+  if (!rect.width || !rect.height) return { rotateX: 0, rotateY: 0 };
+
+  const x = (clientX - rect.left) / rect.width - 0.5;
+  const y = (clientY - rect.top) / rect.height - 0.5;
+  return { rotateX: -y * 2 * MAX_TILT, rotateY: x * 2 * MAX_TILT };
+};
+
 const Card = ({ title, description, imageSrc, url, tech, category, year, index }: CardContent) => {
   const number = String(index + 1).padStart(2, "0");
+  const reducedMotion = useReducedMotion();
+  const rotateX = useSpring(0, TILT_SPRING);
+  const rotateY = useSpring(0, TILT_SPRING);
+
+  const onPointerMove = (event: PointerEvent<HTMLAnchorElement>) => {
+    if (event.pointerType !== "mouse") return;
+
+    const tilt = tiltFrom(
+      event.clientX,
+      event.clientY,
+      event.currentTarget.getBoundingClientRect()
+    );
+    rotateX.set(tilt.rotateX);
+    rotateY.set(tilt.rotateY);
+  };
+
+  const onPointerLeave = () => {
+    rotateX.set(0);
+    rotateY.set(0);
+  };
 
   return (
-    <Box
-      as="a"
+    <MotionAnchor
       href={url}
       target="_blank"
       rel="noopener noreferrer"
@@ -27,13 +64,16 @@ const Card = ({ title, description, imageSrc, url, tech, category, year, index }
       border="1px solid rgba(201,168,67,0.22)"
       borderRadius="12px"
       overflow="hidden"
-      bg="rgba(255,255,255,0.015)"
+      bg="rgba(13,12,10,0.72)"
       _hover={{
         borderColor: "rgba(201,168,67,0.55)",
-        bg: "rgba(255,255,255,0.03)",
+        bg: "rgba(20,18,14,0.78)",
         textDecoration: "none",
       }}
-      transition="all 0.3s ease"
+      sx={{ transition: "border-color 0.3s ease, background 0.3s ease" }}
+      style={{ rotateX, rotateY, transformPerspective: 900 }}
+      onPointerMove={reducedMotion ? undefined : onPointerMove}
+      onPointerLeave={reducedMotion ? undefined : onPointerLeave}
       cursor="pointer"
     >
       {/* Inner wrapper with role="group" enables _groupHover on children */}
@@ -168,7 +208,7 @@ const Card = ({ title, description, imageSrc, url, tech, category, year, index }
           </Flex>
         </Flex>
       </Box>
-    </Box>
+    </MotionAnchor>
   );
 };
 

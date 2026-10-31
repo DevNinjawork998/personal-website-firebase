@@ -15,6 +15,10 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
+import { motion, useScroll, useSpring } from "framer-motion";
+import { useActiveSection } from "../hooks/useActiveSection";
+
+const MotionBox = motion.create(Box);
 
 const GOLD = "#C9A843";
 const BG = "#0D0C0A";
@@ -25,6 +29,8 @@ const navLinks = [
   { label: "Contact", id: "contact" },
 ];
 
+const sectionIds = navLinks.map(({ id }) => id);
+
 const scrollTo = (id: string) => {
   const el = document.getElementById(id);
   if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -33,6 +39,9 @@ const scrollTo = (id: string) => {
 function Header() {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const activeSection = useActiveSection(sectionIds);
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
 
   return (
     <>
@@ -75,6 +84,7 @@ function Header() {
                 <Text
                   key={id}
                   as="button"
+                  position="relative"
                   fontSize="sm"
                   color="rgba(255,255,255,0.6)"
                   fontWeight="400"
@@ -88,6 +98,19 @@ function Header() {
                   border="none"
                 >
                   {label}
+                  {activeSection === id && (
+                    <MotionBox
+                      as="span"
+                      layoutId="nav-active"
+                      position="absolute"
+                      bottom="-6px"
+                      left={0}
+                      right={0}
+                      h="1px"
+                      bg={GOLD}
+                      transition={{ duration: 0.35, ease: "easeOut" }}
+                    />
+                  )}
                 </Text>
               ))}
             </HStack>
@@ -127,6 +150,17 @@ function Header() {
             )}
           </HStack>
         </Flex>
+
+        {/* Scroll progress */}
+        <MotionBox
+          position="absolute"
+          bottom="-1px"
+          left={0}
+          right={0}
+          h="2px"
+          bg={GOLD}
+          style={{ scaleX: progress, transformOrigin: "0%" }}
+        />
       </Box>
 
       {/* Mobile drawer */}
