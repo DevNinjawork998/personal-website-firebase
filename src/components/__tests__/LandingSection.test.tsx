@@ -17,6 +17,13 @@ describe("LandingSection Component", () => {
     expect(screen.getByText(/and care/)).toBeInTheDocument();
   });
 
+  test("keeps each headline line in one text node", () => {
+    render(<LandingSection />);
+    for (const line of ["Crafting digital", "products with", "precision", "and care."]) {
+      expect(screen.getByText(line)).toBeInTheDocument();
+    }
+  });
+
   test("renders bio with name and company", () => {
     render(<LandingSection />);
     expect(screen.getByText(/Jack Ooi/)).toBeInTheDocument();

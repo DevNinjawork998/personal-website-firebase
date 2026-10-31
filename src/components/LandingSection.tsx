@@ -1,5 +1,8 @@
+import { ReactNode, useLayoutEffect, useRef } from "react";
 import { Box, Flex, Text, Heading, Button, HStack, Image } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
+import { createScope, createTimeline, stagger, utils } from "animejs";
+import { useReducedMotion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
@@ -38,9 +41,41 @@ const scrollTo = (id: string) => {
   if (el) el.scrollIntoView({ behavior: "smooth" });
 };
 
+// The padding keeps the mask from clipping descenders at this line height
+const HeadlineLine = ({ children }: { children: ReactNode }) => (
+  <Box as="span" display="block" overflow="hidden" pb="0.12em" mb="-0.12em">
+    <Box as="span" display="block" data-intro="line">
+      {children}
+    </Box>
+  </Box>
+);
+
 const LandingSection = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotion();
+
+  useLayoutEffect(() => {
+    if (reducedMotion) return;
+
+    const scope = createScope({ root: sectionRef }).add(() => {
+      utils.set('[data-intro="hairline"]', { scaleX: 0 });
+      utils.set('[data-intro="eyebrow"], [data-intro="fade"]', { opacity: 0 });
+      utils.set('[data-intro="line"]', { translateY: "110%" });
+      utils.set('[data-intro="photo"]', { clipPath: "inset(100% 0% 0% 0%)" });
+
+      createTimeline({ defaults: { ease: "outExpo" } })
+        .add('[data-intro="hairline"]', { scaleX: 1, duration: 400 }, 0)
+        .add('[data-intro="eyebrow"]', { opacity: 1, duration: 300 }, 200)
+        .add('[data-intro="line"]', { translateY: "0%", duration: 700, delay: stagger(120) }, 400)
+        .add('[data-intro="photo"]', { clipPath: "inset(0% 0% 0% 0%)", duration: 900 }, 300)
+        .add('[data-intro="fade"]', { opacity: 1, duration: 500, delay: stagger(100) }, 1100);
+    });
+
+    return () => scope.revert();
+  }, [reducedMotion]);
+
   return (
-    <Box as="section" pt="80px" id="landing">
+    <Box as="section" pt="80px" id="landing" ref={sectionRef}>
       {/* Hero */}
       <Box maxW="1200px" mx="auto" px={{ base: 6, md: 12, lg: 16 }} py={{ base: 16, md: 24 }}>
         <Flex
@@ -52,8 +87,16 @@ const LandingSection = () => {
           <Box flex="1" maxW={{ md: "58%" }}>
             {/* Eyebrow */}
             <HStack spacing={3} mb={8} align="center">
-              <Box h="1px" w="32px" bg="rgba(255,255,255,0.35)" flexShrink={0} />
+              <Box
+                h="1px"
+                w="32px"
+                bg="rgba(255,255,255,0.35)"
+                flexShrink={0}
+                transformOrigin="left"
+                data-intro="hairline"
+              />
               <Text
+                data-intro="eyebrow"
                 fontSize="xs"
                 fontFamily="'Inter', sans-serif"
                 fontWeight="500"
@@ -75,19 +118,19 @@ const LandingSection = () => {
               color="white"
               mb={8}
             >
-              Crafting digital
-              <br />
-              products with
-              <br />
-              <Box as="span" color={GOLD} fontStyle="italic">
-                precision
-              </Box>
-              <br />
-              and care.
+              <HeadlineLine>Crafting digital</HeadlineLine>
+              <HeadlineLine>products with</HeadlineLine>
+              <HeadlineLine>
+                <Box as="span" color={GOLD} fontStyle="italic">
+                  precision
+                </Box>
+              </HeadlineLine>
+              <HeadlineLine>and care.</HeadlineLine>
             </Heading>
 
             {/* Bio */}
             <Text
+              data-intro="fade"
               fontSize={{ base: "md", md: "lg" }}
               color="rgba(255,255,255,0.6)"
               lineHeight="1.75"
@@ -112,7 +155,7 @@ const LandingSection = () => {
             </Text>
 
             {/* CTA + socials */}
-            <HStack spacing={4} flexWrap="wrap" align="center">
+            <HStack spacing={4} flexWrap="wrap" align="center" data-intro="fade">
               <Button
                 onClick={() => scrollTo("work")}
                 bg={GOLD}
@@ -161,7 +204,7 @@ const LandingSection = () => {
 
           {/* Right column — B&W photo */}
           <Box flex="1" maxW={{ md: "42%" }}>
-            <Box position="relative">
+            <Box position="relative" data-intro="photo">
               <Image
                 src={profilePic}
                 alt="Jack Ooi"
@@ -201,7 +244,12 @@ const LandingSection = () => {
 
       {/* Skills marquee */}
       <Box borderTop="1px solid rgba(255,255,255,0.05)" py={6} overflow="hidden">
-        <Box display="flex" width="max-content" animation={`${scrollLeft} 28s linear infinite`}>
+        <Box
+          display="flex"
+          width="max-content"
+          animation={`${scrollLeft} 28s linear infinite`}
+          sx={{ "@media (prefers-reduced-motion: reduce)": { animation: "none" } }}
+        >
           {[...marqueeItems, ...marqueeItems].map((item, i) => (
             <HStack key={i} spacing={0} mr={0} flexShrink={0}>
               <Text
