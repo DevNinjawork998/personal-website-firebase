@@ -1,6 +1,7 @@
 import { render, screen } from "../test-utils";
 import { describe, test, expect, vi } from "vitest";
 import App from "../App";
+import Hairline from "../components/Hairline";
 
 // useReducedMotion caches its first read, so it cannot be driven through matchMedia
 vi.mock("framer-motion", async (importOriginal) => ({
@@ -16,6 +17,11 @@ describe("reduced motion", () => {
   test("renders no gold field", () => {
     render(<App />);
     expect(screen.queryByTestId("gold-field")).toBeNull();
+  });
+
+  test("draws hairlines at full length", () => {
+    const { container } = render(<Hairline w="16px" />);
+    expect(container.firstChild).not.toHaveStyle("transform: scaleX(0)");
   });
 
   test("leaves the hero fully visible", () => {

@@ -1,6 +1,9 @@
+import { useEffect, useRef } from "react";
 import { Box, Flex, Heading, Text, VStack, Spinner } from "@chakra-ui/react";
-import { motion } from "framer-motion";
+import { animate } from "animejs";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import Card from "./Card";
+import Hairline from "./Hairline";
 import { useProjects } from "../hooks/useProjects";
 
 import photo1 from "../images/photo1.jpg";
@@ -23,6 +26,45 @@ const imageMap: Record<string, string> = {
   "ANZ OneFleet Portal.png": anzPortal,
   "Digicraft.png": digicraft,
   "InfiniteCabinet.png": infiniteCabinet,
+};
+
+const projectLabel = (count: number) => `${count} project${count !== 1 ? "s" : ""}`;
+
+// Mounts only once projects load, because useInView binds its ref a single time
+const ProjectCount = ({ count }: { count: number }) => {
+  const ref = useRef<HTMLParagraphElement>(null);
+  const inView = useInView(ref, { once: true });
+  const reducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (!inView || reducedMotion) return;
+
+    const counter = { value: 0 };
+    const countUp = animate(counter, {
+      value: count,
+      duration: 900,
+      ease: "outExpo",
+      onUpdate: () => {
+        if (ref.current) ref.current.textContent = projectLabel(Math.round(counter.value));
+      },
+    });
+    return () => {
+      countUp.cancel();
+    };
+  }, [inView, reducedMotion, count]);
+
+  return (
+    <Text
+      ref={ref}
+      fontSize="sm"
+      fontFamily="'Inter', sans-serif"
+      color={GOLD}
+      letterSpacing="0.06em"
+      display={{ base: "none", md: "block" }}
+    >
+      {projectLabel(count)}
+    </Text>
+  );
 };
 
 const ProjectsSection = () => {
@@ -76,7 +118,7 @@ const ProjectsSection = () => {
     <Box as="section" id="work" py={{ base: 20, md: 28 }}>
       <Box maxW="1200px" mx="auto" px={{ base: 6, md: 12, lg: 16 }}>
         <Flex align="center" gap={2} mb={4}>
-          <Box h="1px" w="16px" bg={GOLD} flexShrink={0} />
+          <Hairline w="16px" />
           <Text
             fontSize="xs"
             fontFamily="'Inter', sans-serif"
@@ -100,15 +142,7 @@ const ProjectsSection = () => {
           >
             {`Things I've built.`}
           </Heading>
-          <Text
-            fontSize="sm"
-            fontFamily="'Inter', sans-serif"
-            color={GOLD}
-            letterSpacing="0.06em"
-            display={{ base: "none", md: "block" }}
-          >
-            {projects.length} project{projects.length !== 1 ? "s" : ""}
-          </Text>
+          <ProjectCount count={projects.length} />
         </Flex>
 
         <VStack spacing={5} align="stretch">
