@@ -174,6 +174,18 @@ describe("ProjectsSection Component", () => {
     expect(screen.getByText(/4 projects/)).toBeInTheDocument();
   });
 
+  test("shows the project count on phones", () => {
+    vi.mocked(useProjects).mockReturnValue({
+      projects: mockProjects,
+      loading: false,
+      error: null,
+      refetch: vi.fn(),
+    });
+
+    render(<ProjectsSection />);
+    expect(screen.getByText(/4 projects/)).toBeVisible();
+  });
+
   test("project count label is one text node", () => {
     vi.mocked(useProjects).mockReturnValue({
       projects: [mockProjects[0]],

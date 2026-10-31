@@ -60,7 +60,6 @@ const ProjectCount = ({ count }: { count: number }) => {
       fontFamily="'Inter', sans-serif"
       color={GOLD}
       letterSpacing="0.06em"
-      display={{ base: "none", md: "block" }}
     >
       {projectLabel(count)}
     </Text>
@@ -131,7 +130,7 @@ const ProjectsSection = () => {
           </Text>
         </Flex>
 
-        <Flex justify="space-between" align="flex-end" mb={12}>
+        <Flex justify="space-between" align="flex-end" wrap="wrap" gap={2} mb={12}>
           <Heading
             as="h2"
             fontFamily="'Cormorant Garamond', serif"

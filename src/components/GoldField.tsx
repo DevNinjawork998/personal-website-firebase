@@ -29,27 +29,66 @@ export type Composition = {
   spin: number;
 };
 
+type Frame = Pick<DOMRect, "left" | "top" | "width" | "height">;
+
 export const RING_RADIUS = 2.4;
 
-const COMPACT_WIDTH = 1200;
+const SPHERE_RADIUS = 1.7;
+const CAMERA_FOV = 50;
+const CAMERA_Z = 6;
+// World units the camera sees from top to bottom at z = 0
+export const VIEW_HEIGHT = 2 * CAMERA_Z * Math.tan((CAMERA_FOV * Math.PI) / 360);
+
+const DOT_PIXELS = 2.6;
+// three scales point size with viewport height, which would swell dots on tall tablets
+export const dotSize = (height: number) => (DOT_PIXELS * 2 * CAMERA_Z) / height;
+
+// Perspective pushes the rim past the sphere's radius, so this lands it on the portrait's corners
+const PORTRAIT_FIT = 0.91;
+const RING_FIT = 0.88;
+// Chakra's md breakpoint: the hero stacks below it, so there is no portrait beside the text to frame
+const COMPACT_WIDTH = 768;
 const HOLD = 0.2;
 
 // Stages in page order: sphere, wave, drift, ring
 const DESKTOP: Composition[] = [
-  { opacity: 0.75, x: 1.1, y: 0, scale: 1.15, spin: 0.12 },
+  { opacity: 0.75, x: 0, y: 0, scale: 1.15, spin: 0.12 },
   { opacity: 0.3, x: 0, y: 0, scale: 1, spin: 0 },
   { opacity: 0.18, x: 0, y: 0, scale: 1, spin: 0.03 },
   { opacity: 0.7, x: 0, y: 0, scale: 1, spin: 0 },
 ];
 
 const COMPACT: Composition[] = [
-  { opacity: 0.25, x: 0, y: 0.6, scale: 0.8, spin: 0.12 },
-  { opacity: 0.2, x: 0, y: 0, scale: 0.7, spin: 0 },
-  { opacity: 0.12, x: 0, y: 0, scale: 0.8, spin: 0.03 },
-  { opacity: 0.25, x: 0, y: 0, scale: 0.85, spin: 0 },
+  { opacity: 0.75, x: 0, y: 0.95, scale: 0.66, spin: 0.12 },
+  { opacity: 0.3, x: 0, y: 0, scale: 0.7, spin: 0 },
+  { opacity: 0.18, x: 0, y: 0, scale: 0.8, spin: 0.03 },
+  { opacity: 0.7, x: 0, y: 0, scale: 0.85, spin: 0 },
 ];
 
-export const compositionFor = (width: number) => (width < COMPACT_WIDTH ? COMPACT : DESKTOP);
+const aroundPortrait = (portrait: Frame, width: number, height: number) => {
+  const unitsPerPixel = VIEW_HEIGHT / height;
+  const rim = (Math.hypot(portrait.width, portrait.height) / 2) * unitsPerPixel * PORTRAIT_FIT;
+  // Perspective also pushes a sphere away from the middle of the view
+  const pullIn = 1 - (rim / CAMERA_Z) ** 2;
+  return {
+    x: (portrait.left + portrait.width / 2 - width / 2) * unitsPerPixel * pullIn,
+    y: (height / 2 - portrait.top - portrait.height / 2) * unitsPerPixel * pullIn,
+    scale: rim / SPHERE_RADIUS,
+  };
+};
+
+export const compositionFor = (width: number, height: number, portrait?: Frame) => {
+  if (width < COMPACT_WIDTH) return COMPACT;
+
+  const [sphere, wave, drift, ring] = DESKTOP;
+  const halfWidth = ((VIEW_HEIGHT / 2) * width) / height;
+  return [
+    portrait ? { ...sphere, ...aroundPortrait(portrait, width, height) } : sphere,
+    wave,
+    drift,
+    { ...ring, scale: Math.min((halfWidth * RING_FIT) / RING_RADIUS, 1) },
+  ];
+};
 
 export const stageAt = (
   scrollY: number,
@@ -88,7 +127,11 @@ export const sphereShape = (count: number) =>
     const y = Math.random() * 2 - 1;
     const angle = Math.random() * Math.PI * 2;
     const radius = Math.sqrt(1 - y * y);
-    return [1.7 * radius * Math.cos(angle), 1.7 * y, 1.7 * radius * Math.sin(angle)];
+    return [
+      SPHERE_RADIUS * radius * Math.cos(angle),
+      SPHERE_RADIUS * y,
+      SPHERE_RADIUS * radius * Math.sin(angle),
+    ];
   });
 
 export const waveShape = (count: number) => {
@@ -120,6 +163,19 @@ const easeOut = (t: number) => 1 - (1 - t) ** 3;
 
 const sectionTop = (id: string) =>
   (document.getElementById(id)?.getBoundingClientRect().top ?? Infinity) + window.scrollY;
+
+// Where the portrait sits with the page at the top, which is where the sphere belongs
+const portraitFrame = () => {
+  const rect = document.getElementById("portrait")?.getBoundingClientRect();
+  return (
+    rect && {
+      left: rect.left,
+      top: rect.top + window.scrollY,
+      width: rect.width,
+      height: rect.height,
+    }
+  );
+};
 
 const softDot = () => {
   const canvas = document.createElement("canvas");
@@ -162,7 +218,6 @@ const GoldField = () => {
     const material = new PointsMaterial({
       color: GOLD,
       map: dot,
-      size: 0.035,
       transparent: true,
       opacity: 0,
       depthWrite: false,
@@ -170,15 +225,14 @@ const GoldField = () => {
     });
     const points = new Points(geometry, material);
     const scene = new Scene().add(points);
-    const camera = new PerspectiveCamera(50, 1, 0.1, 100);
-    camera.position.z = 6;
+    const camera = new PerspectiveCamera(CAMERA_FOV, 1, 0.1, 100);
+    camera.position.z = CAMERA_Z;
 
-    let composition = compositionFor(host.clientWidth);
     const resize = () => {
       renderer.setSize(host.clientWidth, host.clientHeight);
       camera.aspect = host.clientWidth / host.clientHeight;
       camera.updateProjectionMatrix();
-      composition = compositionFor(host.clientWidth);
+      material.size = dotSize(host.clientHeight);
     };
     resize();
     const observer = new ResizeObserver(resize);
@@ -186,11 +240,14 @@ const GoldField = () => {
 
     const tiltTarget = { x: 0, y: 0 };
     const tilt = { x: 0, y: 0 };
-    const onPointerMove = (event: PointerEvent) => {
-      tiltTarget.x = (event.clientY / window.innerHeight - 0.5) * 2 * MAX_TILT;
-      tiltTarget.y = (event.clientX / window.innerWidth - 0.5) * 2 * MAX_TILT;
+    const aim = ({ clientX, clientY }: Pick<Touch, "clientX" | "clientY">) => {
+      tiltTarget.x = (clientY / window.innerHeight - 0.5) * 2 * MAX_TILT;
+      tiltTarget.y = (clientX / window.innerWidth - 0.5) * 2 * MAX_TILT;
     };
-    window.addEventListener("pointermove", onPointerMove);
+    // Scrolling cancels a touch's pointer events, so fingers need touchmove
+    const onTouchMove = ({ touches }: TouchEvent) => aim(touches[0]);
+    window.addEventListener("pointermove", aim);
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
 
     let started: number | undefined;
     let previous = 0;
@@ -221,10 +278,11 @@ const GoldField = () => {
       }
       attribute.needsUpdate = true;
 
+      // Read each frame: the portrait's height changes when the image loads
+      const composition = compositionFor(host.clientWidth, host.clientHeight, portraitFrame());
       const start = composition[from];
       const end = composition[to];
-      // x scales with the view width so the sphere stays behind the photo
-      points.position.set(lerp(start.x, end.x, t) * camera.aspect, lerp(start.y, end.y, t), 0);
+      points.position.set(lerp(start.x, end.x, t), lerp(start.y, end.y, t), 0);
       points.scale.setScalar(lerp(start.scale, end.scale, t));
       material.opacity += (lerp(start.opacity, end.opacity, t) - material.opacity) * 0.08;
 
@@ -243,7 +301,8 @@ const GoldField = () => {
     return () => {
       renderer.setAnimationLoop(null);
       observer.disconnect();
-      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointermove", aim);
+      window.removeEventListener("touchmove", onTouchMove);
       geometry.dispose();
       material.dispose();
       dot?.dispose();

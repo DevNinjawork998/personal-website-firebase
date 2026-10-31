@@ -37,9 +37,7 @@ const Card = ({ title, description, imageSrc, url, tech, category, year, index }
   const rotateX = useSpring(0, TILT_SPRING);
   const rotateY = useSpring(0, TILT_SPRING);
 
-  const onPointerMove = (event: PointerEvent<HTMLAnchorElement>) => {
-    if (event.pointerType !== "mouse") return;
-
+  const tiltToward = (event: PointerEvent<HTMLAnchorElement>) => {
     const tilt = tiltFrom(
       event.clientX,
       event.clientY,
@@ -72,7 +70,8 @@ const Card = ({ title, description, imageSrc, url, tech, category, year, index }
       }}
       sx={{ transition: "border-color 0.3s ease, background 0.3s ease" }}
       style={{ rotateX, rotateY, transformPerspective: 900 }}
-      onPointerMove={reducedMotion ? undefined : onPointerMove}
+      onPointerDown={reducedMotion ? undefined : tiltToward}
+      onPointerMove={reducedMotion ? undefined : tiltToward}
       onPointerLeave={reducedMotion ? undefined : onPointerLeave}
       cursor="pointer"
     >

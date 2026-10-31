@@ -3,7 +3,9 @@ import { describe, test, expect, vi } from "vitest";
 import { WebGLRenderer } from "three";
 import GoldField, {
   RING_RADIUS,
+  VIEW_HEIGHT,
   compositionFor,
+  dotSize,
   driftShape,
   ringShape,
   scatterShape,
@@ -61,6 +63,20 @@ describe("GoldField", () => {
     expect(renderer.forceContextLoss).toHaveBeenCalled();
     expect(renderer.domElement.isConnected).toBe(false);
   });
+
+  test("leans toward a finger dragging across the screen", () => {
+    const renderer = fakeRenderer();
+    stubRenderer(renderer);
+    render(<GoldField />);
+
+    window.dispatchEvent(
+      Object.assign(new Event("touchmove"), { touches: [{ clientX: 100, clientY: 0 }] })
+    );
+    renderer.setAnimationLoop.mock.calls[0][0](16);
+
+    const [scene] = renderer.render.mock.lastCall!;
+    expect(scene.children[0].rotation.x).toBeLessThan(0);
+  });
 });
 
 // Anchors become 0, 500, 1050, 3050
@@ -108,9 +124,49 @@ describe("stageAt", () => {
 });
 
 describe("compositionFor", () => {
-  test("uses the compact composition below 1200px, where the sphere would sit behind text", () => {
-    expect(compositionFor(1199).map((c) => c.opacity)).toEqual([0.25, 0.2, 0.12, 0.25]);
-    expect(compositionFor(1200).map((c) => c.opacity)).toEqual([0.75, 0.3, 0.18, 0.7]);
+  const PORTRAIT = { left: 460, top: 340, width: 300, height: 400 };
+  const PHONE = compositionFor(390, 844);
+  const TABLET = compositionFor(820, 1180, PORTRAIT);
+  const DESKTOP = compositionFor(1440, 900);
+
+  test("keeps desktop brightness on every screen", () => {
+    const opacities = DESKTOP.map((stage) => stage.opacity);
+    expect(PHONE.map((stage) => stage.opacity)).toEqual(opacities);
+    expect(TABLET.map((stage) => stage.opacity)).toEqual(opacities);
+  });
+
+  test("switches layout at 768px, where the hero stacks", () => {
+    expect(compositionFor(767, 1024, PORTRAIT)[0].x).toBe(0);
+    expect(compositionFor(768, 1024, PORTRAIT)[0].x).toBeGreaterThan(0);
+  });
+
+  test("centres the sphere on the portrait once perspective pushes it outward", () => {
+    const { x, y, scale } = TABLET[0];
+    const pushedOut = 1 / (1 - ((1.7 * scale) / 6) ** 2);
+    const unitsPerPixel = VIEW_HEIGHT / 1180;
+    expect(x * pushedOut).toBeCloseTo((610 - 410) * unitsPerPixel);
+    expect(y * pushedOut).toBeCloseTo((590 - 540) * unitsPerPixel);
+  });
+
+  test("grows the sphere with the portrait", () => {
+    const larger = { ...PORTRAIT, width: 600, height: 800 };
+    expect(compositionFor(820, 1180, larger)[0].scale).toBeCloseTo(TABLET[0].scale * 2);
+  });
+
+  test("shrinks the ring to stay on a narrow tablet", () => {
+    const halfWidth = ((VIEW_HEIGHT / 2) * 820) / 1180;
+    expect(TABLET[3].scale * RING_RADIUS).toBeLessThan(halfWidth);
+  });
+
+  test("keeps the ring full size on desktop", () => {
+    expect(DESKTOP[3].scale).toBe(1);
+  });
+});
+
+describe("dotSize", () => {
+  test("keeps dots the same size on screen at any viewport height", () => {
+    expect(dotSize(1180) * 1180).toBeCloseTo(dotSize(844) * 844);
+    expect(dotSize(900)).toBeCloseTo(0.035, 3);
   });
 });
 

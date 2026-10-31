@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "../../test-utils";
+import { fireEvent, render, screen, waitFor } from "../../test-utils";
 import { describe, test, expect } from "vitest";
 import Card, { tiltFrom } from "../Card";
 
@@ -107,6 +107,16 @@ describe("Card Component", () => {
     render(<Card {...mockProps} year={2023} />);
 
     expect(screen.getByText("2023")).toBeInTheDocument();
+  });
+
+  test("tilts toward a finger pressing it", async () => {
+    render(<Card {...mockProps} />);
+    const link = screen.getByRole("link");
+    link.getBoundingClientRect = () => ({ left: 0, top: 0, width: 100, height: 100 }) as DOMRect;
+
+    fireEvent.pointerDown(link, { pointerType: "touch", clientX: 100, clientY: 0 });
+
+    await waitFor(() => expect(link.style.transform).toContain("rotateY"));
   });
 });
 

@@ -1,8 +1,8 @@
-import { ReactNode, useLayoutEffect, useRef } from "react";
+import { ReactNode, useEffect, useLayoutEffect, useRef } from "react";
 import { Box, Flex, Text, Heading, Button, HStack, Image } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
-import { createScope, createTimeline, stagger, utils } from "animejs";
-import { useReducedMotion } from "framer-motion";
+import { animate, createScope, createTimeline, stagger, utils } from "animejs";
+import { useInView, useReducedMotion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
@@ -52,6 +52,8 @@ const HeadlineLine = ({ children }: { children: ReactNode }) => (
 
 const LandingSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const photoRef = useRef<HTMLDivElement>(null);
+  const photoInView = useInView(photoRef, { once: true });
   const reducedMotion = useReducedMotion();
 
   useLayoutEffect(() => {
@@ -67,12 +69,26 @@ const LandingSection = () => {
         .add('[data-intro="hairline"]', { scaleX: 1, duration: 400 }, 0)
         .add('[data-intro="eyebrow"]', { opacity: 1, duration: 300 }, 200)
         .add('[data-intro="line"]', { translateY: "0%", duration: 700, delay: stagger(120) }, 400)
-        .add('[data-intro="photo"]', { clipPath: "inset(0% 0% 0% 0%)", duration: 900 }, 300)
         .add('[data-intro="fade"]', { opacity: 1, duration: 500, delay: stagger(100) }, 1100);
     });
 
     return () => scope.revert();
   }, [reducedMotion]);
+
+  // Apart from the timeline because phones stack the portrait below the fold
+  useEffect(() => {
+    if (!photoInView || reducedMotion || !photoRef.current) return;
+
+    const unveil = animate(photoRef.current, {
+      clipPath: "inset(0% 0% 0% 0%)",
+      duration: 900,
+      delay: 300,
+      ease: "outExpo",
+    });
+    return () => {
+      unveil.cancel();
+    };
+  }, [photoInView, reducedMotion]);
 
   return (
     <Box as="section" pt="80px" id="landing" ref={sectionRef}>
@@ -81,10 +97,10 @@ const LandingSection = () => {
         <Flex
           direction={{ base: "column", md: "row" }}
           align={{ base: "flex-start", md: "center" }}
-          gap={{ base: 12, md: 20 }}
+          gap={{ base: 12, md: 10, xl: 20 }}
         >
-          {/* Left column */}
-          <Box flex="1" maxW={{ md: "58%" }}>
+          {/* Left column: wider on tablets so the headline keeps its four lines */}
+          <Box flex={{ base: "1", md: "1.5", xl: "1" }} maxW={{ md: "58%" }}>
             {/* Eyebrow */}
             <HStack spacing={3} mb={8} align="center">
               <Box
@@ -136,7 +152,7 @@ const LandingSection = () => {
               lineHeight="1.75"
               mb={10}
               fontFamily="'Inter', sans-serif"
-              maxW="500px"
+              maxW={{ base: "500px", md: "340px", lg: "430px", xl: "500px" }}
             >
               I'm{" "}
               <Box as="span" color="white" fontWeight="600">
@@ -155,7 +171,12 @@ const LandingSection = () => {
             </Text>
 
             {/* CTA + socials */}
-            <HStack spacing={4} flexWrap="wrap" align="center" data-intro="fade">
+            <HStack
+              spacing={{ base: 4, md: 3, xl: 4 }}
+              flexWrap="wrap"
+              align="center"
+              data-intro="fade"
+            >
               <Button
                 onClick={() => scrollTo("work")}
                 bg={GOLD}
@@ -204,8 +225,9 @@ const LandingSection = () => {
 
           {/* Right column — B&W photo */}
           <Box flex="1" maxW={{ md: "42%" }}>
-            <Box position="relative" data-intro="photo">
+            <Box position="relative" data-intro="photo" ref={photoRef}>
               <Image
+                id="portrait"
                 src={profilePic}
                 alt="Jack Ooi"
                 w="full"

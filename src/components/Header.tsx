@@ -36,6 +36,20 @@ const scrollTo = (id: string) => {
   if (el) el.scrollIntoView({ behavior: "smooth" });
 };
 
+const activeMarker = (
+  <MotionBox
+    as="span"
+    layoutId="nav-active"
+    position="absolute"
+    bottom="-6px"
+    left={0}
+    right={0}
+    h="1px"
+    bg={GOLD}
+    transition={{ duration: 0.35, ease: "easeOut" }}
+  />
+);
+
 function Header() {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -98,19 +112,7 @@ function Header() {
                   border="none"
                 >
                   {label}
-                  {activeSection === id && (
-                    <MotionBox
-                      as="span"
-                      layoutId="nav-active"
-                      position="absolute"
-                      bottom="-6px"
-                      left={0}
-                      right={0}
-                      h="1px"
-                      bg={GOLD}
-                      transition={{ duration: 0.35, ease: "easeOut" }}
-                    />
-                  )}
+                  {activeSection === id && activeMarker}
                 </Text>
               ))}
             </HStack>
@@ -173,6 +175,7 @@ function Header() {
               {navLinks.map(({ label, id }) => (
                 <Text
                   key={id}
+                  position="relative"
                   fontSize="2xl"
                   fontFamily="'Cormorant Garamond', serif"
                   fontWeight="600"
@@ -186,6 +189,7 @@ function Header() {
                   }}
                 >
                   {label}
+                  {activeSection === id && activeMarker}
                 </Text>
               ))}
               <Box pt={4} borderTop="1px solid rgba(201,168,67,0.2)" w="full">
