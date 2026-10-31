@@ -1,6 +1,6 @@
 import React from "react";
-import { render, screen } from "../../test-utils";
-import { describe, test, expect } from "vitest";
+import { act, render, screen, waitFor } from "../../test-utils";
+import { afterEach, beforeEach, describe, test, expect } from "vitest";
 import LandingSection from "../LandingSection";
 
 describe("LandingSection Component", () => {
@@ -64,5 +64,37 @@ describe("LandingSection Component", () => {
   test("renders CTA button", () => {
     render(<LandingSection />);
     expect(screen.getByRole("button", { name: /View selected work/i })).toBeInTheDocument();
+  });
+});
+
+describe("portrait unveil", () => {
+  const RealObserver = global.IntersectionObserver;
+  let notify: (entries: { target: Element; isIntersecting: boolean }[]) => void;
+
+  beforeEach(() => {
+    global.IntersectionObserver = class {
+      constructor(callback: typeof notify) {
+        notify = callback;
+      }
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    } as unknown as typeof IntersectionObserver;
+  });
+
+  afterEach(() => {
+    global.IntersectionObserver = RealObserver;
+  });
+
+  // Phones stack the portrait below the fold, so the hero timeline would play it unseen
+  test("waits until the portrait is on screen", async () => {
+    const { container } = render(<LandingSection />);
+    const photo = container.querySelector<HTMLElement>('[data-intro="photo"]')!;
+
+    await act(() => new Promise((resolve) => setTimeout(resolve, 600)));
+    expect(photo.style.clipPath).toContain("100%");
+
+    act(() => notify([{ target: photo, isIntersecting: true }]));
+    await waitFor(() => expect(photo.style.clipPath).not.toContain("100%"), { timeout: 2000 });
   });
 });

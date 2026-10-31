@@ -41,7 +41,7 @@ Only `framer-motion` 11 is installed today. `three` (0.186.1) and `animejs` (4.5
 - Dust does not form the portrait: the photo background is busy foliage and would read as noise.
 - Shrink the 9 MB portrait and fix the "andowner" typo in the same pass.
 - Each form holds on scroll, then morphs, with no overlapping morphs.
-- Phones get their own composition and much dimmer dust. Legibility beats visibility there, so the field is subtle on phones.
+- Phones get their own composition at desktop brightness, and tablets use the desktop composition. Revised 2026-11-01: the user asked for phone and iPad to match the web view, replacing the original much dimmer dust.
 - No new text backings: only `Card.tsx` gets one.
 
 ## Implementation
@@ -80,19 +80,21 @@ Remove `bg` from `LandingSection`, `AboutSection`, all three `ProjectsSection` r
 
 Scene:
 
-- Shapes: `Float32Array`s of the same length for scatter, sphere, wave, drift, ring. 6000 points, 2500 when `innerWidth < 1200`.
+- Shapes: `Float32Array`s of the same length for scatter, sphere, wave, drift, ring. 6000 points, 2500 when `innerWidth < 768`.
 - Material: `PointsMaterial` in `#C9A843`, additive blending, `depthWrite: false`, a small `CanvasTexture` soft dot so points are round.
-- Each frame: lerp the current shape pair into the position attribute, apply slow rotation, ease toward the cursor tilt (about 0.15 rad, from `pointermove` on `window`), ease opacity toward the stage value.
+- Each frame: lerp the current shape pair into the position attribute, apply slow rotation, ease toward the cursor or finger tilt (about 0.15 rad, from `pointermove` and `touchmove` on `window`, because scrolling cancels a touch's pointer events), ease opacity toward the stage value.
 - Intro: scatter to sphere over about 1.8s after the chunk arrives. If the visitor loads mid-page, assemble into the current stage's shape.
 
-Starting values, tuned in the browser. Below 1200px the sphere would sit behind text, so phones, tablets and small laptops use their own composition and much dimmer dust. Dust never gets a text backing outside `Card.tsx`. If dust and legibility conflict, dim the dust.
+Starting values, tuned in the browser. Compact means below 768px, Chakra's `md`, where the hero stacks and no portrait sits beside the text. From 768px up the sphere is measured from the portrait each frame rather than set from a fixed offset, so it frames the photo at every width. Dust never gets a text backing outside `Card.tsx`.
 
-| Stage | Anchor | Form, desktop | Opacity, desktop | Form, compact | Opacity, compact |
-|---|---|---|---|---|---|
-| 0 | top of page | sphere, right of centre behind the photo | 0.75 | sphere, centred | 0.25 |
-| 1 | `#about` | wave across full width | 0.3 | wave | 0.2 |
-| 2 | `#work` | loose drift | 0.18 | loose drift | 0.12 |
-| 3 | `#contact` | ring, centred, large enough that text sits in the hole | 0.7 | ring running off both sides, arcs above and below the card text | 0.25 |
+| Stage | Anchor | Form, 768px and up | Form, compact | Opacity, both |
+|---|---|---|---|---|
+| 0 | top of page | sphere, centred on the portrait with its rim on the corners | sphere, centred behind the headline, clear of the bio | 0.75 |
+| 1 | `#about` | wave across full width | wave | 0.3 |
+| 2 | `#work` | loose drift | loose drift | 0.18 |
+| 3 | `#contact` | ring, centred, text in the hole, shrunk to fit a narrow tablet | ring running off both sides, arcs above and below the card text | 0.7 |
+
+Points render 2.6px at every viewport height via `dotSize`, because three scales point size with height and they would swell on tall tablets.
 
 `stageAt(scrollY, sectionTops, viewportHeight, maxScroll)` returns one `{ from, to, t }` pair:
 
@@ -115,7 +117,7 @@ Legibility: change the `Card.tsx` background from `rgba(255,255,255,0.015)` to `
 
 - `useLayoutEffect` with `createScope`, returning `scope.revert()`. Hide targets before paint with `utils.set` to avoid a flash. Skip entirely when `useReducedMotion()` is true. Confirm these names against the installed 4.5 types.
 - Headline: remove the `<br />`s. Each of the four lines is a `display="block" overflow="hidden"` span containing one `display="block"` span. Keep each line's text in one node so existing `getByText` tests pass. Add `pb="0.12em" mb="-0.12em"` to the mask, or line-height 1.05 clips the italic "p" descender.
-- Timeline, 2s at most, ease-out only: eyebrow hairline scales in, eyebrow fades, headline lines slide up staggered 120ms, bio and CTA row fade, photo unveils with `clip-path` from the bottom, overlapping the headline.
+- Timeline, 2s at most, ease-out only: eyebrow hairline scales in, eyebrow fades, headline lines slide up staggered 120ms, bio and CTA row fade. The photo unveils with `clip-path` from the bottom outside the timeline, once it is in view, because phones stack it below the fold.
 - Marquee: add `sx={{ "@media (prefers-reduced-motion: reduce)": { animation: "none" } }}`.
 
 ### 5. Project count-up in `ProjectsSection.tsx` (anime.js)
@@ -128,8 +130,8 @@ Legibility: change the `Card.tsx` background from `rgba(255,255,255,0.015)` to `
 ### 6. Motion details
 
 - `Header.tsx`: 2px gold bar at the header's bottom edge using `useScroll` and `useSpring` on `scaleX`, origin left.
-- `Header.tsx`: active nav marker. One IntersectionObserver with `rootMargin: "-50% 0px -50% 0px"` over `about`, `work`, `contact`, plus a `motion.span layoutId="nav-active"` underline. Desktop only.
-- `Card.tsx`: use `motion.create(Box)`. `useMotionValue` + `useSpring` drive `rotateX`/`rotateY` up to 3 degrees with `transformPerspective: 900`. Handle `pointerType === "mouse"` only, and skip under reduced motion. Motion consumes the `transition` prop, so replace the Chakra `transition="all 0.3s ease"` with `sx={{ transition: "border-color 0.3s ease, background 0.3s ease" }}`.
+- `Header.tsx`: active nav marker. One IntersectionObserver with `rootMargin: "-50% 0px -50% 0px"` over `about`, `work`, `contact`, plus a `motion.span layoutId="nav-active"` underline, on the nav links and on the drawer links on phones.
+- `Card.tsx`: use `motion.create(Box)`. `useMotionValue` + `useSpring` drive `rotateX`/`rotateY` up to 3 degrees with `transformPerspective: 900`. Tilt on pointer move and pointer down so a finger press tilts too, and skip under reduced motion. Motion consumes the `transition` prop, so replace the Chakra `transition="all 0.3s ease"` with `sx={{ transition: "border-color 0.3s ease, background 0.3s ease" }}`.
 - `ContactMeSection.tsx`: wrap the bordered card in `MotionBox` with the same reveal props as `AboutSection.tsx:31-36`.
 
 ### 7. Tests
