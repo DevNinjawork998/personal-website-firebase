@@ -4,7 +4,7 @@
 
 The portfolio (`src/App.tsx`: Header, Landing, About, Projects, Contact, Footer) is a dark, gold, editorial single page with very little motion: About text and project rows fade up on scroll, and the hero marquee is a CSS keyframe. The user asked for more motion and 3D using Motion, anime.js and Three.js. They approved the direction below as proposed.
 
-Only `framer-motion` 11 is installed today. `three` (0.187.0) and `animejs` (4.5.0) are new; both are MIT.
+Only `framer-motion` 11 is installed today. `three` (0.186.1) and `animejs` (4.5.0) are new; both are MIT.
 
 **Idea:** one thread of gold dust runs through the whole page. It starts scattered and snaps into order, which is what the headline promises ("precision and care"), then reshapes as the visitor scrolls.
 
@@ -80,14 +80,14 @@ Remove `bg` from `LandingSection`, `AboutSection`, all three `ProjectsSection` r
 
 Scene:
 
-- Shapes: `Float32Array`s of the same length for scatter, sphere, wave, drift, ring. 6000 points, 2500 when `innerWidth < 768`.
+- Shapes: `Float32Array`s of the same length for scatter, sphere, wave, drift, ring. 6000 points, 2500 when `innerWidth < 1200`.
 - Material: `PointsMaterial` in `#C9A843`, additive blending, `depthWrite: false`, a small `CanvasTexture` soft dot so points are round.
 - Each frame: lerp the current shape pair into the position attribute, apply slow rotation, ease toward the cursor tilt (about 0.15 rad, from `pointermove` on `window`), ease opacity toward the stage value.
 - Intro: scatter to sphere over about 1.8s after the chunk arrives. If the visitor loads mid-page, assemble into the current stage's shape.
 
-Starting values, tuned in the browser. Below 768px the fixed canvas cannot sit "behind the photo" and text fills the screen, so phones use their own composition and much dimmer dust. Dust never gets a text backing outside `Card.tsx`. If dust and legibility conflict, dim the dust.
+Starting values, tuned in the browser. Below 1200px the sphere would sit behind text, so phones, tablets and small laptops use their own composition and much dimmer dust. Dust never gets a text backing outside `Card.tsx`. If dust and legibility conflict, dim the dust.
 
-| Stage | Anchor | Form, desktop | Opacity, desktop | Form, phone | Opacity, phone |
+| Stage | Anchor | Form, desktop | Opacity, desktop | Form, compact | Opacity, compact |
 |---|---|---|---|---|---|
 | 0 | top of page | sphere, right of centre behind the photo | 0.75 | sphere, centred | 0.25 |
 | 1 | `#about` | wave across full width | 0.3 | wave | 0.2 |

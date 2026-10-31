@@ -31,25 +31,25 @@ export type Composition = {
 
 export const RING_RADIUS = 2.4;
 
-const PHONE_WIDTH = 768;
+const COMPACT_WIDTH = 1200;
 const HOLD = 0.2;
 
 // Stages in page order: sphere, wave, drift, ring
 const DESKTOP: Composition[] = [
-  { opacity: 0.75, x: 2.2, y: 0, scale: 1, spin: 0.12 },
+  { opacity: 0.75, x: 1.1, y: 0, scale: 1.15, spin: 0.12 },
   { opacity: 0.3, x: 0, y: 0, scale: 1, spin: 0 },
   { opacity: 0.18, x: 0, y: 0, scale: 1, spin: 0.03 },
   { opacity: 0.7, x: 0, y: 0, scale: 1, spin: 0 },
 ];
 
-const PHONE: Composition[] = [
+const COMPACT: Composition[] = [
   { opacity: 0.25, x: 0, y: 0.6, scale: 0.8, spin: 0.12 },
   { opacity: 0.2, x: 0, y: 0, scale: 0.7, spin: 0 },
   { opacity: 0.12, x: 0, y: 0, scale: 0.8, spin: 0.03 },
   { opacity: 0.25, x: 0, y: 0, scale: 0.85, spin: 0 },
 ];
 
-export const compositionFor = (width: number) => (width < PHONE_WIDTH ? PHONE : DESKTOP);
+export const compositionFor = (width: number) => (width < COMPACT_WIDTH ? COMPACT : DESKTOP);
 
 export const stageAt = (
   scrollY: number,
@@ -151,7 +151,7 @@ const GoldField = () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     host.appendChild(renderer.domElement);
 
-    const count = window.innerWidth < PHONE_WIDTH ? 2500 : 6000;
+    const count = window.innerWidth < COMPACT_WIDTH ? 2500 : 6000;
     const shapes = [sphereShape, waveShape, driftShape, ringShape].map((shape) => shape(count));
     const scatter = scatterShape(count);
     const positions = scatter.slice();
@@ -162,7 +162,7 @@ const GoldField = () => {
     const material = new PointsMaterial({
       color: GOLD,
       map: dot,
-      size: 0.03,
+      size: 0.035,
       transparent: true,
       opacity: 0,
       depthWrite: false,
@@ -223,7 +223,8 @@ const GoldField = () => {
 
       const start = composition[from];
       const end = composition[to];
-      points.position.set(lerp(start.x, end.x, t), lerp(start.y, end.y, t), 0);
+      // x scales with the view width so the sphere stays behind the photo
+      points.position.set(lerp(start.x, end.x, t) * camera.aspect, lerp(start.y, end.y, t), 0);
       points.scale.setScalar(lerp(start.scale, end.scale, t));
       material.opacity += (lerp(start.opacity, end.opacity, t) - material.opacity) * 0.08;
 

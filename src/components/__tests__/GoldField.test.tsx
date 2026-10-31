@@ -108,9 +108,9 @@ describe("stageAt", () => {
 });
 
 describe("compositionFor", () => {
-  test("uses the phone composition below 768px", () => {
-    expect(compositionFor(767).map((c) => c.opacity)).toEqual([0.25, 0.2, 0.12, 0.25]);
-    expect(compositionFor(768).map((c) => c.opacity)).toEqual([0.75, 0.3, 0.18, 0.7]);
+  test("uses the compact composition below 1200px, where the sphere would sit behind text", () => {
+    expect(compositionFor(1199).map((c) => c.opacity)).toEqual([0.25, 0.2, 0.12, 0.25]);
+    expect(compositionFor(1200).map((c) => c.opacity)).toEqual([0.75, 0.3, 0.18, 0.7]);
   });
 });
 
