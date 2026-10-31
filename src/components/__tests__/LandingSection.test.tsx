@@ -23,6 +23,11 @@ describe("LandingSection Component", () => {
     expect(screen.getByText(/bp Malaysia/)).toBeInTheDocument();
   });
 
+  test("bio keeps a space before owner", () => {
+    const { container } = render(<LandingSection />);
+    expect(container.textContent).toContain("and owner of JNS Nexion Enterprise");
+  });
+
   test("renders eyebrow label with location", () => {
     render(<LandingSection />);
     expect(screen.getByText(/Software Engineer/)).toBeInTheDocument();

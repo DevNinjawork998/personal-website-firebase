@@ -3,7 +3,7 @@ import { keyframes } from "@emotion/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
-import profilePic from "../images/IMG_2796.png";
+import profilePic from "../images/profile.jpg";
 
 const GOLD = "#C9A843";
 const BG = "#0D0C0A";
@@ -103,7 +103,7 @@ const LandingSection = () => {
               <Box as="span" color="white" fontWeight="600">
                 bp Malaysia
               </Box>{" "}
-              and
+              and{" "}
               <Box as="span" color="white" fontWeight="600">
                 owner of JNS Nexion Enterprise
               </Box>
