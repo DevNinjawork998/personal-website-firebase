@@ -2,7 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { Box, Text } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import { animate } from "animejs";
-import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
+import {
+  MotionValue,
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import { useActiveSection } from "../hooks/useActiveSection";
 
 const MotionBox = motion.create(Box);
@@ -12,9 +19,14 @@ const INK = "#0D0C0A";
 const CODE_FONT = "ui-monospace, SFMono-Regular, Menlo, monospace";
 // Side margins only fit commit hashes from here up
 const WIDE = "@media (min-width: 1400px)";
+// Too little height for the typed block to sit clear of the hero text
+const SHORT = "@media (max-height: 759px)";
 
 const RAIL_START = 0.12;
-const RAIL_END = 0.96;
+// Stops above the opaque footer
+const RAIL_END = 0.86;
+const LIFT_START = 0.96;
+const LIFT_PX = 96;
 const CHAR_MS = 14;
 const MAX_TYPE_MS = 1800;
 
@@ -148,7 +160,13 @@ const Graph = () => (
   </>
 );
 
-const TypedCode = ({ reducedMotion }: { reducedMotion: boolean | null }) => {
+const TypedCode = ({
+  lift,
+  reducedMotion,
+}: {
+  lift: MotionValue<number>;
+  reducedMotion: boolean | null;
+}) => {
   const ref = useRef<HTMLPreElement>(null);
   const active = useActiveSection(SECTION_IDS);
   const [section, setSection] = useState("landing");
@@ -184,10 +202,12 @@ const TypedCode = ({ reducedMotion }: { reducedMotion: boolean | null }) => {
   }, [snippet, reducedMotion]);
 
   return (
-    <Box
+    <MotionBox
       as="pre"
       ref={ref}
       data-testid="typed-code"
+      style={{ y: lift }}
+      sx={{ [SHORT]: { display: "none" } }}
       position="absolute"
       right={{ base: "12px", md: "3vw" }}
       bottom={{ base: "2lvh", md: "5lvh" }}
@@ -217,6 +237,8 @@ const CodeRail = () => {
   const clipPath = useTransform(head, (h) => `inset(0 -100vw ${100 - h * 100}% -100vw)`);
   const headTop = useTransform(head, (h) => `${h * 100}%`);
   const drift = useTransform(progress, [0, 1], ["0lvh", "-30lvh"]);
+  // Fixed to the screen, so it would land on the footer at the end of the page
+  const lift = useTransform(scrollYProgress, [LIFT_START, 1], [0, -LIFT_PX]);
 
   return (
     <Box
@@ -292,7 +314,7 @@ const CodeRail = () => {
         )}
       </Box>
 
-      <TypedCode reducedMotion={reducedMotion} />
+      <TypedCode lift={lift} reducedMotion={reducedMotion} />
     </Box>
   );
 };

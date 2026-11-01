@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "../../test-utils";
-import { vi, describe, test, expect, beforeEach } from "vitest";
+import { vi, describe, test, expect, beforeEach, afterEach } from "vitest";
 import ProjectsSection from "../ProjectsSection";
 import { useProjects } from "../../hooks/useProjects";
 
@@ -210,5 +210,34 @@ describe("ProjectsSection Component", () => {
 
     const links = screen.getAllByRole("link");
     expect(links.length).toBe(4);
+  });
+});
+
+describe("on a touch screen", () => {
+  const realMatchMedia = window.matchMedia;
+
+  beforeEach(() => {
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches: query === "(pointer: coarse)",
+      media: query,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }));
+    vi.mocked(useProjects).mockReturnValue({
+      projects: mockProjects,
+      loading: false,
+      error: null,
+      refetch: vi.fn(),
+    });
+  });
+
+  afterEach(() => {
+    window.matchMedia = realMatchMedia;
+  });
+
+  test("shows the projects as a swipe deck", () => {
+    render(<ProjectsSection />);
+    expect(screen.getByText("1 / 4")).toBeInTheDocument();
+    expect(screen.getAllByRole("link")).toHaveLength(1);
   });
 });

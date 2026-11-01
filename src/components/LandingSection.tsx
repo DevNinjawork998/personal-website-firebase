@@ -129,7 +129,7 @@ const LandingSection = () => {
               as="h1"
               fontFamily="'Cormorant Garamond', serif"
               fontWeight="600"
-              fontSize={{ base: "5xl", md: "6xl", lg: "7xl" }}
+              fontSize={{ base: "min(3rem, 13.5vw)", md: "6xl", lg: "7xl" }}
               lineHeight="1.05"
               color="white"
               mb={8}
@@ -195,31 +195,34 @@ const LandingSection = () => {
                 View selected work ↗
               </Button>
 
-              {socials.map(({ icon, url, label }) => (
-                <Box
-                  key={url}
-                  as="a"
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  w="44px"
-                  h="44px"
-                  borderRadius="full"
-                  border="1px solid rgba(255,255,255,0.18)"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  color="rgba(255,255,255,0.6)"
-                  _hover={{
-                    borderColor: "rgba(255,255,255,0.45)",
-                    color: "white",
-                  }}
-                  transition="all 0.2s"
-                >
-                  <FontAwesomeIcon icon={icon} />
-                </Box>
-              ))}
+              {/* Grouped so a narrow screen wraps all three, never one alone */}
+              <HStack spacing={{ base: 4, md: 3, xl: 4 }}>
+                {socials.map(({ icon, url, label }) => (
+                  <Box
+                    key={url}
+                    as="a"
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    w="44px"
+                    h="44px"
+                    borderRadius="full"
+                    border="1px solid rgba(255,255,255,0.18)"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    color="rgba(255,255,255,0.6)"
+                    _hover={{
+                      borderColor: "rgba(255,255,255,0.45)",
+                      color: "white",
+                    }}
+                    transition="all 0.2s"
+                  >
+                    <FontAwesomeIcon icon={icon} />
+                  </Box>
+                ))}
+              </HStack>
             </HStack>
           </Box>
 

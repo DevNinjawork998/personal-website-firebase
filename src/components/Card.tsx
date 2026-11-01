@@ -183,6 +183,7 @@ const Card = ({ title, description, imageSrc, url, tech, category, year, index }
                   <WrapItem key={t}>
                     <Badge
                       variant="outline"
+                      whiteSpace="normal"
                       px={3}
                       py={1}
                       borderRadius="full"

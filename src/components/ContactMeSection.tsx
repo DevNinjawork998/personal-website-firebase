@@ -29,7 +29,7 @@ const ContactMeSection = () => {
           border="1px solid rgba(201,168,67,0.28)"
           borderRadius="16px"
           py={{ base: 16, md: 24 }}
-          px={{ base: 8, md: 16 }}
+          px={{ base: 5, md: 16 }}
           bg="rgba(255,255,255,0.015)"
           textAlign="center"
         >
@@ -84,8 +84,9 @@ const ContactMeSection = () => {
               bg={GOLD}
               color={BG}
               borderRadius="full"
-              px={8}
+              px={{ base: 5, md: 8 }}
               py={4}
+              whiteSpace="nowrap"
               fontSize="sm"
               fontWeight="600"
               fontFamily="'Inter', sans-serif"

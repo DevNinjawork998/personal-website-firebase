@@ -1,7 +1,8 @@
-import { render, screen } from "../test-utils";
+import { fireEvent, render, screen } from "../test-utils";
 import { describe, test, expect, vi } from "vitest";
 import App from "../App";
 import Hairline from "../components/Hairline";
+import ProjectDeck from "../components/ProjectDeck";
 import { SNIPPETS } from "../components/CodeRail";
 
 // useReducedMotion caches its first read, so it cannot be driven through matchMedia
@@ -30,6 +31,14 @@ describe("reduced motion", () => {
     expect(screen.getByTestId("typed-code").textContent).toBe(SNIPPETS.landing);
     expect(screen.getByTestId("rail-lit").style.clipPath).toBe("");
     expect(screen.queryByTestId("rail-head")).toBeNull();
+  });
+
+  test("turns the project deck into buttons with instant swaps", () => {
+    render(<ProjectDeck cards={[<a key="a">A</a>, <a key="b">B</a>]} />);
+    expect(screen.getByTestId("deck-top").style.touchAction).not.toBe("pan-y");
+
+    fireEvent.click(screen.getByRole("button", { name: "Next project" }));
+    expect(screen.getByText("2 / 2")).toBeInTheDocument();
   });
 
   test("leaves the hero fully visible", () => {
