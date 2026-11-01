@@ -8,8 +8,12 @@ import AboutSection from "./components/AboutSection";
 import ProjectsSection from "./components/ProjectsSection";
 import ContactMeSection from "./components/ContactMeSection";
 import Footer from "./components/Footer";
+import CodeRail from "./components/CodeRail";
 
-const GoldField = lazy(() => import("./components/GoldField"));
+// Decorative, so a failed chunk must not take the page down with it
+const GoldField = lazy(() =>
+  import("./components/GoldField").catch(() => ({ default: () => <></> }))
+);
 
 function App() {
   const reducedMotion = useReducedMotion();
@@ -22,6 +26,7 @@ function App() {
             <GoldField />
           </Suspense>
         )}
+        <CodeRail />
         <Box as="main" position="relative" zIndex={1}>
           <Header />
           <LandingSection />

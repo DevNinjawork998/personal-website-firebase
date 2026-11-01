@@ -15,6 +15,15 @@ export interface Project {
   updatedAt: Date;
 }
 
+// Firestore values reach an href, so anything but a web link is dropped
+const safeUrl = (url: unknown) => {
+  try {
+    return ["http:", "https:"].includes(new URL(String(url)).protocol) ? String(url) : "";
+  } catch {
+    return "";
+  }
+};
+
 export const fetchProjects = async (): Promise<Project[]> => {
   try {
     const projectsRef = collection(db, "projects");
@@ -26,7 +35,8 @@ export const fetchProjects = async (): Promise<Project[]> => {
       return {
         ...data,
         id: doc.id,
-        tech: data.tech || [],
+        url: safeUrl(data.url),
+        tech: Array.isArray(data.tech) ? data.tech : [],
         order: data.order || 0,
         createdAt: data.createdAt?.toDate() || new Date(),
         updatedAt: data.updatedAt?.toDate() || new Date(),
