@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
-import { Box, Flex, Heading, Text, VStack, Spinner } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, VStack, Spinner, useMediaQuery } from "@chakra-ui/react";
 import { animate } from "animejs";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import Card from "./Card";
 import Hairline from "./Hairline";
+import ProjectDeck from "./ProjectDeck";
 import { useProjects } from "../hooks/useProjects";
 
 import photo1 from "../images/photo1.jpg";
@@ -68,6 +69,7 @@ const ProjectCount = ({ count }: { count: number }) => {
 
 const ProjectsSection = () => {
   const { projects, loading, error, refetch } = useProjects();
+  const [isTouch] = useMediaQuery("(pointer: coarse)", { ssr: false });
 
   if (loading) {
     return (
@@ -113,8 +115,22 @@ const ProjectsSection = () => {
     );
   }
 
+  const cards = projects.map((project, index) => (
+    <Card
+      key={project.id}
+      title={project.title}
+      description={project.description}
+      imageSrc={imageMap[project.imageSrc] ?? ""}
+      url={project.url}
+      tech={project.tech}
+      category={project.category}
+      year={project.year}
+      index={index}
+    />
+  ));
+
   return (
-    <Box as="section" id="work" py={{ base: 20, md: 28 }}>
+    <Box as="section" id="work" py={{ base: 20, md: 28 }} sx={{ overflowX: "clip" }}>
       <Box maxW="1200px" mx="auto" px={{ base: 6, md: 12, lg: 16 }}>
         <Flex align="center" gap={2} mb={4}>
           <Hairline w="16px" />
@@ -144,28 +160,23 @@ const ProjectsSection = () => {
           <ProjectCount count={projects.length} />
         </Flex>
 
-        <VStack spacing={5} align="stretch">
-          {projects.map((project, index) => (
-            <MotionBox
-              key={project.id}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-            >
-              <Card
-                title={project.title}
-                description={project.description}
-                imageSrc={imageMap[project.imageSrc] ?? ""}
-                url={project.url}
-                tech={project.tech}
-                category={project.category}
-                year={project.year}
-                index={index}
-              />
-            </MotionBox>
-          ))}
-        </VStack>
+        {isTouch ? (
+          <ProjectDeck cards={cards} />
+        ) : (
+          <VStack spacing={5} align="stretch">
+            {cards.map((card, index) => (
+              <MotionBox
+                key={projects[index].id}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+              >
+                {card}
+              </MotionBox>
+            ))}
+          </VStack>
+        )}
       </Box>
     </Box>
   );
