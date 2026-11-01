@@ -13,7 +13,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  build_and_preview:
+  build:
     if: "${{ github.event.pull_request.head.repo.full_name == github.repository }}"
     runs-on: ubuntu-latest
     environment: Production - personal-website-firebase
@@ -54,8 +54,30 @@ jobs:
           VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.REACT_APP_FIREBASE_MEASUREMENT_ID }}
         run: pnpm run build
 
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: build
+          path: build/
+
+  # Separate job so nothing installed or run from the PR can reach the deploy secret
+  preview:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: Production - personal-website-firebase
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: build
+          path: build/
+
       - name: Deploy preview to Firebase Hosting
-        uses: FirebaseExtended/action-hosting-deploy@v0
+        uses: FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a # v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_PERSONAL_WEBSITE_3580D }}"

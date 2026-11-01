@@ -47,6 +47,35 @@ describe("fetchProjects", () => {
     expect(projects[0].updatedAt).toEqual(created);
   });
 
+  test.each(["javascript:alert(1)", "data:text/html,x", "not a url", 42])(
+    "blanks the unsafe url %s",
+    async (url) => {
+      mockGetDocs.mockResolvedValue({ docs: [doc("bad", { title: "Bad", url })] } as never);
+
+      const [project] = await fetchProjects();
+
+      expect(project.url).toBe("");
+    }
+  );
+
+  test("keeps http and https urls", async () => {
+    mockGetDocs.mockResolvedValue({
+      docs: [doc("a", { url: "http://example.com" }), doc("b", { url: "https://example.com/x" })],
+    } as never);
+
+    const projects = await fetchProjects();
+
+    expect(projects.map(({ url }) => url)).toEqual(["http://example.com", "https://example.com/x"]);
+  });
+
+  test("treats a non-array tech as empty", async () => {
+    mockGetDocs.mockResolvedValue({ docs: [doc("bad", { tech: "React" })] } as never);
+
+    const [project] = await fetchProjects();
+
+    expect(project.tech).toEqual([]);
+  });
+
   test("defaults missing tech, order and timestamps", async () => {
     mockGetDocs.mockResolvedValue({
       docs: [doc("bare", { title: "Bare", description: "", imageSrc: "", url: "" })],
